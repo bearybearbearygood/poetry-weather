@@ -1,0 +1,13 @@
+config.json
+history.json
+poetry_weather.db
+*.db
+__pycache__/
+*.pyc
+.workbuddy/
+.env
+data/
+.env.local
+maoxuan_rss_guide.pdf
+preview.png
+*.pdf

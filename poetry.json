@@ -1,0 +1,151 @@
+{
+  "clear": [
+    {"title": "秋词", "dynasty": "唐", "author": "刘禹锡", "lines": ["晴空一鹤排云上，", "便引诗情到碧霄。"], "season": "autumn"},
+    {"title": "晓出净慈寺送林子方", "dynasty": "宋", "author": "杨万里", "lines": ["接天莲叶无穷碧，", "映日荷花别样红。"], "season": "summer"},
+    {"title": "绝句", "dynasty": "唐", "author": "杜甫", "lines": ["迟日江山丽，", "春风花草香。"], "season": "spring"},
+    {"title": "春日", "dynasty": "宋", "author": "朱熹", "lines": ["胜日寻芳泗水滨，", "无边光景一时新。"], "season": "spring"},
+    {"title": "望庐山瀑布", "dynasty": "唐", "author": "李白", "lines": ["日照香炉生紫烟，", "遥看瀑布挂前川。"], "season": "summer"},
+    {"title": "绝句", "dynasty": "唐", "author": "杜甫", "lines": ["两个黄鹂鸣翠柳，", "一行白鹭上青天。"], "season": "spring"},
+    {"title": "桑茶坑道中", "dynasty": "宋", "author": "杨万里", "lines": ["晴明风日雨干时，", "草满花堤水满溪。"], "season": "spring"},
+    {"title": "山亭夏日", "dynasty": "唐", "author": "高骈", "lines": ["绿树阴浓夏日长，", "楼台倒影入池塘。"], "season": "summer"},
+    {"title": "登鹳雀楼", "dynasty": "唐", "author": "王之涣", "lines": ["白日依山尽，", "黄河入海流。"], "season": "all"},
+    {"title": "登飞来峰", "dynasty": "宋", "author": "王安石", "lines": ["飞来山上千寻塔，", "闻说鸡鸣见日升。"], "season": "all"},
+    {"title": "江南春", "dynasty": "唐", "author": "杜牧", "lines": ["千里莺啼绿映红，", "水村山郭酒旗风。"], "season": "spring"},
+    {"title": "小池", "dynasty": "宋", "author": "杨万里", "lines": ["泉眼无声惜细流，", "树阴照水爱晴柔。"], "season": "summer"},
+    {"title": "题临安邸", "dynasty": "宋", "author": "林升", "lines": ["山外青山楼外楼，", "西湖歌舞几时休。"], "season": "all"}
+  ],
+  "partly_cloudy": [
+    {"title": "终南别业", "dynasty": "唐", "author": "王维", "lines": ["行到水穷处，", "坐看云起时。"], "season": "all"},
+    {"title": "独坐敬亭山", "dynasty": "唐", "author": "李白", "lines": ["众鸟高飞尽，", "孤云独去闲。"], "season": "all"},
+    {"title": "寻隐者不遇", "dynasty": "唐", "author": "贾岛", "lines": ["只在此山中，", "云深不知处。"], "season": "all"},
+    {"title": "山行", "dynasty": "唐", "author": "杜牧", "lines": ["远上寒山石径斜，", "白云生处有人家。"], "season": "autumn"},
+    {"title": "观书有感", "dynasty": "宋", "author": "朱熹", "lines": ["半亩方塘一鉴开，", "天光云影共徘徊。"], "season": "all"},
+    {"title": "黄鹤楼送孟浩然之广陵", "dynasty": "唐", "author": "李白", "lines": ["孤帆远影碧空尽，", "唯见长江天际流。"], "season": "spring"},
+    {"title": "望天门山", "dynasty": "唐", "author": "李白", "lines": ["两岸青山相对出，", "孤帆一片日边来。"], "season": "all"},
+    {"title": "早发白帝城", "dynasty": "唐", "author": "李白", "lines": ["朝辞白帝彩云间，", "千里江陵一日还。"], "season": "all"},
+    {"title": "终南山", "dynasty": "唐", "author": "王维", "lines": ["白云回望合，", "青霭入看无。"], "season": "all"},
+    {"title": "望岳", "dynasty": "唐", "author": "杜甫", "lines": ["造化钟神秀，", "阴阳割昏晓。"], "season": "all"}
+  ],
+  "cloudy": [
+    {"title": "雁门太守行", "dynasty": "唐", "author": "李贺", "lines": ["黑云压城城欲摧，", "甲光向日金鳞开。"], "season": "all"},
+    {"title": "天净沙·秋思", "dynasty": "元", "author": "马致远", "lines": ["枯藤老树昏鸦，", "小桥流水人家。"], "season": "autumn"},
+    {"title": "江雪", "dynasty": "唐", "author": "柳宗元", "lines": ["千山鸟飞绝，", "万径人踪灭。"], "season": "winter"},
+    {"title": "逢雪宿芙蓉山主人", "dynasty": "唐", "author": "刘长卿", "lines": ["日暮苍山远，", "天寒白屋贫。"], "season": "winter"},
+    {"title": "黄鹤楼", "dynasty": "唐", "author": "崔颢", "lines": ["黄鹤一去不复返，", "白云千载空悠悠。"], "season": "all"},
+    {"title": "咸阳城东楼", "dynasty": "唐", "author": "许浑", "lines": ["溪云初起日沉阁，", "山雨欲来风满楼。"], "season": "all"},
+    {"title": "枫桥夜泊", "dynasty": "唐", "author": "张继", "lines": ["月落乌啼霜满天，", "江枫渔火对愁眠。"], "season": "autumn"},
+    {"title": "暮江吟", "dynasty": "唐", "author": "白居易", "lines": ["一道残阳铺水中，", "半江瑟瑟半江红。"], "season": "autumn"},
+    {"title": "天净沙·秋", "dynasty": "元", "author": "白朴", "lines": ["孤村落日残霞，", "轻烟老树寒鸦。"], "season": "autumn"}
+  ],
+  "rain": [
+    {"title": "春夜喜雨", "dynasty": "唐", "author": "杜甫", "lines": ["好雨知时节，", "当春乃发生。"], "season": "spring"},
+    {"title": "清明", "dynasty": "唐", "author": "杜牧", "lines": ["清明时节雨纷纷，", "路上行人欲断魂。"], "season": "spring"},
+    {"title": "春晓", "dynasty": "唐", "author": "孟浩然", "lines": ["夜来风雨声，", "花落知多少。"], "season": "spring"},
+    {"title": "山居秋暝", "dynasty": "唐", "author": "王维", "lines": ["空山新雨后，", "天气晚来秋。"], "season": "autumn"},
+    {"title": "送元二使安西", "dynasty": "唐", "author": "王维", "lines": ["渭城朝雨浥轻尘，", "客舍青青柳色新。"], "season": "spring"},
+    {"title": "饮湖上初晴后雨", "dynasty": "宋", "author": "苏轼", "lines": ["水光潋滟晴方好，", "山色空蒙雨亦奇。"], "season": "summer"},
+    {"title": "夜雨寄北", "dynasty": "唐", "author": "李商隐", "lines": ["君问归期未有期，", "巴山夜雨涨秋池。"], "season": "autumn"},
+    {"title": "渔歌子", "dynasty": "唐", "author": "张志和", "lines": ["青箬笠，绿蓑衣，", "斜风细雨不须归。"], "season": "spring"},
+    {"title": "绝句", "dynasty": "宋", "author": "志南", "lines": ["沾衣欲湿杏花雨，", "吹面不寒杨柳风。"], "season": "spring"},
+    {"title": "西江月·夜行黄沙道中", "dynasty": "宋", "author": "辛弃疾", "lines": ["七八个星天外，", "两三点雨山前。"], "season": "summer"},
+    {"title": "芙蓉楼送辛渐", "dynasty": "唐", "author": "王昌龄", "lines": ["寒雨连江夜入吴，", "平明送客楚山孤。"], "season": "autumn"},
+    {"title": "滁州西涧", "dynasty": "唐", "author": "韦应物", "lines": ["春潮带雨晚来急，", "野渡无人舟自横。"], "season": "spring"},
+    {"title": "临安春雨初霁", "dynasty": "宋", "author": "陆游", "lines": ["小楼一夜听春雨，", "深巷明朝卖杏花。"], "season": "spring"},
+    {"title": "约客", "dynasty": "宋", "author": "赵师秀", "lines": ["黄梅时节家家雨，", "青草池塘处处蛙。"], "season": "summer"},
+    {"title": "十一月四日风雨大作", "dynasty": "宋", "author": "陆游", "lines": ["夜阑卧听风吹雨，", "铁马冰河入梦来。"], "season": "winter"}
+  ],
+  "heavy_rain": [
+    {"title": "六月二十七日望湖楼醉书", "dynasty": "宋", "author": "苏轼", "lines": ["黑云翻墨未遮山，", "白雨跳珠乱入船。"], "season": "summer"},
+    {"title": "大风雨中作", "dynasty": "宋", "author": "陆游", "lines": ["风如拔山怒，", "雨如决河倾。"], "season": "summer"},
+    {"title": "广阳山道中", "dynasty": "明", "author": "李攀龙", "lines": ["雷声千嶂落，", "雨色万峰来。"], "season": "summer"},
+    {"title": "有美堂暴雨", "dynasty": "宋", "author": "苏轼", "lines": ["游人脚底一声雷，", "满座顽云拨不开。"], "season": "summer"},
+    {"title": "暴雨", "dynasty": "唐", "author": "韦庄", "lines": ["江村入夏多雷雨，", "晓作狂霖晚又晴。"], "season": "summer"},
+    {"title": "梅雨", "dynasty": "唐", "author": "柳宗元", "lines": ["梅实迎时雨，", "苍茫值晚春。"], "season": "spring"},
+    {"title": "雨晴", "dynasty": "唐", "author": "王驾", "lines": ["雨前初见花间蕊，", "雨后兼无叶里花。"], "season": "spring"},
+    {"title": "春游曲", "dynasty": "唐", "author": "王涯", "lines": ["万树江边杏，", "新开一夜风。"], "season": "spring"}
+  ],
+  "snow": [
+    {"title": "白雪歌送武判官归京", "dynasty": "唐", "author": "岑参", "lines": ["忽如一夜春风来，", "千树万树梨花开。"], "season": "winter"},
+    {"title": "江雪", "dynasty": "唐", "author": "柳宗元", "lines": ["孤舟蓑笠翁，", "独钓寒江雪。"], "season": "winter"},
+    {"title": "问刘十九", "dynasty": "唐", "author": "白居易", "lines": ["晚来天欲雪，", "能饮一杯无？"], "season": "winter"},
+    {"title": "逢雪宿芙蓉山主人", "dynasty": "唐", "author": "刘长卿", "lines": ["柴门闻犬吠，", "风雪夜归人。"], "season": "winter"},
+    {"title": "雪梅", "dynasty": "宋", "author": "卢梅坡", "lines": ["梅须逊雪三分白，", "雪却输梅一段香。"], "season": "winter"},
+    {"title": "绝句", "dynasty": "唐", "author": "杜甫", "lines": ["窗含西岭千秋雪，", "门泊东吴万里船。"], "season": "winter"},
+    {"title": "夜雪", "dynasty": "唐", "author": "白居易", "lines": ["已讶衾枕冷，", "复见窗户明。"], "season": "winter"},
+    {"title": "冬晚送长孙渐舍人归州", "dynasty": "唐", "author": "岑参", "lines": ["北风卷地白草折，", "胡天八月即飞雪。"], "season": "winter"},
+    {"title": "梅花", "dynasty": "宋", "author": "王安石", "lines": ["墙角数枝梅，", "凌寒独自开。"], "season": "winter"},
+    {"title": "山中雪后", "dynasty": "清", "author": "郑燮", "lines": ["晨起开门雪满山，", "雪晴云淡日光寒。"], "season": "winter"},
+    {"title": "雪梅·其二", "dynasty": "宋", "author": "卢梅坡", "lines": ["有梅无雪不精神，", "有雪无诗俗了人。"], "season": "winter"}
+  ],
+  "heavy_snow": [
+    {"title": "北风行", "dynasty": "唐", "author": "李白", "lines": ["燕山雪花大如席，", "片片吹落轩辕台。"], "season": "winter"},
+    {"title": "塞下曲", "dynasty": "唐", "author": "卢纶", "lines": ["欲将轻骑逐，", "大雪满弓刀。"], "season": "winter"},
+    {"title": "夜雪", "dynasty": "唐", "author": "白居易", "lines": ["夜深知雪重，", "时闻折竹声。"], "season": "winter"},
+    {"title": "从军行", "dynasty": "唐", "author": "王昌龄", "lines": ["青海长云暗雪山，", "孤城遥望玉门关。"], "season": "winter"},
+    {"title": "别董大", "dynasty": "唐", "author": "高适", "lines": ["千里黄云白日曛，", "北风吹雁雪纷纷。"], "season": "winter"},
+    {"title": "对雪", "dynasty": "唐", "author": "高骈", "lines": ["六出飞花入户时，", "坐看青竹变琼枝。"], "season": "winter"},
+    {"title": "走马川行奉送出师西征", "dynasty": "唐", "author": "岑参", "lines": ["轮台九月风夜吼，", "一川碎石大如斗。"], "season": "winter"},
+    {"title": "古意", "dynasty": "唐", "author": "李颀", "lines": ["黄叶萧萧壮士悲，", "白雪漫漫征人寒。"], "season": "winter"}
+  ],
+  "fog": [
+    {"title": "泊秦淮", "dynasty": "唐", "author": "杜牧", "lines": ["烟笼寒水月笼沙，", "夜泊秦淮近酒家。"], "season": "autumn"},
+    {"title": "花非花", "dynasty": "唐", "author": "白居易", "lines": ["花非花，雾非雾，", "夜半来，天明去。"], "season": "all"},
+    {"title": "踏莎行", "dynasty": "宋", "author": "秦观", "lines": ["雾失楼台，", "月迷津渡。"], "season": "spring"},
+    {"title": "送灵澈上人", "dynasty": "唐", "author": "刘长卿", "lines": ["苍苍竹林寺，", "杳杳钟声晚。"], "season": "all"},
+    {"title": "渔翁", "dynasty": "唐", "author": "柳宗元", "lines": ["烟销日出不见人，", "欸乃一声山水绿。"], "season": "all"},
+    {"title": "望洞庭", "dynasty": "唐", "author": "刘禹锡", "lines": ["湖光秋月两相和，", "潭面无风镜未磨。"], "season": "autumn"},
+    {"title": "终南山", "dynasty": "唐", "author": "王维", "lines": ["分野中峰变，", "阴晴众壑殊。"], "season": "all"},
+    {"title": "题破山寺后禅院", "dynasty": "唐", "author": "常建", "lines": ["清晨入古寺，", "初日照高林。"], "season": "all"},
+    {"title": "渡荆门送别", "dynasty": "唐", "author": "李白", "lines": ["山随平野尽，", "江入大荒流。"], "season": "all"}
+  ],
+  "haze": [
+    {"title": "鹿柴", "dynasty": "唐", "author": "王维", "lines": ["空山不见人，", "但闻人语响。"], "season": "all"},
+    {"title": "竹里馆", "dynasty": "唐", "author": "王维", "lines": ["深林人不知，", "明月来相照。"], "season": "all"},
+    {"title": "望洞庭", "dynasty": "唐", "author": "刘禹锡", "lines": ["遥望洞庭山水翠，", "白银盘里一青螺。"], "season": "autumn"},
+    {"title": "鸟鸣涧", "dynasty": "唐", "author": "王维", "lines": ["人闲桂花落，", "夜静春山空。"], "season": "spring"},
+    {"title": "过香积寺", "dynasty": "唐", "author": "王维", "lines": ["不知香积寺，", "数里入云峰。"], "season": "all"},
+    {"title": "辋川闲居赠裴秀才迪", "dynasty": "唐", "author": "王维", "lines": ["寒山转苍翠，", "秋水日潺湲。"], "season": "autumn"},
+    {"title": "辛夷坞", "dynasty": "唐", "author": "王维", "lines": ["涧户寂无人，", "纷纷开且落。"], "season": "spring"}
+  ],
+  "wind": [
+    {"title": "大风歌", "dynasty": "汉", "author": "刘邦", "lines": ["大风起兮云飞扬，", "威加海内兮归故乡。"], "season": "all"},
+    {"title": "登高", "dynasty": "唐", "author": "杜甫", "lines": ["风急天高猿啸哀，", "渚清沙白鸟飞回。"], "season": "autumn"},
+    {"title": "行路难", "dynasty": "唐", "author": "李白", "lines": ["长风破浪会有时，", "直挂云帆济沧海。"], "season": "all"},
+    {"title": "茅屋为秋风所破歌", "dynasty": "唐", "author": "杜甫", "lines": ["八月秋高风怒号，", "卷我屋上三重茅。"], "season": "autumn"},
+    {"title": "观刈麦", "dynasty": "唐", "author": "白居易", "lines": ["夜来南风起，", "小麦覆陇黄。"], "season": "summer"},
+    {"title": "无题", "dynasty": "唐", "author": "李商隐", "lines": ["相见时难别亦难，", "东风无力百花残。"], "season": "spring"},
+    {"title": "泊船瓜洲", "dynasty": "宋", "author": "王安石", "lines": ["春风又绿江南岸，", "明月何时照我还。"], "season": "spring"},
+    {"title": "风", "dynasty": "唐", "author": "李峤", "lines": ["解落三秋叶，", "能开二月花。"], "season": "all"},
+    {"title": "春日", "dynasty": "宋", "author": "秦观", "lines": ["一夜轻风起，", "千金买亦无。"], "season": "spring"}
+  ],
+  "dust": [
+    {"title": "使至塞上", "dynasty": "唐", "author": "王维", "lines": ["大漠孤烟直，", "长河落日圆。"], "season": "all"},
+    {"title": "从军行", "dynasty": "唐", "author": "王昌龄", "lines": ["黄沙百战穿金甲，", "不破楼兰终不还。"], "season": "all"},
+    {"title": "别董大", "dynasty": "唐", "author": "高适", "lines": ["千里黄云白日曛，", "北风吹雁雪纷纷。"], "season": "winter"},
+    {"title": "凉州词", "dynasty": "唐", "author": "王翰", "lines": ["葡萄美酒夜光杯，", "欲饮琵琶马上催。"], "season": "all"},
+    {"title": "出塞", "dynasty": "唐", "author": "王之涣", "lines": ["黄河远上白云间，", "一片孤城万仞山。"], "season": "all"},
+    {"title": "塞下曲", "dynasty": "唐", "author": "卢纶", "lines": ["月黑雁飞高，", "单于夜遁逃。"], "season": "winter"},
+    {"title": "古从军行", "dynasty": "唐", "author": "李颀", "lines": ["白日登山望烽火，", "黄昏饮马傍交河。"], "season": "all"},
+    {"title": "关山月", "dynasty": "唐", "author": "李白", "lines": ["明月出天山，", "苍茫云海间。"], "season": "all"}
+  ],
+  "hot": [
+    {"title": "悯农", "dynasty": "唐", "author": "李绅", "lines": ["锄禾日当午，", "汗滴禾下土。"], "season": "summer"},
+    {"title": "夏日山中", "dynasty": "唐", "author": "李白", "lines": ["懒摇白羽扇，", "裸袒青林中。"], "season": "summer"},
+    {"title": "夏意", "dynasty": "宋", "author": "苏舜钦", "lines": ["别院深深夏席清，", "石榴开遍透帘明。"], "season": "summer"},
+    {"title": "苦热题恒寂师禅室", "dynasty": "唐", "author": "白居易", "lines": ["人人避暑走如狂，", "独有禅师不出房。"], "season": "summer"},
+    {"title": "纳凉", "dynasty": "宋", "author": "秦观", "lines": ["携扙来追柳外凉，", "画桥南畔倚胡床。"], "season": "summer"},
+    {"title": "大热", "dynasty": "宋", "author": "戴复古", "lines": ["天地一大窑，", "阳炭烹六月。"], "season": "summer"},
+    {"title": "夏夜叹", "dynasty": "唐", "author": "杜甫", "lines": ["永日不可暮，", "炎蒸毒我肠。"], "season": "summer"},
+    {"title": "苦热", "dynasty": "宋", "author": "陆游", "lines": ["万瓦鳞鳞若火龙，", "日车不动汗珠融。"], "season": "summer"}
+  ],
+  "cold": [
+    {"title": "苦寒吟", "dynasty": "唐", "author": "孟郊", "lines": ["天寒色青苍，", "北风叫枯桑。"], "season": "winter"},
+    {"title": "冬景", "dynasty": "宋", "author": "苏轼", "lines": ["荷尽已无擎雨盖，", "菊残犹有傲霜枝。"], "season": "winter"},
+    {"title": "邯郸冬至夜思家", "dynasty": "唐", "author": "白居易", "lines": ["邯郸驿里逢冬至，", "抱膝灯前影伴身。"], "season": "winter"},
+    {"title": "十一月四日风雨大作", "dynasty": "宋", "author": "陆游", "lines": ["僵卧孤村不自哀，", "尚思为国戍轮台。"], "season": "winter"},
+    {"title": "早寒江上有怀", "dynasty": "唐", "author": "孟浩然", "lines": ["木落雁南度，", "北风江上寒。"], "season": "autumn"},
+    {"title": "寒菊", "dynasty": "宋", "author": "郑思肖", "lines": ["花开不并百花丛，", "独立疏篱趣未穷。"], "season": "winter"},
+    {"title": "岁暮", "dynasty": "唐", "author": "杜甫", "lines": ["岁暮远为客，", "边隅还用兵。"], "season": "winter"},
+    {"title": "邯郸客舍", "dynasty": "唐", "author": "高适", "lines": ["客从长安来，", "还归长安去。"], "season": "winter"}
+  ]
+}

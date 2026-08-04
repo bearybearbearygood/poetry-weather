@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}注册 - 诗词天气{% endblock %}
+
+{% block content %}
+<section class="form-section">
+    <h1>注册诗词天气</h1>
+    <p class="form-intro">填写以下信息，注册后立即推送第一条诗词天气到你的 Dot. 设备。</p>
+
+    <form method="POST" action="{{ url_for('register') }}" class="form">
+        <div class="form-group">
+            <label for="dot_api_key">Dot. API 密钥</label>
+            <input type="text" id="dot_api_key" name="dot_api_key"
+                   placeholder="dot_app_xxxxxxxxxxxx" required
+                   autocomplete="off">
+            <small>在 Dot. App「我的」-「开发者」中创建</small>
+        </div>
+
+        <div class="form-group">
+            <label for="device_id">设备序列号</label>
+            <input type="text" id="device_id" name="device_id"
+                   placeholder="ABCD1234ABCD" required
+                   autocomplete="off">
+            <small>在 Dot. App「我的设备」中查看，12 位字母数字</small>
+        </div>
+
+        <div class="form-group">
+            <label for="city">选择城市</label>
+            <select id="city" name="city">
+                <option value="">-- 选择城市 --</option>
+                {% for city_name in cities.keys() | sort %}
+                <option value="{{ city_name }}">{{ city_name }}</option>
+                {% endfor %}
+            </select>
+            <small>选择你所在的城市，用于获取天气数据</small>
+        </div>
+
+        <details class="form-advanced">
+            <summary>手动输入经纬度（城市列表中没有我的城市）</summary>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="lng">经度</label>
+                    <input type="text" id="lng" name="lng" placeholder="116.4074">
+                </div>
+                <div class="form-group">
+                    <label for="lat">纬度</label>
+                    <input type="text" id="lat" name="lat" placeholder="39.9042">
+                </div>
+            </div>
+            <small>如果选择城市列表中的城市，无需填写经纬度</small>
+        </details>
+
+        <div class="form-notice">
+            <p>你的 API 密钥和设备序列号仅用于向你的设备推送内容，不会用于其他用途。</p>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-large btn-block">注册并推送</button>
+    </form>
+
+    <div class="form-help">
+        <h3>注册前请确认</h3>
+        <ul>
+            <li>已在 Dot. App 的「内容工坊」中添加「文本 API」到设备循环任务</li>
+            <li>设备已接通电源并连接网络</li>
+            <li>API 密钥和设备序列号填写正确</li>
+        </ul>
+        <p>遇到问题？请检查设备循环任务中是否已添加「文本 API」内容。</p>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,10 @@
+{
+  "caiyun_token": "你的彩云天气Token",
+  "location": {
+    "lng": 116.4074,
+    "lat": 39.9042,
+    "name": "北京"
+  },
+  "dot_api_key": "dot_app_你的Dot.API密钥",
+  "device_id": "你的设备序列号"
+}

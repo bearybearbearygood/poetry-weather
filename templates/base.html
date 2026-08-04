@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}诗词天气{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="nav">
+        <a href="{{ url_for('index') }}" class="nav-logo">诗词天气</a>
+        <div class="nav-links">
+            <a href="{{ url_for('index') }}">首页</a>
+            <a href="/preview" target="_blank">今日预览</a>
+            <a href="/rss" target="_blank">RSS 示例</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <p>诗词天气 &middot; 天气驱动的每日诗词 &middot; <a href="https://dot.mindreset.tech" target="_blank">Dot. 墨水屏</a></p>
+    </footer>
+</body>
+</html>

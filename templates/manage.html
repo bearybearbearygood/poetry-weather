@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block title %}管理订阅 - 诗词天气{% endblock %}
+
+{% block content %}
+<section class="manage-section">
+    <h1>我的订阅</h1>
+
+    <div class="sub-card">
+        <div class="sub-info">
+            <div class="sub-row">
+                <span class="sub-label">设备序列号</span>
+                <span class="sub-value">{{ sub.device_id }}</span>
+            </div>
+            <div class="sub-row">
+                <span class="sub-label">城市</span>
+                <span class="sub-value">{{ sub.city }}</span>
+            </div>
+            <div class="sub-row">
+                <span class="sub-label">状态</span>
+                <span class="sub-status sub-status-{{ 'active' if sub.active else 'inactive' }}">
+                    {{ '已激活' if sub.active else '已停用' }}
+                </span>
+            </div>
+            <div class="sub-row">
+                <span class="sub-label">注册时间</span>
+                <span class="sub-value">{{ sub.created_at[:10] }}</span>
+            </div>
+        </div>
+
+        {% if sub.active %}
+        <div class="sub-actions">
+            <form method="POST" action="{{ url_for('manage', token=token) }}" class="inline-form">
+                <input type="hidden" name="action" value="push">
+                <button type="submit" class="btn btn-secondary">立即推送一次</button>
+            </form>
+
+            <details class="inline-details">
+                <summary class="btn btn-ghost">更换城市</summary>
+                <form method="POST" action="{{ url_for('manage', token=token) }}" class="form form-inline">
+                    <input type="hidden" name="action" value="update">
+                    <select name="city" required>
+                        <option value="">-- 选择城市 --</option>
+                        {% for city_name in cities %}
+                        <option value="{{ city_name }}" {{ 'selected' if city_name == sub.city }}>{{ city_name }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn-primary">更新</button>
+                </form>
+            </details>
+
+            <form method="POST" action="{{ url_for('manage', token=token) }}" class="inline-form"
+                  onsubmit="return confirm('确定要取消订阅吗？取消后不再每日推送。')">
+                <input type="hidden" name="action" value="delete">
+                <button type="submit" class="btn btn-danger">取消订阅</button>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="sub-link">
+        <p>保存此页面链接以便日后管理：<code>{{ request.url }}</code></p>
+    </div>
+
+    {% if history %}
+    <div class="history-section">
+        <h2>推送历史</h2>
+        <table class="history-table">
+            <thead>
+                <tr>
+                    <th>日期</th>
+                    <th>诗词</th>
+                    <th>天气</th>
+                    <th>温度</th>
+                    <th>状态</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for h in history %}
+                <tr>
+                    <td>{{ h.pushed_at[:16].replace('T', ' ') }}</td>
+                    <td>
+                        {% if h.poem_title %}
+                        {{ h.poem_title }}
+                        {% if h.poem_author %}· {{ h.poem_author }}{% endif %}
+                        {% else %}
+                        -
+                        {% endif %}
+                    </td>
+                    <td>{{ h.weather_desc or '-' }}</td>
+                    <td>{{ h.temperature ~ '℃' if h.temperature is not none else '-' }}</td>
+                    <td>
+                        <span class="push-status push-status-{{ h.status }}">
+                            {{ '成功' if h.status == 'success' else '失败' }}
+                        </span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}
