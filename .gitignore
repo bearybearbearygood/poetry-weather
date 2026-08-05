@@ -11,3 +11,6 @@ data/
 maoxuan_rss_guide.pdf
 preview.png
 *.pdf
+*.log
+poetry-weather-deploy.zip
+push.log
