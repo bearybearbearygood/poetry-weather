@@ -162,13 +162,16 @@ def get_cached_content(lng, lat, city_name):
 
 
 def build_rss_title(weather):
-    """构建 RSS item 标题：温度 + 天气状况 + 舒适度"""
+    """构建 RSS item 标题：温度区间 + 天气状况 + 舒适度"""
     if not weather:
         return "诗词天气"
     parts = []
-    temp = weather.get("temperature")
-    if temp is not None:
-        parts.append(f"{temp}℃")
+    temp_min = weather.get("temp_min")
+    temp_max = weather.get("temp_max")
+    if temp_min is not None and temp_max is not None:
+        parts.append(f"{temp_min}~{temp_max}℃")
+    elif weather.get("temperature") is not None:
+        parts.append(f'{weather["temperature"]}℃')
     if weather.get("description"):
         parts.append(weather["description"])
     if weather.get("comfort_desc"):
@@ -298,6 +301,8 @@ def preview():
         },
         "weather": {
             "temperature": weather.get("temperature") if weather else None,
+            "temp_min": weather.get("temp_min") if weather else None,
+            "temp_max": weather.get("temp_max") if weather else None,
             "description": weather.get("description") if weather else None,
             "humidity": weather.get("humidity") if weather else None,
             "wind_speed": weather.get("wind_speed") if weather else None,

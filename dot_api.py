@@ -4,7 +4,7 @@
 
 布局效果（296x152px 墨水屏）：
 ┌─────────────────────────────────┐
-│  30℃ 多云 闷热                    │ ← 标题：温度+天气+舒适度
+│  26~36℃ 晴 热                    │ ← 标题：温度区间+天气+舒适度
 │                                 │
 │  永日不可暮，                      │ ← 正文：诗句
 │  炎蒸毒我肠。                      │
@@ -31,11 +31,14 @@ def build_text_payload(poem, weather, date_str):
         weather: 天气字典（description, temperature, humidity 等）
         date_str: 日期字符串，如 "8月4日 周二"
     """
-    # ── 标题：温度 + 天气状况 + 舒适度 ──
-    temp = weather.get("temperature")
+    # ── 标题：温度区间 + 天气状况 + 舒适度 ──
+    temp_min = weather.get("temp_min")
+    temp_max = weather.get("temp_max")
     title_parts = []
-    if temp is not None:
-        title_parts.append(f"{temp}℃")
+    if temp_min is not None and temp_max is not None:
+        title_parts.append(f"{temp_min}~{temp_max}℃")
+    elif weather.get("temperature") is not None:
+        title_parts.append(f'{weather["temperature"]}℃')
     if weather.get("description"):
         title_parts.append(weather["description"])
     if weather.get("comfort_desc"):
