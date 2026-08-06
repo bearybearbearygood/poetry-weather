@@ -205,23 +205,18 @@ def build_rss_title(weather):
 
 
 def build_rss_description(poem, weather, date_str, city):
-    """构建 RSS item 描述：诗句 + 出处 + 天气详情
+    """构建 RSS item 描述：仅诗句 + 出处
 
-    使用 <br> 标签换行（Dot. 渲染 RSS 时不识别 \\n，需要 HTML 标签），
-    配合 generate_rss_xml 中的 CDATA 包裹确保标签不被转义。
-
-    布局：
-      诗句（每句一行）
-      ——作者（朝代）《诗名》
-      湿度73% · 风速4m/s · 空气优
+    Dot. 渲染 RSS 时不识别 \\n 和 <br>，所有内容显示为一行。
+    因此 description 只保留诗句和出处，天气详情不放入。
     """
     parts = []
 
-    # 诗句（每句一行）
+    # 诗句
     poem_lines = poem.get("lines", [])
     parts.extend(poem_lines)
 
-    # 出处（换行，不空行）
+    # 出处
     author = poem.get("author", "")
     poem_title = poem.get("title", "无题")
     dynasty = poem.get("dynasty", "")
@@ -231,22 +226,7 @@ def build_rss_description(poem, weather, date_str, city):
         source = f"——{author}《{poem_title}》"
     parts.append(source)
 
-    # 天气详情（湿度/风速/空气）
-    if weather:
-        detail_parts = []
-        if weather.get("humidity") is not None:
-            detail_parts.append(f'湿度{weather["humidity"]}%')
-        if weather.get("wind_speed") is not None:
-            wind = round(weather["wind_speed"])
-            detail_parts.append(f"风速{wind}m/s")
-        if weather.get("aqi_desc"):
-            detail_parts.append(f'空气{weather["aqi_desc"]}')
-        elif weather.get("aqi") is not None:
-            detail_parts.append(f'AQI{weather["aqi"]}')
-        if detail_parts:
-            parts.append(" · ".join(detail_parts))
-
-    return "<br>".join(parts)
+    return " ".join(parts)
 
 
 def generate_rss_xml(content):
@@ -263,8 +243,8 @@ def generate_rss_xml(content):
     today = date.today().isoformat()
     guid = f"poetry-weather-{edition}-{today}-{city}"
 
-    # pubDate 格式: RFC 822，时间固定为 00:00:00 避免 Dot. 底部显示无意义的时间
-    pub_date = datetime.now().strftime("%a, %d %b %Y 00:00:00 +0800")
+    # pubDate: 只保留日期，去掉时间（Dot. 底部会显示 pubDate，00:00 无意义）
+    pub_date = datetime.now().strftime("%a, %d %b %Y +0800")
 
     # 基础 URL（从请求头推断）
     base_url = request.host_url.rstrip("/")
@@ -281,7 +261,7 @@ def generate_rss_xml(content):
         '    <ttl>60</ttl>',
         '    <item>',
         f'      <title>{escape(title)}</title>',
-        f'      <description><![CDATA[{description}]]></description>',
+        f'      <description>{escape(description)}</description>',
         f'      <guid isPermaLink="false">{escape(guid)}</guid>',
         f'      <pubDate>{pub_date}</pubDate>',
         '    </item>',
@@ -366,6 +346,13 @@ def screen():
     title = build_rss_title(weather)
     description = build_rss_description(poem, weather, date_str, city_name)
 
+    # 预览页面用自己的 HTML 排版（与 Dot. 实际渲染无关）
+    poem_html = "<br>".join(escape(ln) for ln in poem.get("lines", []))
+    author = poem.get("author", "")
+    poem_title = poem.get("title", "无题")
+    dynasty = poem.get("dynasty", "")
+    source = f"——{author}（{dynasty}）《{poem_title}》" if dynasty else f"——{author}《{poem_title}》"
+
     return f"""<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -382,15 +369,14 @@ def screen():
             box-shadow:0 6px 24px rgba(0,0,0,.12); }}
   .top {{ font-size:15px; letter-spacing:.5px; color:#333; }}
   .body {{ font-size:20px; line-height:2.0; text-align:center; }}
-  .body .source {{ font-size:15px; color:#444; }}
-  .body .detail {{ font-size:13px; color:#555; }}
+  .body .source {{ font-size:15px; color:#444; margin-top:10px; }}
   .tag {{ display:inline-block; font-size:11px; color:#777; border:1px solid #ccc; border-radius:4px; padding:1px 6px; margin-bottom:10px; }}
 </style>
 </head>
 <body>
   <div class="screen">
     <div class="top"><span class="tag">{escape(EDITION_LABELS.get(edition, "诗词天气"))}</span><br>{escape(title)}</div>
-    <div class="body">{description}</div>
+    <div class="body">{poem_html}<div class="source">{escape(source)}</div></div>
   </div>
 </body>
 </html>"""
