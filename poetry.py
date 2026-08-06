@@ -35,9 +35,11 @@ def get_season():
         return "winter"
 
 
-def load_poetry():
-    """读取诗词数据库"""
-    with open(POETRY_PATH, "r", encoding="utf-8") as f:
+def load_poetry(path=None):
+    """读取诗词数据库，path 为可选 JSON 路径，默认 poetry.json"""
+    if path is None:
+        path = POETRY_PATH
+    with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 
 

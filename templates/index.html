@@ -10,7 +10,7 @@
 <section class="preview">
     <div class="device-mockup">
         <div class="device-screen">
-            <div class="device-title">30℃ 多云 闷热</div>
+            <div class="device-title">27~36℃ 多云 闷热</div>
             <div class="device-message">
                 永日不可暮，<br>
                 炎蒸毒我肠。<br>
@@ -33,6 +33,15 @@
             <select id="citySelect">
                 {% for city, coords in cities.items() %}
                 <option value="{{ city }}" data-lng="{{ coords[0] }}" data-lat="{{ coords[1] }}">{{ city }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>诗词版本</label>
+            <select id="editionSelect">
+                {% for ed in editions %}
+                <option value="{{ ed.id }}">{{ ed.name }}</option>
                 {% endfor %}
             </select>
         </div>
@@ -60,7 +69,8 @@
             <small>将此链接粘贴到 Dot. App 的「内容工坊 - RSS 订阅」中</small>
         </div>
 
-        <a class="btn btn-secondary btn-block" id="previewBtn" href="/preview" target="_blank" style="margin-top:16px">预览今日内容</a>
+        <a class="btn btn-secondary btn-block" id="previewBtn" href="/preview" target="_blank" style="margin-top:16px">预览今日内容（JSON）</a>
+        <a class="btn btn-secondary btn-block" id="screenBtn" href="/screen" target="_blank" style="margin-top:10px">查看墨水屏效果</a>
     </div>
 </section>
 
@@ -108,8 +118,8 @@
     </div>
     <div class="feature-card">
         <div class="feature-icon">诗词</div>
-        <h3>123 首古诗词</h3>
-        <p>涵盖 13 种天气类型，按季节智能匹配。每天一首不重复，应景应时应天气。</p>
+        <h3>多版本诗词库</h3>
+        <p>通用古诗词、宋词版随心切换，涵盖 13 种天气类型，按季节智能匹配。每天一首不重复，应景应时应天气。</p>
     </div>
     <div class="feature-card">
         <div class="feature-icon">RSS</div>
@@ -133,24 +143,29 @@ function updateRssLink() {
     var baseUrl = getBaseUrl();
     var customLng = document.getElementById('customLng').value;
     var customLat = document.getElementById('customLat').value;
+    var edition = document.getElementById('editionSelect').value;
     var link;
 
     if (customLng && customLat) {
-        link = baseUrl + '/rss?lng=' + customLng + '&lat=' + customLat;
+        link = baseUrl + '/rss?edition=' + edition + '&lng=' + customLng + '&lat=' + customLat;
     } else {
         var select = document.getElementById('citySelect');
         var city = select.value;
-        link = baseUrl + '/rss?city=' + encodeURIComponent(city);
+        link = baseUrl + '/rss?edition=' + edition + '&city=' + encodeURIComponent(city);
     }
 
     document.getElementById('rssLink').value = link;
 
     // 更新预览链接
     var previewBtn = document.getElementById('previewBtn');
+    var screenBtn = document.getElementById('screenBtn');
     if (customLng && customLat) {
-        previewBtn.href = '/preview?lng=' + customLng + '&lat=' + customLat;
+        previewBtn.href = '/preview?edition=' + edition + '&lng=' + customLng + '&lat=' + customLat;
+        screenBtn.href = '/screen?edition=' + edition + '&lng=' + customLng + '&lat=' + customLat;
     } else {
-        previewBtn.href = '/preview?city=' + encodeURIComponent(document.getElementById('citySelect').value);
+        var city = document.getElementById('citySelect').value;
+        previewBtn.href = '/preview?edition=' + edition + '&city=' + encodeURIComponent(city);
+        screenBtn.href = '/screen?edition=' + edition + '&city=' + encodeURIComponent(city);
     }
 }
 
@@ -174,6 +189,7 @@ function copyLink() {
 }
 
 document.getElementById('citySelect').addEventListener('change', updateRssLink);
+document.getElementById('editionSelect').addEventListener('change', updateRssLink);
 document.getElementById('customLng').addEventListener('input', updateRssLink);
 document.getElementById('customLat').addEventListener('input', updateRssLink);
 

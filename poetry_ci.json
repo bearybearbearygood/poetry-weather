@@ -1,0 +1,65 @@
+{
+  "clear": [
+    {"title": "水调歌头·明月几时有", "dynasty": "宋", "author": "苏轼", "lines": ["明月几时有？把酒问青天。", "不知天上宫阙，今夕是何年。"], "season": "autumn"},
+    {"title": "西江月·夜行黄沙道中", "dynasty": "宋", "author": "辛弃疾", "lines": ["明月别枝惊鹊，清风半夜鸣蝉。", "稻花香里说丰年，听取蛙声一片。"], "season": "summer"},
+    {"title": "阳关曲·中秋月", "dynasty": "宋", "author": "苏轼", "lines": ["暮云收尽溢清寒，银汉无声转玉盘。", "此生此夜不长好，明月明年何处看。"], "season": "autumn"},
+    {"title": "太常引·建康中秋", "dynasty": "宋", "author": "辛弃疾", "lines": ["一轮秋影转金波，飞镜又重磨。", "把酒问姮娥：被白发、欺人奈何？"], "season": "autumn"}
+  ],
+  "partly_cloudy": [
+    {"title": "天仙子·送春", "dynasty": "宋", "author": "张先", "lines": ["沙上并禽池上暝，云破月来花弄影。", "重重帘幕密遮灯，风不定，人初静。"], "season": "all"},
+    {"title": "满庭芳·山抹微云", "dynasty": "宋", "author": "秦观", "lines": ["山抹微云，天连衰草，画角声断谯门。", "暂停征棹，聊共引离尊。"], "season": "autumn"},
+    {"title": "怨王孙·湖上风来", "dynasty": "宋", "author": "李清照", "lines": ["湖上风来波浩渺，秋已暮、红稀香少。", "水光山色与人亲，说不尽、无穷好。"], "season": "autumn"}
+  ],
+  "cloudy": [
+    {"title": "声声慢·秋情", "dynasty": "宋", "author": "李清照", "lines": ["乍暖还寒时候，最难将息。", "三杯两盏淡酒，怎敌他、晚来风急。"], "season": "autumn"},
+    {"title": "八声甘州·对潇潇暮雨洒江天", "dynasty": "宋", "author": "柳永", "lines": ["对潇潇暮雨洒江天，一番洗清秋。", "渐霜风凄紧，关河冷落，残照当楼。"], "season": "autumn"},
+    {"title": "兰陵王·柳", "dynasty": "宋", "author": "周邦彦", "lines": ["柳阴直，烟里丝丝弄碧。", "隋堤上、曾见几番，拂水飘绵送行色。"], "season": "spring"}
+  ],
+  "rain": [
+    {"title": "定风波·莫听穿林打叶声", "dynasty": "宋", "author": "苏轼", "lines": ["莫听穿林打叶声，何妨吟啸且徐行。", "竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生。"], "season": "all"},
+    {"title": "虞美人·听雨", "dynasty": "宋", "author": "蒋捷", "lines": ["少年听雨歌楼上，红烛昏罗帐。", "壮年听雨客舟中，江阔云低、断雁叫西风。"], "season": "all"},
+    {"title": "临江仙·梦后楼台高锁", "dynasty": "宋", "author": "晏几道", "lines": ["落花人独立，微雨燕双飞。", "记得小蘋初见，两重心字罗衣。"], "season": "spring"},
+    {"title": "满江红·写怀", "dynasty": "宋", "author": "岳飞", "lines": ["凭栏处、潇潇雨歇，抬望眼、仰天长啸。", "三十功名尘与土，八千里路云和月。"], "season": "all"}
+  ],
+  "heavy_rain": [
+    {"title": "满庭芳·夏日溧水无想山作", "dynasty": "宋", "author": "周邦彦", "lines": ["风老莺雏，雨肥梅子，午阴嘉树清圆。", "地卑山近，衣润费炉烟。"], "season": "summer"},
+    {"title": "添字丑奴儿·芭蕉", "dynasty": "宋", "author": "李清照", "lines": ["伤心枕上三更雨，点滴霖霪。", "愁损北人，不惯起来听。"], "season": "autumn"},
+    {"title": "浣溪沙·游蕲水清泉寺", "dynasty": "宋", "author": "苏轼", "lines": ["松间沙路净无泥，潇潇暮雨子规啼。", "谁道人生无再少？门前流水尚能西。"], "season": "spring"}
+  ],
+  "snow": [
+    {"title": "清平乐·年年雪里", "dynasty": "宋", "author": "李清照", "lines": ["年年雪里，常插梅花醉。", "挼尽梅花无好意，赢得满衣清泪。"], "season": "winter"},
+    {"title": "渔家傲·雪里已知春信至", "dynasty": "宋", "author": "李清照", "lines": ["雪里已知春信至，寒梅点缀琼枝腻。", "香脸半开娇旖旎，当庭际，玉人浴出新妆洗。"], "season": "winter"},
+    {"title": "梅花引·荆溪阻雪", "dynasty": "宋", "author": "蒋捷", "lines": ["白鸥问我泊孤舟，是身留，是心留？", "心若留时，何事锁眉头？"], "season": "winter"}
+  ],
+  "heavy_snow": [
+    {"title": "踏莎行·雪似梅花", "dynasty": "宋", "author": "吕本中", "lines": ["雪似梅花，梅花似雪。似和不似都奇绝。", "恼人风味阿谁知？请君问取南楼月。"], "season": "winter"},
+    {"title": "鹧鸪天·雪照山城", "dynasty": "宋", "author": "刘著", "lines": ["雪照山城玉指寒，一声羌管怨楼闲。", "江南几度梅花发，人在天涯鬓已斑。"], "season": "winter"}
+  ],
+  "fog": [
+    {"title": "踏莎行·雾失楼台", "dynasty": "宋", "author": "秦观", "lines": ["雾失楼台，月迷津渡，桃源望断无寻处。", "可堪孤馆闭春寒，杜鹃声里斜阳暮。"], "season": "all"},
+    {"title": "渔家傲·天接云涛", "dynasty": "宋", "author": "李清照", "lines": ["天接云涛连晓雾，星河欲转千帆舞。", "仿佛梦魂归帝所，闻天语，殷勤问我归何处。"], "season": "all"}
+  ],
+  "haze": [
+    {"title": "渔家傲·秋思", "dynasty": "宋", "author": "范仲淹", "lines": ["千嶂里，长烟落日孤城闭。", "浊酒一杯家万里，燕然未勒归无计。"], "season": "autumn"},
+    {"title": "雨霖铃·寒蝉凄切", "dynasty": "宋", "author": "柳永", "lines": ["念去去，千里烟波，暮霭沉沉楚天阔。", "多情自古伤离别，更那堪、冷落清秋节！"], "season": "all"}
+  ],
+  "wind": [
+    {"title": "蝶恋花·槛菊愁烟兰泣露", "dynasty": "宋", "author": "晏殊", "lines": ["昨夜西风凋碧树，独上高楼，望尽天涯路。", "欲寄彩笺兼尺素，山长水阔知何处？"], "season": "autumn"},
+    {"title": "八声甘州·寄参寥子", "dynasty": "宋", "author": "苏轼", "lines": ["有情风、万里卷潮来，无情送潮去。", "问钱塘江上，西兴浦口，几度斜晖。"], "season": "all"},
+    {"title": "永遇乐·京口北固亭怀古", "dynasty": "宋", "author": "辛弃疾", "lines": ["舞榭歌台，风流总被雨打风吹去。", "斜阳草树，寻常巷陌，人道寄奴曾住。"], "season": "all"}
+  ],
+  "dust": [
+    {"title": "六州歌头·长淮望断", "dynasty": "宋", "author": "张孝祥", "lines": ["长淮望断，关塞莽然平。", "征尘暗，霜风劲，悄边声。"], "season": "all"},
+    {"title": "诉衷情·当年万里觅封侯", "dynasty": "宋", "author": "陆游", "lines": ["关河梦断何处，尘暗旧貂裘。", "胡未灭，鬓先秋，泪空流。"], "season": "all"}
+  ],
+  "hot": [
+    {"title": "阮郎归·初夏", "dynasty": "宋", "author": "苏轼", "lines": ["绿槐高柳咽新蝉，薰风初入弦。", "碧纱窗下水沉烟，棋声惊昼眠。"], "season": "summer"},
+    {"title": "丑奴儿·晚来一阵风兼雨", "dynasty": "宋", "author": "李清照", "lines": ["晚来一阵风兼雨，洗尽炎光。", "理罢笙簧，却对菱花淡淡妆。"], "season": "summer"},
+    {"title": "苏幕遮·燎沉香", "dynasty": "宋", "author": "周邦彦", "lines": ["叶上初阳干宿雨，水面清圆，一一风荷举。", "五月渔郎相忆否？小楫轻舟，梦入芙蓉浦。"], "season": "summer"}
+  ],
+  "cold": [
+    {"title": "扬州慢·淮左名都", "dynasty": "宋", "author": "姜夔", "lines": ["二十四桥仍在，波心荡、冷月无声。", "念桥边红药，年年知为谁生？"], "season": "winter"},
+    {"title": "永遇乐·落日熔金", "dynasty": "宋", "author": "李清照", "lines": ["佳节又重阳，玉枕纱厨，半夜凉初透。", "东篱把酒黄昏后，有暗香盈袖。"], "season": "autumn"},
+    {"title": "念奴娇·过洞庭", "dynasty": "宋", "author": "张孝祥", "lines": ["应念岭海经年，孤光自照，肝肺皆冰雪。", "短发萧骚襟袖冷，稳泛沧浪空阔。"], "season": "winter"}
+  ]
+}
