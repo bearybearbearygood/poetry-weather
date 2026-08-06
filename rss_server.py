@@ -263,9 +263,8 @@ def generate_rss_xml(content):
     today = date.today().isoformat()
     guid = f"poetry-weather-{edition}-{today}-{city}"
 
-    # pubDate 格式: RFC 822
-    now = datetime.now()
-    pub_date = now.strftime("%a, %d %b %Y %H:%M:%S +0800")
+    # pubDate 格式: RFC 822，时间固定为 00:00:00 避免 Dot. 底部显示无意义的时间
+    pub_date = datetime.now().strftime("%a, %d %b %Y 00:00:00 +0800")
 
     # 基础 URL（从请求头推断）
     base_url = request.host_url.rstrip("/")
