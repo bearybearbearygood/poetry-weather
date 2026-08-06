@@ -205,7 +205,12 @@ def build_rss_title(weather):
 
 
 def build_rss_description(poem, weather, date_str, city):
-    """构建 RSS item 描述：诗句 + 出处 + 天气详情"""
+    """构建 RSS item 描述：仅诗句 + 出处
+
+    RSS 只有 title/description 两个字段，Dot. 会把 description 整体当作正文渲染。
+    为了和 Text API 的显示效果一致（标题+正文+签名），这里 description 只放诗句和出处，
+    天气详情（湿度/风速/空气/日期）不再放入 description，避免被当成正文挤压显示。
+    """
     lines = []
 
     # 诗句
@@ -221,32 +226,6 @@ def build_rss_description(poem, weather, date_str, city):
     else:
         source = f"——{author}《{poem_title}》"
     lines.append(source)
-
-    # 空行
-    lines.append("")
-
-    # 天气详情
-    if weather:
-        detail_parts = []
-        # 温度区间（优先区间，缺失时回退单点实时温度）
-        temp_min = weather.get("temp_min")
-        temp_max = weather.get("temp_max")
-        if temp_min is not None and temp_max is not None:
-            detail_parts.append(f"{temp_min}~{temp_max}℃")
-        elif weather.get("temperature") is not None:
-            detail_parts.append(f'{weather["temperature"]}℃')
-        if weather.get("humidity") is not None:
-            detail_parts.append(f'湿度{weather["humidity"]}%')
-        if weather.get("wind_speed") is not None:
-            wind = round(weather["wind_speed"])
-            detail_parts.append(f"风速{wind}m/s")
-        if weather.get("aqi_desc"):
-            detail_parts.append(f'空气{weather["aqi_desc"]}')
-        elif weather.get("aqi") is not None:
-            detail_parts.append(f'AQI{weather["aqi"]}')
-        detail_parts.append(date_str)
-        detail_parts.append(city)
-        lines.append(" · ".join(detail_parts))
 
     return "\n".join(lines)
 
