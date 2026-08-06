@@ -217,6 +217,9 @@ def build_rss_description(poem, weather, date_str, city):
     poem_lines = poem.get("lines", [])
     lines.extend(poem_lines)
 
+    # 空行分隔诗句和出处
+    lines.append("")
+
     # 出处
     author = poem.get("author", "")
     poem_title = poem.get("title", "无题")
