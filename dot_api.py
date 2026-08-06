@@ -50,7 +50,7 @@ def build_text_payload(poem, weather, date_str):
     poem_text = "\n".join(poem_lines)
     author = poem.get("author", "")
     poem_title = poem.get("title", "无题")
-    source = f"\n\n——{author}《{poem_title}》" if author else f"\n\n——《{poem_title}》"
+    source = f"\n——{author}《{poem_title}》" if author else f"\n——《{poem_title}》"
     message = poem_text + source
 
     # ── 签名：天气详情 + 日期 ──
