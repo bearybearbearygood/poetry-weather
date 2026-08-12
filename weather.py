@@ -178,6 +178,11 @@ def fetch_weather(caiyun_token, lng, lat):
         comfort_index = life_index["comfort"].get("index")
         comfort_desc = COMFORT_MAP.get(comfort_index, "")
 
+    # ── 紫外线 ──
+    ultraviolet_desc = ""
+    if isinstance(life_index, dict) and "ultraviolet" in life_index:
+        ultraviolet_desc = life_index["ultraviolet"].get("desc", "")
+
     # ── 温度触发 ──
     triggers = [category]  # 基础天气类型
 
@@ -222,6 +227,8 @@ def fetch_weather(caiyun_token, lng, lat):
         # 舒适度
         "comfort_index": comfort_index,
         "comfort_desc": comfort_desc,
+        # 紫外线
+        "ultraviolet_desc": ultraviolet_desc,
         # 触发列表（用于诗词匹配）
         "triggers": triggers,
     }

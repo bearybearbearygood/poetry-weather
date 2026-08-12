@@ -9,8 +9,9 @@ __pycache__/
 data/
 .env.local
 maoxuan_rss_guide.pdf
-preview.png
+preview*.png
 *.pdf
 *.log
 poetry-weather-deploy.zip
+poetry-weather-push.zip
 push.log

@@ -1,21 +1,28 @@
-# 诗词天气
+# 诗词天气 v2.0
 
-根据每日天气自动匹配古诗词，通过 RSS 订阅推送到 Dot. 墨水屏设备。
+根据每日天气自动匹配古诗词，推送到 Dot. 墨水屏设备。
 
 晴天有晴诗，雨天有雨诗，高温有夏诗，严寒有冬诗。每天在墨水屏上静静呈现一首应景的古诗词，搭配当日天气信息。
+
+## v2.0 更新
+
+- **Image API 像素级排版**：用 Pillow 生成 296×152 PNG 图片，替代 Text API，实现诗词精确居中、底部右对齐、每行独立字号
+- **假粗体渲染**：冬青黑体 + 偏移重绘增粗约 1.5 倍，墨水屏竖画清晰不糊
+- **节气显示**：当天是节气日时，顶部天气行末尾自动显示节气名
+- **多版本诗词库**：通用古诗词版（123 首）+ 宋词版（37 首），通过 `?edition=` 参数切换
+- **紫外线指数**：底部新增紫外线信息，替代原来的风速
 
 ## 效果展示
 
 ```
 ┌─────────────────────────────────┐
-│  30℃ 多云 闷热                    │
+│ 24~26℃ 湿度95% 阴  立秋        │ ← 顶部 16px 左对齐 + 节气
 │                                 │
-│  永日不可暮，                      │
-│  炎蒸毒我肠。                      │
-│  ——杜甫《夏夜叹》                 │
+│       永日不可暮，              │ ← 诗词 20px 居中
+│       炎蒸毒我肠。              │ ← 诗词 20px 居中
+│      ——杜甫《夏夜叹》           │ ← 出处 16px 居中
 │                                 │
-│  湿度77% · 风速3m/s · 空气优       │
-│  · 8月4日 周二                    │
+│   紫外线很弱 · 空气优 · 8月12日 │ ← 底部 14px 右对齐
 └─────────────────────────────────┘
        296×152px 墨水屏
 ```
@@ -23,87 +30,61 @@
 ## 工作原理
 
 ```
-彩云天气 API → 获取实时天气 → 匹配古诗词 → 生成 RSS Feed
-                                              ↓
-                              Dot. 设备定时拉取 RSS ← 用户在 App 中添加订阅
+彩云天气 API → 获取实时天气 → 匹配古诗词 → 生成图片/RSS
+                    ↓                              ↓
+            Dot. Image API 直推            Dot. 设备定时拉取 RSS
+            （单用户，main.py）           （多用户，rss_server.py）
 ```
-
-用户无需注册、无需提供 API 密钥，只需在 Dot. App 中添加一个 RSS 链接。
 
 ## 快速部署
 
-### Docker 部署（推荐）
+### 方式一：命令行直推（单用户，推荐个人使用）
 
-```bash
-# 1. 复制环境变量配置
-cp .env.example .env
-
-# 2. 启动服务
-docker-compose up -d
-
-# 3. 访问
-# http://你的服务器IP:8080
-```
-
-### 直接运行
+通过 Dot. Image API 生成图片直接推送到设备，像素级控制排版。
 
 ```bash
 # 1. 安装依赖
 pip install -r requirements.txt
 
-# 2. 配置（二选一）
-#    a) 环境变量
-export CAIYUN_TOKEN=你的彩云天气Token
-#    b) 或编辑 config.json
+# 2. 配置
+cp config.example.json config.json
+# 编辑 config.json，填入彩云天气 Token、Dot. API 密钥和设备序列号
 
-# 3. 启动
-python rss_server.py
+# 3. 运行
+python main.py
+
+# 4.（可选）配合定时任务实现每日自动推送
+crontab -e
+# 每天早上 7:00 推送
+0 7 * * * cd /path/to/诗词天气 && python3 main.py >> push.log 2>&1
 ```
 
-## 用户使用方式
+> **注意**：Image API 模式需要在 Dot. App 中为设备添加「图像 API」内容槽位到循环任务。
 
-### RSS 订阅（多用户）
+### 方式二：RSS 服务（多用户）
 
-1. 访问服务首页 `http://你的服务器IP:8080`
-2. 选择城市，复制 RSS 链接（如 `http://你的域名/rss?city=北京`）
-3. 打开 Dot. App → 内容工坊 → RSS 订阅
-4. 粘贴 RSS 链接，添加到设备循环任务
-5. 完成！设备每天自动展示新内容
+部署 Web 服务，用户在 Dot. App 中添加 RSS 链接即可订阅。
+
+```bash
+# Docker 部署（推荐）
+cp .env.example .env
+# 编辑 .env 填入 CAIYUN_TOKEN
+docker-compose up -d
+# 访问 http://你的服务器IP:8080
+
+# 或直接运行
+pip install -r requirements.txt
+export CAIYUN_TOKEN=你的彩云天气Token
+python rss_server.py
+```
 
 RSS 链接格式：
 - `http://域名/rss` — 默认北京
 - `http://域名/rss?city=上海` — 指定城市
 - `http://域名/rss?lng=121.47&lat=31.23` — 自定义经纬度
-
-### 命令行直推（单用户）
-
-适合个人使用，通过 Dot. Text API 直接推送到设备：
-
-```bash
-# 1. 配置
-cp config.example.json config.json
-# 编辑 config.json，填入 Dot. API 密钥和设备序列号
-
-# 2. 运行
-python main.py
-```
-
-配合 crontab 实现每日自动推送：
-
-```bash
-# 每天早上 7:00 推送
-0 7 * * * cd /path/to/诗词天气 && python3 main.py >> push.log 2>&1
-```
+- `http://域名/rss?edition=ci` — 宋词版（默认 general 通用古诗词）
 
 ## 配置说明
-
-### 环境变量（RSS 服务）
-
-| 变量 | 说明 | 默认值 |
-|------|------|--------|
-| `CAIYUN_TOKEN` | 彩云天气 Token | 从 config.json 读取 |
-| `PORT` | Web 服务端口 | `8080` |
-| `FLASK_SECRET_KEY` | Flask 密钥 | 内置默认值 |
 
 ### config.json（单用户模式）
 
@@ -116,36 +97,44 @@ python main.py
 | `dot_api_key` | Dot. API 密钥 | `dot_app_xxx` |
 | `device_id` | 设备序列号 | `ABCD1234ABCD` |
 
+### 环境变量（RSS 服务）
+
+| 变量 | 说明 | 默认值 |
+|------|------|--------|
+| `CAIYUN_TOKEN` | 彩云天气 Token | 从 config.json 读取 |
+| `PORT` | Web 服务端口 | `8080` |
+| `FLASK_SECRET_KEY` | Flask 密钥 | 内置默认值 |
+
 ## 项目结构
 
 ```
 诗词天气/
-├── rss_server.py        # RSS Feed 服务（Flask）
-├── main.py              # 单用户命令行入口（Text API 直推）
+├── main.py              # 单用户入口（Image API 直推）
+├── rss_server.py        # RSS Feed 服务（Flask，多用户）
 ├── weather.py           # 彩云天气 API 客户端
-├── dot_api.py           # Dot. 设备 Text API 客户端
+├── dot_api.py           # Dot. 设备 Image API 客户端（Pillow 生成图片）
 ├── poetry.py            # 诗词匹配模块
-├── poetry.json          # 诗词数据库（123 首，13 类天气）
+├── poetry.json          # 通用诗词库（123 首，13 类天气）
+├── poetry_ci.json       # 宋词库（37 首，13 类天气）
 ├── cities.json          # 中国 50 个主要城市经纬度
-├── templates/
-│   ├── base.html        # 基础布局
-│   └── index.html       # 首页（RSS 订阅说明）
-├── static/
-│   └── style.css        # 样式表
+├── templates/           # Web 页面
+├── static/              # 样式表
 ├── Dockerfile           # Docker 镜像构建
 ├── docker-compose.yml   # Docker Compose 部署
-├── requirements.txt     # Python 依赖（仅 flask）
+├── requirements.txt     # Python 依赖
 ├── config.example.json  # 单用户配置模板
-├── .env.example         # 环境变量模板
-└── .gitignore
+└── .env.example         # 环境变量模板
 ```
 
 ## 技术细节
 
-- **天气数据**：彩云天气 API v2.6，获取实时温度、湿度、风速、AQI、舒适度
+- **天气数据**：彩云天气 API v2.6，获取实时温度、湿度、AQI、紫外线、舒适度
+- **图片生成**：Pillow 生成 296×152 灰度 PNG，`textbbox` 测量文字宽度实现像素级居中
+- **假粗体**：冬青黑体（Hiragino Sans GB）+ 水平/垂直偏移重绘，笔画增粗约 1.5 倍
+- **节气显示**：24 节气查表，当天是节气日时在顶部显示
 - **诗词匹配**：13 种天气/温度类型触发，季节优先，每日种子去重
-- **RSS 缓存**：同一天同一城市只请求一次天气 API，返回相同内容
-- **随机种子**：使用日期+坐标作为种子，保证同一天同一位置选到同一首诗
+- **多版本文库**：`edition` 参数切换不同诗词 JSON，匹配引擎与触发逻辑完全复用
+- **RSS 缓存**：同一天同一城市只请求一次天气 API
 
 ### 诗词匹配优先级
 
@@ -166,8 +155,8 @@ python main.py
 ## 依赖
 
 - Python 3.10+
-- RSS 服务：flask
-- 单用户模式：仅 Python 标准库
+- `flask`（RSS 服务）
+- `Pillow`（Image API 图片生成）
 
 ## License
 
