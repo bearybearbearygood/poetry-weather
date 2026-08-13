@@ -7,4 +7,6 @@ services:
       - CAIYUN_TOKEN=${CAIYUN_TOKEN:-}
       - PORT=8080
       - FLASK_SECRET_KEY=${FLASK_SECRET_KEY:-change-me-in-production}
+      - DOT_API_KEY=${DOT_API_KEY:-}
+      - DOT_DEVICE_ID=${DOT_DEVICE_ID:-}
     restart: unless-stopped

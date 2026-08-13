@@ -39,10 +39,13 @@ SCREEN_W = 296
 SCREEN_H = 152
 
 # ── 字体路径（无衬线，笔画粗，墨水屏清晰）──
+# macOS 优先冬青黑体，Linux 用 Noto Sans CJK（Dockerfile 安装）
 _FONT_CANDIDATES = [
-    "/System/Library/Fonts/Hiragino Sans GB.ttc",       # 冬青黑体（首选，笔画粗圆）
-    "/System/Library/Fonts/STHeiti Medium.ttc",         # 黑体（备选）
-    "/System/Library/Fonts/Supplemental/Arial Unicode.ttf",  # Arial Unicode（兜底）
+    "/System/Library/Fonts/Hiragino Sans GB.ttc",       # macOS 冬青黑体（首选）
+    "/System/Library/Fonts/STHeiti Medium.ttc",         # macOS 黑体（备选）
+    "/System/Library/Fonts/Supplemental/Arial Unicode.ttf",  # macOS 兜底
+    "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",  # Linux Noto Sans CJK
+    "/usr/share/fonts/truetype/noto/NotoSansCJK-Regular.ttc",  # Linux Noto (备选路径)
 ]
 
 # ── 字号配置 ──

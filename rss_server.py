@@ -29,6 +29,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from weather import fetch_weather
 from poetry import load_poetry, select_poem, get_season, CATEGORY_NAMES
+from dot_api import generate_image, push_to_device
 
 # ── 配置 ──
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -380,6 +381,59 @@ def screen():
   </div>
 </body>
 </html>"""
+
+
+@app.route("/image")
+def image():
+    """生成并返回 296×152 墨水屏 PNG 图片（与 Image API 推送的一致）"""
+    lng, lat, city_name = parse_location()
+    edition = resolve_edition(request.args.get("edition", DEFAULT_EDITION))
+    content = get_cached_content(lng, lat, city_name, edition)
+    weather = content.get("weather")
+    poem = content.get("poem", {})
+    date_str = get_date_str()
+
+    png_data = generate_image(poem, weather, date_str)
+    return Response(png_data, mimetype="image/png")
+
+
+@app.route("/push")
+def push():
+    """远程生成图片并推送到 Dot. 设备（供外部定时器调用，实现每日自动推送）
+
+    需要 environment 变量 DOT_API_KEY 和 DOT_DEVICE_ID，
+    或在 URL 中传 ?api_key=xxx&device_id=xxx
+    """
+    api_key = os.environ.get("DOT_API_KEY", "")
+    device_id = os.environ.get("DOT_DEVICE_ID", "")
+
+    # URL 参数可覆盖环境变量（测试用）
+    api_key = request.args.get("api_key", api_key)
+    device_id = request.args.get("device_id", device_id)
+
+    if not api_key or not device_id:
+        return jsonify({
+            "success": False,
+            "error": "未配置 DOT_API_KEY 或 DOT_DEVICE_ID。请在 Render 环境变量中设置，或通过 URL 参数传入。"
+        }), 400
+
+    lng, lat, city_name = parse_location()
+    edition = resolve_edition(request.args.get("edition", DEFAULT_EDITION))
+    content = get_cached_content(lng, lat, city_name, edition)
+    weather = content.get("weather")
+    poem = content.get("poem", {})
+    date_str = get_date_str()
+
+    try:
+        msg = push_to_device(api_key, device_id, poem, weather, date_str)
+        return jsonify({
+            "success": True,
+            "message": msg,
+            "city": city_name,
+            "poem": f'{poem.get("author", "")}《{poem.get("title", "")}》',
+        })
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
 
 
 # ── 启动 ──

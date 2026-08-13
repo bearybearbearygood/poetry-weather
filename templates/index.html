@@ -9,17 +9,9 @@
 
 <section class="preview">
     <div class="device-mockup">
-        <div class="device-screen">
-            <div class="device-title">27~36℃ 多云 闷热</div>
-            <div class="device-message">
-                永日不可暮，<br>
-                炎蒸毒我肠。<br>
-                <span class="device-source">——杜甫《夏夜叹》</span>
-            </div>
-            <div class="device-signature">湿度77% · 风速3m/s · 空气优 · 8月4日</div>
-        </div>
+        <img id="deviceImage" src="/image" alt="墨水屏显示效果" style="width:296px;height:152px;display:block;border-radius:4px;">
     </div>
-    <p class="preview-caption">设备显示效果示意</p>
+    <p class="preview-caption">实际墨水屏显示效果（Image API 生成）</p>
 </section>
 
 <!-- RSS 链接生成器 -->
@@ -155,6 +147,15 @@ function updateRssLink() {
     }
 
     document.getElementById('rssLink').value = link;
+
+    // 更新预览图片
+    var deviceImg = document.getElementById('deviceImage');
+    if (customLng && customLat) {
+        deviceImg.src = '/image?edition=' + edition + '&lng=' + customLng + '&lat=' + customLat + '&_t=' + Date.now();
+    } else {
+        var city2 = document.getElementById('citySelect').value;
+        deviceImg.src = '/image?edition=' + edition + '&city=' + encodeURIComponent(city2) + '&_t=' + Date.now();
+    }
 
     // 更新预览链接
     var previewBtn = document.getElementById('previewBtn');
