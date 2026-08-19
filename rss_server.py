@@ -140,7 +140,7 @@ def generate_daily_content(lng, lat, city_name, edition="general"):
     seed = int(hashlib.md5(seed_str.encode()).hexdigest()[:8], 16)
     rng = random.Random(seed)
 
-    poem, matched_trigger = select_poem(db, weather["triggers"])
+    poem, matched_trigger = select_poem(db, weather["triggers"], rng=rng)
     if not poem:
         poem = {"title": "无题", "author": "佚名", "lines": ["今日无诗"], "dynasty": ""}
 

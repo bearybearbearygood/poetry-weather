@@ -5,18 +5,18 @@
 - 无衬线字体（冬青黑体）+ 假粗体（水平/垂直偏移重绘，增粗约1.5倍），墨水屏竖画清晰且不糊
 - 每行独立字号：诗 20px、出处 16px、签名 14px、顶部 16px
 - 底部右对齐
-- 节气当天在顶部天气行末尾显示
+- 底部显示日期+农历，节气当天追加节气名
 - base64 PNG 推送到 Dot. Image API
 
 布局效果（296×152px）：
 ┌─────────────────────────────────┐
-│ 24~26℃ 湿度95% 阴  立秋        │ ← 顶部 14px 左对齐 + 节气
+│ 24~26℃ 湿度95% 阴 空气优        │ ← 顶部 16px 左对齐
 │                                 │
 │       永日不可暮，              │ ← 诗词 20px 居中
 │       炎蒸毒我肠。              │ ← 诗词 20px 居中
 │      ——杜甫《夏夜叹》           │ ← 出处 16px 居中
 │                                 │
-│        紫外线很弱 · 空气优 · 8月12日 │ ← 底部 14px 右对齐
+│  8月7日 · 周三 · 农历七月初五 · 立秋   │ ← 底部 14px 右对齐
 └─────────────────────────────────┘
 
 注：体感属性（热/寒冷）不显示，但 triggers 仍保留给诗词匹配用。
@@ -31,6 +31,7 @@ import os
 from datetime import date
 
 from PIL import Image, ImageDraw, ImageFont
+from lunardate import LunarDate
 
 DOT_API_BASE = "https://dot.mindreset.tech"
 
@@ -56,7 +57,7 @@ FS_SIG = 14      # 底部签名
 
 # ── 布局参数 ──
 HEADER_Y = 3             # 顶部 y 坐标
-POEM_Y_START = 30        # 诗词起始 y
+POEM_Y_START = 36        # 诗词起始 y（距顶部留足呼吸空间）
 POEM_LINE_HEIGHT = 26    # 诗词行高（字号20 + 间距6）
 SOURCE_GAP = 4           # 出处与诗词的间距
 SIG_Y = SCREEN_H - FS_SIG - 4  # 底部 y
@@ -146,6 +147,35 @@ def get_solar_term():
     return _SOLAR_TERMS.get((today.month, today.day))
 
 
+# ── 农历日期 ──
+_CN_NUMS = ["", "一", "二", "三", "四", "五", "六", "七", "八", "九"]
+_LUNAR_MONTHS = ["正月", "二月", "三月", "四月", "五月", "六月",
+                 "七月", "八月", "九月", "十月", "冬月", "腊月"]
+
+
+def _format_lunar_day(day):
+    """农历日 → 汉字: 1→初一, 10→初十, 15→十五, 20→二十, 25→廿五, 30→三十"""
+    if day == 10:
+        return "初十"
+    if day == 20:
+        return "二十"
+    if day == 30:
+        return "三十"
+    tens = day // 10
+    ones = day % 10
+    prefix = ["初", "十", "廿"][tens]
+    return prefix + _CN_NUMS[ones]
+
+
+def get_lunar_date_str(d=None):
+    """返回农历日期字符串，如 '农历七月初五'"""
+    if d is None:
+        d = date.today()
+    ld = LunarDate.fromSolarDate(d.year, d.month, d.day)
+    month_str = ("闰" if ld.isLeapMonth else "") + _LUNAR_MONTHS[ld.month - 1]
+    return f"农历{month_str}{_format_lunar_day(ld.day)}"
+
+
 def generate_image(poem, weather, date_str):
     """生成 296×152 墨水屏图片
 
@@ -165,7 +195,7 @@ def generate_image(poem, weather, date_str):
     f_source = _get_font(FS_SOURCE)
     f_sig = _get_font(FS_SIG)
 
-    # ── 顶部：温度区间 + 湿度 + 天气 + 节气（左对齐，14px）──
+    # ── 顶部：温度区间 + 湿度 + 天气 + 空气质量（左对齐，16px）──
     parts = []
     tmin = weather.get("temp_min")
     tmax = weather.get("temp_max")
@@ -177,12 +207,12 @@ def generate_image(poem, weather, date_str):
         parts.append(f"湿度{weather['humidity']}%")
     if weather.get("description"):
         parts.append(weather["description"])
+    aqi_desc = weather.get("aqi_desc")
+    if aqi_desc:
+        parts.append(f"空气{aqi_desc}")
+    elif weather.get("aqi") is not None:
+        parts.append(f"AQI{weather['aqi']}")
     header_text = " ".join(parts)
-
-    # 如果今天是节气日，追加节气名（间隔两个空格）
-    solar_term = get_solar_term()
-    if solar_term:
-        header_text += "  " + solar_term
 
     _draw_bold(draw, (5, HEADER_Y), header_text, f_header)
 
@@ -197,17 +227,14 @@ def generate_image(poem, weather, date_str):
     source_y = POEM_Y_START + len(poem_lines) * POEM_LINE_HEIGHT + SOURCE_GAP
     _draw_centered(draw, source, source_y, f_source)
 
-    # ── 底部：紫外线 + AQI + 日期（右对齐，14px）──
-    sig_parts = []
-    if weather.get("ultraviolet_desc"):
-        sig_parts.append(f"紫外线{weather['ultraviolet_desc']}")
-    aqi = weather.get("aqi")
-    aqi_desc = weather.get("aqi_desc")
-    if aqi is not None and aqi_desc:
-        sig_parts.append(f"空气{aqi_desc}")
-    elif aqi is not None:
-        sig_parts.append(f"AQI{aqi}")
-    sig_parts.append(date_str)
+    # ── 底部：日期 + 农历 + 节气（右对齐，14px）──
+    sig_parts = [date_str.replace(" ", " · ")]  # "8月17日 周一" → "8月17日 · 周一"
+    lunar = get_lunar_date_str()
+    if lunar:
+        sig_parts.append(lunar)
+    solar_term = get_solar_term()
+    if solar_term:
+        sig_parts.append(solar_term)
     _draw_right(draw, " · ".join(sig_parts), SIG_Y, f_sig)
 
     # 输出 PNG

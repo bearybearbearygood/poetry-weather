@@ -12,6 +12,7 @@
 import urllib.request
 import urllib.error
 import json
+from datetime import datetime
 
 # ── 彩云天气 skycon 到本地天气类型的映射 ──
 # 彩云天气会返回带 _DAY / _NIGHT 后缀的值，统一映射
@@ -179,8 +180,31 @@ def fetch_weather(caiyun_token, lng, lat):
         comfort_desc = COMFORT_MAP.get(comfort_index, "")
 
     # ── 紫外线 ──
+    # 彩云 daily.ultraviolet 为空（免费版不提供全天紫外线预报），realtime 紫外线是"当前时刻"值，
+    # 早上 9 点推送时永远显示"弱"失真。改为用当天 hourly 太阳辐射 dswrf 峰值推算全天紫外线等级：
+    #   <200 W/m² 弱 | 200~400 中等 | 400~600 强 | ≥600 很强（对应正午晴天的 800+ W/m² → 很强）
     ultraviolet_desc = ""
-    if isinstance(life_index, dict) and "ultraviolet" in life_index:
+    try:
+        today = datetime.now().strftime("%Y-%m-%d")
+        dswrf_list = result.get("hourly", {}).get("dswrf", [])
+        today_peaks = [
+            item.get("value", 0) for item in dswrf_list
+            if item.get("datetime", "").startswith(today)
+        ]
+        if today_peaks:
+            peak = max(today_peaks)
+            if peak < 200:
+                ultraviolet_desc = "弱"
+            elif peak < 400:
+                ultraviolet_desc = "中等"
+            elif peak < 600:
+                ultraviolet_desc = "强"
+            else:
+                ultraviolet_desc = "很强"
+    except Exception:
+        pass
+    # fallback：若 hourly 数据缺失，退回实时紫外线描述
+    if not ultraviolet_desc and isinstance(life_index, dict) and "ultraviolet" in life_index:
         ultraviolet_desc = life_index["ultraviolet"].get("desc", "")
 
     # ── 温度触发 ──
@@ -194,7 +218,8 @@ def fetch_weather(caiyun_token, lng, lat):
 
     # 舒适度触发（补充温度判断）
     if comfort_index is not None:
-        if comfort_index <= 3 and "hot" not in triggers:
+        # 阈值 ≤2：仅"闷热/酷热/炎热"视为高温；"热"(3) 不触发，避免体感偏热就霸屏高温诗
+        if comfort_index <= 2 and "hot" not in triggers:
             triggers.append("hot")
         elif comfort_index >= 7 and "cold" not in triggers:
             triggers.append("cold")

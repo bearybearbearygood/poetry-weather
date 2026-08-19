@@ -11,39 +11,20 @@
 import json
 import os
 import sys
-import random
 from datetime import datetime
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from weather import fetch_weather, get_location_by_ip, WEATHER_EMOJI
 from dot_api import push_to_device
+from poetry import load_poetry, select_poem, CATEGORY_NAMES
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 CONFIG_PATH = os.path.join(SCRIPT_DIR, "config.json")
-POETRY_PATH = os.path.join(SCRIPT_DIR, "poetry.json")
 HISTORY_PATH = os.path.join(SCRIPT_DIR, "history.json")
 
-# 天气类型的中文名称
-CATEGORY_NAMES = {
-    "clear": "晴", "partly_cloudy": "多云", "cloudy": "阴",
-    "rain": "雨", "heavy_rain": "大雨", "snow": "雪", "heavy_snow": "大雪",
-    "fog": "雾", "haze": "霾", "wind": "大风", "dust": "沙尘",
-    "hot": "高温", "cold": "严寒",
-}
-
-
-def get_season():
-    """根据当前月份判断季节"""
-    month = datetime.now().month
-    if month in (3, 4, 5):
-        return "spring"
-    elif month in (6, 7, 8):
-        return "summer"
-    elif month in (9, 10, 11):
-        return "autumn"
-    else:
-        return "winter"
+# 去重窗口：窗口内推送过的诗词不会被再次选中（天）
+DEDUP_DAYS = 20
 
 
 def load_config():
@@ -52,12 +33,6 @@ def load_config():
         print("❌ 未找到 config.json，请先复制 config.example.json 为 config.json 并填写你的信息。")
         sys.exit(1)
     with open(CONFIG_PATH, "r", encoding="utf-8") as f:
-        return json.load(f)
-
-
-def load_poetry():
-    """读取诗词数据库"""
-    with open(POETRY_PATH, "r", encoding="utf-8") as f:
         return json.load(f)
 
 
@@ -71,9 +46,22 @@ def load_history():
 
 def save_history(history):
     """保存推送历史"""
-    history["sent"] = history["sent"][-50:]
+    history["sent"] = history["sent"][-200:]
     with open(HISTORY_PATH, "w", encoding="utf-8") as f:
         json.dump(history, f, ensure_ascii=False, indent=2)
+
+
+def build_last_sent(history):
+    """从推送历史构建 {title|author: 最近一次推送时间戳} 时间表"""
+    last_sent = {}
+    for item in history["sent"]:
+        key = f'{item.get("title", "")}|{item.get("author", "")}'
+        ts = item.get("timestamp", "")
+        if not key:
+            continue
+        if key not in last_sent or ts > last_sent[key]:
+            last_sent[key] = ts
+    return last_sent
 
 
 def resolve_location(config):
@@ -99,58 +87,6 @@ def resolve_location(config):
 
     print("   ⚠️ IP 定位失败，使用默认位置（北京）")
     return 116.4074, 39.9042, "北京（默认）"
-
-
-def select_poem(poetry_db, triggers, history):
-    """从诗词库中选择一首诗
-
-    多维度匹配：
-      1. 优先匹配所有触发条件中更"特殊"的（hot/cold > 天气类型）
-      2. 同一类别内优先选当季的诗
-      3. 排除最近推送过的诗
-
-    Args:
-        poetry_db: 诗词数据库
-        triggers: 触发条件列表，如 ["clear", "hot"]
-        history: 推送历史
-    """
-    current_season = get_season()
-
-    # 按优先级排序触发条件：hot/cold 优先，其次按顺序
-    priority = {"hot": 0, "cold": 0, "heavy_rain": 1, "heavy_snow": 1,
-                "dust": 2, "haze": 2, "fog": 2, "wind": 2,
-                "rain": 3, "snow": 3, "cloudy": 4,
-                "partly_cloudy": 5, "clear": 6}
-    sorted_triggers = sorted(triggers, key=lambda t: priority.get(t, 99))
-
-    # 收集最近推送过的诗
-    recent = set()
-    for item in history["sent"][-20:]:
-        recent.add(f'{item.get("title", "")}|{item.get("author", "")}')
-
-    # 按触发优先级依次尝试
-    for trigger in sorted_triggers:
-        poems = poetry_db.get(trigger, [])
-        if not poems:
-            continue
-
-        # 优先选当季
-        seasonal = [p for p in poems if p.get("season") == current_season or p.get("season") == "all"]
-        pool = seasonal if seasonal else poems
-
-        # 排除最近推送过的
-        available = [p for p in pool if f'{p.get("title", "")}|{p.get("author", "")}' not in recent]
-        if not available:
-            available = pool
-
-        return random.choice(available), trigger
-
-    # 兜底
-    fallback = poetry_db.get("clear", poetry_db.get("rain", []))
-    if fallback:
-        return random.choice(fallback), "fallback"
-
-    return None, None
 
 
 def main():
@@ -203,12 +139,13 @@ def main():
         print(f"   空气: {weather['aqi_desc']}(AQI {weather.get('aqi', '?')})  舒适: {weather.get('comfort_desc', 'N/A')}")
     print(f"   触发: {', '.join(weather['triggers'])}")
 
-    # 4. 匹配诗词
-    print(f"\n📚 匹配诗词...")
+    # 4. 匹配诗词（排除 DEDUP_DAYS 天内推送过的诗）
+    print(f"\n📚 匹配诗词（{DEDUP_DAYS}天内不重复）...")
     poetry_db = load_poetry()
     history = load_history()
+    last_sent = build_last_sent(history)
 
-    poem, matched_trigger = select_poem(poetry_db, weather["triggers"], history)
+    poem, matched_trigger = select_poem(poetry_db, weather["triggers"], last_sent, DEDUP_DAYS)
 
     if not poem:
         print("❌ 未找到合适的诗词")
