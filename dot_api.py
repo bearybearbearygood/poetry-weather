@@ -32,6 +32,7 @@ from datetime import date
 
 from PIL import Image, ImageDraw, ImageFont
 from lunardate import LunarDate
+from lunar_python import Solar as _LunarSolar
 
 DOT_API_BASE = "https://dot.mindreset.tech"
 
@@ -112,39 +113,14 @@ def _draw_right(draw, text, y, font, fill=0, right_margin=5):
 
 
 # ── 二十四节气 ──
-# 覆盖每年可能出现的日期（±1~2天波动），用 (month, day) → 节气名 查表
-_SOLAR_TERMS = {
-    (1, 5): "小寒", (1, 6): "小寒",
-    (1, 20): "大寒", (1, 21): "大寒",
-    (2, 3): "立春", (2, 4): "立春", (2, 5): "立春",
-    (2, 18): "雨水", (2, 19): "雨水",
-    (3, 5): "惊蛰", (3, 6): "惊蛰",
-    (3, 20): "春分", (3, 21): "春分",
-    (4, 4): "清明", (4, 5): "清明",
-    (4, 19): "谷雨", (4, 20): "谷雨",
-    (5, 5): "立夏", (5, 6): "立夏",
-    (5, 20): "小满", (5, 21): "小满",
-    (6, 5): "芒种", (6, 6): "芒种",
-    (6, 21): "夏至", (6, 22): "夏至",
-    (7, 7): "小暑", (7, 8): "小暑",
-    (7, 22): "大暑", (7, 23): "大暑",
-    (8, 7): "立秋", (8, 8): "立秋",
-    (8, 23): "处暑", (8, 24): "处暑",
-    (9, 7): "白露", (9, 8): "白露",
-    (9, 22): "秋分", (9, 23): "秋分",
-    (10, 8): "寒露", (10, 9): "寒露",
-    (10, 23): "霜降", (10, 24): "霜降",
-    (11, 7): "立冬", (11, 8): "立冬",
-    (11, 22): "小雪", (11, 23): "小雪",
-    (12, 7): "大雪", (12, 8): "大雪",
-    (12, 21): "冬至", (12, 22): "冬至",
-}
-
-
-def get_solar_term():
-    """返回今天的节气名，如果不是节气日则返回 None"""
-    today = date.today()
-    return _SOLAR_TERMS.get((today.month, today.day))
+# 用 lunar_python（寿星天文历移植）精确计算节气日，只在节气当天显示。
+# 此前用 (月,日) 硬编码表覆盖 ±1 天漂移，导致每个节气连续显示 3 天（错）。
+def get_solar_term(d=None):
+    """返回指定日期（默认今天）的节气名，如果不是节气日则返回 None"""
+    if d is None:
+        d = date.today()
+    jq = _LunarSolar.fromYmd(d.year, d.month, d.day).getLunar().getJieQi()
+    return jq or None
 
 
 # ── 农历日期 ──
