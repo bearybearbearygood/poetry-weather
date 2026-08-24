@@ -225,9 +225,15 @@ def fetch_weather(caiyun_token, lng, lat):
             triggers.append("cold")
 
     # ── 湿度触发 ──
+    # 阈值从 85 提到 92，避免南方潮湿天气（桑拿天 / 回南天）误推雾诗：
+    # 真雾天 humidity 一般 95%+ 仍能命中，但 80~90% 的湿热天不会触发。
+    # 进一步收紧：必须 skycon 不是晴/多云/阴 之一（这三类本来就和"雾"无关）。
     if humidity is not None:
-        if humidity >= 85 and category not in ("rain", "heavy_rain", "snow", "heavy_snow"):
-            triggers.append("fog")  # 高湿度但没下雨 → 偏雾的感觉
+        if (
+            humidity >= 92
+            and category not in ("rain", "heavy_rain", "snow", "heavy_snow", "clear", "partly_cloudy", "cloudy")
+        ):
+            triggers.append("fog")
 
     return {
         # 天气类型

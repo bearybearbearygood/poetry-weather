@@ -14,6 +14,14 @@ from datetime import datetime
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 POETRY_PATH = os.path.join(SCRIPT_DIR, "poetry.json")
+POETRY_CI_PATH = os.path.join(SCRIPT_DIR, "poetry_ci.json")  # 预留位，未来扩展宋词版时取消注释
+
+# 版本 → 诗词库路径映射
+# 当前只提供 general（137 首通用古诗词库）。edition='ci' 会自动回退到 general 并打印警告。
+# 未来增加宋词版时：把 poetry_ci.json 放回 scripts/ 目录，去掉 POETRY_CI_PATH 注释，并在 POETRY_PATHS 加 "ci": POETRY_CI_PATH
+POETRY_PATHS = {
+    "general": POETRY_PATH,
+}
 
 CATEGORY_NAMES = {
     "clear": "晴", "partly_cloudy": "多云", "cloudy": "阴",
@@ -42,10 +50,15 @@ def get_season():
         return "winter"
 
 
-def load_poetry(path=None):
-    """读取诗词数据库，path 为可选 JSON 路径，默认 poetry.json"""
+def load_poetry(path=None, edition="general"):
+    """读取诗词数据库
+
+    Args:
+        path: 可选 JSON 路径（指定时优先级高于 edition）
+        edition: 版本，"general" (默认) 或 "ci"，仅在 path 为空时生效
+    """
     if path is None:
-        path = POETRY_PATH
+        path = POETRY_PATHS.get(edition, POETRY_PATH)
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 

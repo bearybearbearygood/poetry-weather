@@ -6,6 +6,14 @@
 
 首次使用前，请复制 config.example.json 为 config.json 并填入你的密钥信息。
 支持 IP 自动定位（当 config.json 中未指定经纬度时自动启用）。
+
+edition 选项：
+    general (默认) - 通用古诗词库，唐宋为主，137 首
+    （未来可扩展 ci 纯宋词版，预留接口位，当前只有 general）
+
+诗词库查找顺序：
+    $POETRY_WEATHER_CONFIG 环境变量指向的路径（推荐放在 skill 之外的目录）
+    → <scripts>/config.json（单用户向后兼容）
 """
 
 import json
@@ -20,17 +28,32 @@ from dot_api import push_to_device
 from poetry import load_poetry, select_poem, CATEGORY_NAMES
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-CONFIG_PATH = os.path.join(SCRIPT_DIR, "config.json")
-HISTORY_PATH = os.path.join(SCRIPT_DIR, "history.json")
+# 配置文件查找顺序：环境变量 > skills/config.json，向后兼容旧用户
+CONFIG_PATH = os.environ.get("POETRY_WEATHER_CONFIG") or os.path.join(SCRIPT_DIR, "config.json")
+# 历史记录与 config 同目录（避免 skill 更新时丢失推送历史）
+HISTORY_DIR = os.path.dirname(CONFIG_PATH)
+HISTORY_PATH = os.path.join(HISTORY_DIR, "history.json")
 
 # 去重窗口：窗口内推送过的诗词不会被再次选中（天）
 DEDUP_DAYS = 20
 
+# 支持的诗词版本（当前只 general；预留扩展位，未来加宋词版时改此处）
+SUPPORTED_EDITIONS = ("general",)
+
 
 def load_config():
-    """读取配置文件"""
+    """读取配置文件
+
+    查找顺序：
+    1. $POETRY_WEATHER_CONFIG 环境变量指向的路径（推荐 skill 外）
+    2. <scripts>/config.json（默认，向后兼容）
+    """
     if not os.path.exists(CONFIG_PATH):
-        print("❌ 未找到 config.json，请先复制 config.example.json 为 config.json 并填写你的信息。")
+        if os.environ.get("POETRY_WEATHER_CONFIG"):
+            print(f"❌ 环境变量 POETRY_WEATHER_CONFIG 指向的路径不存在：{CONFIG_PATH}")
+        else:
+            print("❌ 未找到 config.json，请先复制 config.example.json 为 config.json 并填写你的信息。")
+            print("   提示：可通过环境变量 POETRY_WEATHER_CONFIG 指定配置文件路径（推荐放在 skill 之外）。")
         sys.exit(1)
     with open(CONFIG_PATH, "r", encoding="utf-8") as f:
         return json.load(f)
@@ -51,10 +74,18 @@ def save_history(history):
         json.dump(history, f, ensure_ascii=False, indent=2)
 
 
-def build_last_sent(history):
-    """从推送历史构建 {title|author: 最近一次推送时间戳} 时间表"""
+def build_last_sent(history, edition=None):
+    """从推送历史构建 {title|author: 最近一次推送时间戳} 时间表
+
+    Args:
+        history: 推送历史 dict（含 "sent" 列表）
+        edition: 仅取该版本的推送记录（None = 不过滤，等同 historical 行为）
+    """
     last_sent = {}
     for item in history["sent"]:
+        # 按 edition 隔离，避免通用版记录影响宋词版选诗
+        if edition is not None and item.get("edition", "general") != edition:
+            continue
         key = f'{item.get("title", "")}|{item.get("author", "")}'
         ts = item.get("timestamp", "")
         if not key:
@@ -141,9 +172,16 @@ def main():
 
     # 4. 匹配诗词（排除 DEDUP_DAYS 天内推送过的诗）
     print(f"\n📚 匹配诗词（{DEDUP_DAYS}天内不重复）...")
-    poetry_db = load_poetry()
+    # 读取版本（config.json 中 edition 字段，缺省 general；非法值回退 general）
+    edition = config.get("edition", "general").lower().strip()
+    if edition not in SUPPORTED_EDITIONS:
+        print(f"   ⚠️ edition={edition!r} 不支持，回退到 general。可选值：{', '.join(SUPPORTED_EDITIONS)}")
+        edition = "general"
+    poetry_db = load_poetry(edition=edition)
+
     history = load_history()
-    last_sent = build_last_sent(history)
+    # 去重按 edition 隔离：避免通用版推送记录影响宋词版选诗
+    last_sent = build_last_sent(history, edition=edition)
 
     poem, matched_trigger = select_poem(poetry_db, weather["triggers"], last_sent, DEDUP_DAYS)
 
@@ -175,6 +213,7 @@ def main():
         "title": poem.get("title", ""),
         "author": poem.get("author", ""),
         "dynasty": poem.get("dynasty", ""),
+        "edition": edition,
         "weather": weather["description"],
         "temperature": temp,
         "triggers": weather["triggers"],
