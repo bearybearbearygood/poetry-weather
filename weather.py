@@ -45,6 +45,14 @@ SKYCON_MAP = {
     "SLEET": ("snow", "雨夹雪"),
 }
 
+# 天气严重度（越大越"恶劣"），用于实时与当日预报合并时取更恶劣者
+CATEGORY_SEVERITY = {
+    "clear": 0, "partly_cloudy": 1, "cloudy": 2,
+    "rain": 3, "snow": 3,
+    "fog": 4, "haze": 4, "wind": 4, "dust": 4,
+    "heavy_rain": 5, "heavy_snow": 5,
+}
+
 # 天气图标 emoji
 WEATHER_EMOJI = {
     "clear": "☀️",
@@ -133,9 +141,25 @@ def fetch_weather(caiyun_token, lng, lat):
     realtime = result.get("realtime", {})
     daily = result.get("daily", {})
 
-    # ── skycon ──
+    # ── skycon：实时 + 当日预报合并（取更恶劣者）──
+    # 每日推送代表一整天，realtime 只反映推送那一瞬间：雷阵雨来临前实时可能恰好是晴，
+    # 而当天预报已是雨。故取 realtime / daily 全天综合 / daily 白天 三者中严重度最高的
+    # 作为当日天气类型；严重度相同时优先 realtime。
     skycon = realtime.get("skycon", "CLEAR_DAY")
     category, description = SKYCON_MAP.get(skycon, ("clear", "晴"))
+
+    forecast_skycon = None
+    candidates = [(CATEGORY_SEVERITY.get(category, 0), 0, category, description)]
+    for key in ("skycon", "skycon_08h_20h"):
+        series = daily.get(key) or []
+        if series:
+            fc = series[0].get("value")
+            fc_cat, fc_desc = SKYCON_MAP.get(fc, (None, None))
+            if fc_cat:
+                candidates.append((CATEGORY_SEVERITY.get(fc_cat, 0), 1, fc_cat, fc_desc))
+                if forecast_skycon is None:
+                    forecast_skycon = fc
+    _, _, category, description = max(candidates, key=lambda c: (c[0], -c[1]))
     emoji = WEATHER_EMOJI.get(category, "🌤️")
 
     # ── 温度 ──
@@ -241,6 +265,8 @@ def fetch_weather(caiyun_token, lng, lat):
         "description": description,
         "emoji": emoji,
         "skycon": skycon,
+        "realtime_category": SKYCON_MAP.get(skycon, ("clear", "晴"))[0],
+        "forecast_skycon": forecast_skycon,
         # 温度
         "temperature": temperature,
         "apparent_temp": apparent_temp,

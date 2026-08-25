@@ -16,3 +16,5 @@ poetry-weather-deploy.zip
 poetry-weather-push.zip
 poetry-weather.zip
 push.log
+fonts/*.otf
+scripts/__pycache__/

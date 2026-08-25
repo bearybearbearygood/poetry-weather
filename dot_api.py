@@ -41,14 +41,50 @@ SCREEN_W = 296
 SCREEN_H = 152
 
 # ── 字体路径（无衬线，笔画粗，墨水屏清晰）──
-# macOS 优先冬青黑体，Linux 用 Noto Sans CJK（Dockerfile 安装）
+# 优先级：
+#   1) 安装包自带的子集中文字体（fonts/poetry-weather.ttf，OFL 许可，~500KB），
+#      随 skill/zip 分发，用户无需自装中文字体 —— 这是默认途径
+#   2) 环境变量 POETRY_WEATHER_FONT_PATH 强制指定（高级用户覆盖）
+#   3) 常见系统路径（macOS 冬青黑体/苹方/黑体、Linux Noto/wqy、Windows 微软雅黑/宋体/黑体）
+# 若找不到可渲染中文的 TrueType 字体，直接报错并提示，避免回退到默认字体后
+# 把缺字占位符糊成粗黑条（朋友设备上出现的那种"三"字杠）。
+_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 _FONT_CANDIDATES = [
-    "/System/Library/Fonts/Hiragino Sans GB.ttc",       # macOS 冬青黑体（首选）
-    "/System/Library/Fonts/STHeiti Medium.ttc",         # macOS 黑体（备选）
-    "/System/Library/Fonts/Supplemental/Arial Unicode.ttf",  # macOS 兜底
-    "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",  # Linux Noto Sans CJK
-    "/usr/share/fonts/truetype/noto/NotoSansCJK-Regular.ttc",  # Linux Noto (备选路径)
+    os.path.join(_SCRIPT_DIR, "fonts", "poetry-weather.ttf"),   # 项目/脚本同目录 fonts/
+    os.path.join(os.path.dirname(_SCRIPT_DIR), "fonts", "poetry-weather.ttf"),  # skill 根目录 fonts/
+    os.environ.get("POETRY_WEATHER_FONT_PATH"),
+    "/System/Library/Fonts/Hiragino Sans GB.ttc",              # macOS 冬青黑体（首选）
+    "/System/Library/Fonts/PingFang.ttc",                       # macOS 苹方
+    "/System/Library/Fonts/STHeiti Medium.ttc",                 # macOS 黑体
+    "/System/Library/Fonts/STHeiti Light.ttc",                  # macOS 黑体（细）
+    "/Library/Fonts/Arial Unicode.ttf",                         # macOS 兜底
+    "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",   # Linux Noto Sans CJK
+    "/usr/share/fonts/truetype/noto/NotoSansCJK-Regular.ttc",   # Linux Noto (备选路径)
+    "/usr/share/fonts/truetype/noto/NotoSansCJK-Regular.ttc",   # Debian/Ubuntu 常见路径
+    "/usr/share/fonts/truetype/wqy/wqy-microhei.ttc",           # Linux 文泉驿微米黑
+    "/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc",             # Linux 文泉驿正黑
+    "C:/Windows/Fonts/msyh.ttc",                                # Windows 微软雅黑
+    "C:/Windows/Fonts/msyhl.ttc",                               # Windows 微软雅黑细
+    "C:/Windows/Fonts/simsun.ttc",                              # Windows 宋体
+    "C:/Windows/Fonts/simhei.ttf",                              # Windows 黑体
 ]
+# 过滤掉 None/空字符串
+_FONT_CANDIDATES = [p for p in _FONT_CANDIDATES if p]
+
+# 测试字体是否真的能渲染中文（避免某些 ttc 首 face 不含中文导致后续缺字）
+_FONT_TEST_CHAR = "诗"
+
+
+def _font_supports_cjk(font):
+    """检查字体是否能渲染中文字符"""
+    try:
+        bbox = font.getbbox(_FONT_TEST_CHAR)
+        if bbox is None:
+            return False
+        return (bbox[2] - bbox[0]) > 0 and (bbox[3] - bbox[1]) > 0
+    except Exception:
+        return False
+
 
 # ── 字号配置 ──
 FS_HEADER = 16   # 顶部天气行（℃ 必须够大才能看清圆圈）
@@ -73,17 +109,29 @@ _font_cache = {}
 
 
 def _get_font(size):
-    """加载指定大小的字体（带缓存）"""
+    """加载指定大小的字体（带缓存）
+
+    找不到可渲染中文的 TrueType 字体时直接报错，而不是静默回退到默认字体。
+    """
     if size not in _font_cache:
         for path in _FONT_CANDIDATES:
             if os.path.exists(path):
                 try:
-                    _font_cache[size] = ImageFont.truetype(path, size)
-                    break
+                    font = ImageFont.truetype(path, size)
+                    if _font_supports_cjk(font):
+                        _font_cache[size] = font
+                        break
                 except Exception:
                     continue
         else:
-            _font_cache[size] = ImageFont.load_default()
+            raise RuntimeError(
+                "未找到可用的中文字体，无法生成诗词图片。\n"
+                "诗词天气需要系统安装中文字体（如 Noto Sans CJK / 思源黑体 / 微软雅黑 / 冬青黑体）。\n"
+                "解决方案（任选其一）：\n"
+                "1. 在系统里安装一款中文字体；\n"
+                "2. 下载字体文件后设置环境变量 POETRY_WEATHER_FONT_PATH=/path/to/font.ttf；\n"
+                "3. 若是 Docker 部署，可在 Dockerfile 中安装 fonts-noto-cjk。"
+            )
     return _font_cache[size]
 
 
