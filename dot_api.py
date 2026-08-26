@@ -252,14 +252,18 @@ def generate_image(poem, weather, date_str):
     _draw_centered(draw, source, source_y, f_source)
 
     # ── 底部：日期 + 农历 + 节气（右对齐，14px）──
-    sig_parts = [date_str.replace(" ", " · ")]  # "8月17日 周一" → "8月17日 · 周一"
+    # 用 split 把 date_str 内空格拆成独立元素，再统一用 "·" 无空格 join。
+    # ① 避免 replace(" ", " · ") 后又 join 造成 · 两侧双空格；
+    # ② 带空格时"8月26日 · 周三 · 农历七月十四 · 处暑"宽 318px 溢出 296px 屏幕，
+    #    无空格版仅 234px，留足节气余量。
+    sig_parts = date_str.split()
     lunar = get_lunar_date_str()
     if lunar:
         sig_parts.append(lunar)
     solar_term = get_solar_term()
     if solar_term:
         sig_parts.append(solar_term)
-    _draw_right(draw, " · ".join(sig_parts), SIG_Y, f_sig)
+    _draw_right(draw, "·".join(sig_parts), SIG_Y, f_sig)
 
     # 输出 PNG
     buf = io.BytesIO()
