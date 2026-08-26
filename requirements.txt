@@ -1,5 +1,9 @@
 Pillow>=10.0
 lunardate>=0.2
 lunar_python>=1.4
-# 说明：本 skill 仅做每日主动推送（Image API），不需要 flask。
-# 如需 RSS 公开分发（无密钥方案），请用 poetry-weather-deploy 或 poetry-weather-push skill 的 RSS 服务。
+flask>=2.0
+APScheduler>=3.10
+# 说明：
+# - main.py 直推（Image API）只需 Pillow/lunardate/lunar_python
+# - server.py 托管推送服务（多用户注册 + 定时批量推图）需要额外 flask + APScheduler
+# - rss_server.py RSS 服务需要 flask

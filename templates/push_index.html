@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}诗词天气 - 每日天气诗词图片推送{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <h1>诗词天气</h1>
+    <p class="subtitle">根据每日天气自动匹配古诗词<br>以精美图片推送到你的 Dot. 墨水屏</p>
+</section>
+
+<section class="preview">
+    <div class="device-mockup" style="width:296px;height:152px;display:flex;align-items:center;justify-content:center;border:1px dashed #ccc;border-radius:4px;background:#fafafa;color:#999;font-size:13px;">
+        每日自动生成 296×152 诗词图片<br>推送至你的墨水屏
+    </div>
+    <p class="preview-caption">墨水屏显示效果示意（每日自动生成并推送）</p>
+</section>
+
+<!-- 注册入口 -->
+<section class="cta">
+    <h2>免费订阅，一次注册</h2>
+    <p>填写你的 Dot. API 密钥和设备序列号，之后每天自动收到一首与天气相配的古诗词图片。</p>
+    <a href="{{ url_for('register') }}" class="btn btn-primary btn-large">立即注册</a>
+</section>
+
+<!-- 使用步骤 -->
+<section class="steps">
+    <h2>如何使用</h2>
+    <div class="step-list">
+        <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+                <h3>添加「图像 API」槽位</h3>
+                <p>打开 Dot. App → 内容工坊 → 添加「图像 API」到设备循环任务。</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+                <h3>获取 API 密钥</h3>
+                <p>Dot. App → 更多 → API 密钥 → 创建，复制 <code>dot_app_</code> 开头的密钥。</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+                <h3>复制设备序列号</h3>
+                <p>Dot. App → 更多 → 设备列表 → 选择设备 → 复制 12 位设备序列号。</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-content">
+                <h3>注册订阅</h3>
+                <p>点击上方「立即注册」，填入密钥、序列号和城市。之后每天自动推送，无需任何操作。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 功能特点 -->
+<section class="features">
+    <div class="feature-card">
+        <div class="feature-icon">天气</div>
+        <h3>实时天气驱动</h3>
+        <p>接入彩云天气 API，实时获取温度、湿度、空气质量、舒适度。晴选晴诗，雨选雨诗，高温选夏诗，严寒选冬诗。</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">诗词</div>
+        <h3>精美图片排版</h3>
+        <p>296×152 墨水屏定制排版：顶部天气信息，中部诗词居中，底部日期农历节气。内置中文字体，无需安装。</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">自动</div>
+        <h3>一次订阅终身更新</h3>
+        <p>注册后服务端每天自动推送。服务升级、诗词库扩充、布局优化都无需你再操作，自动生效。</p>
+    </div>
+</section>
+{% endblock %}

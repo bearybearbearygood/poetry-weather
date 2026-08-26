@@ -19,5 +19,6 @@ COPY . .
 # 暴露端口
 EXPOSE 8080
 
-# 启动 RSS 服务
-CMD ["python", "rss_server.py"]
+# 默认启动托管推送服务（多用户注册 + 每日定时推图）。
+# 如需跑 RSS 服务，覆盖 CMD 即可：docker run ... python rss_server.py
+CMD ["python", "server.py"]

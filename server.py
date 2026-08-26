@@ -31,7 +31,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, jso
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from weather import fetch_weather
-from dot_api import build_text_payload, get_text_api_task_key, DOT_API_BASE
+from dot_api import generate_image, push_to_device
 from poetry import load_poetry, select_poem, get_season, CATEGORY_NAMES
 import db
 
@@ -120,15 +120,18 @@ def push_to_subscriber(sub):
     result["weather_desc"] = weather.get("description", "")
     result["temperature"] = weather.get("temperature")
 
-    # 2. 获取该用户最近的推送历史（用于去重）
-    recent_titles = set()
+    # 2. 获取该用户最近的推送历史（用于去重：{title|author: 最近推送ISO时间}）
+    last_sent = {}
     history = db.get_push_history(sub["manage_token"], limit=20)
     for h in history:
         if h.get("poem_title") and h.get("poem_author"):
-            recent_titles.add(f'{h["poem_title"]}|{h["poem_author"]}')
+            key = f'{h["poem_title"]}|{h["poem_author"]}'
+            ts = h.get("pushed_at", "")
+            if key not in last_sent or ts > last_sent[key]:
+                last_sent[key] = ts
 
     # 3. 匹配诗词
-    poem, matched_trigger = select_poem(POETRY_DB, weather["triggers"], recent_titles)
+    poem, matched_trigger = select_poem(POETRY_DB, weather["triggers"], last_sent)
     if not poem:
         result["message"] = "未找到合适的诗词"
         return result
@@ -136,41 +139,22 @@ def push_to_subscriber(sub):
     result["poem_title"] = poem.get("title", "")
     result["poem_author"] = poem.get("author", "")
 
-    # 4. 构建并推送
+    # 4. 生成图片并推送（Image API，与本地 main.py 相同的 296×152 PNG 效果）
     date_str = get_date_str()
-    payload = build_text_payload(poem, weather, date_str)
 
-    # 设置任务别名，方便用户在 Dot. App 中识别
-    payload["taskAlias"] = "诗词天气"
-
-    # 查询并携带 taskKey
-    task_key = get_text_api_task_key(sub["dot_api_key"], sub["device_id"])
-    if task_key:
-        payload["taskKey"] = task_key
-
-    url = f"{DOT_API_BASE}/api/authV2/open/device/{sub['device_id']}/text"
-    body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
-
-    req = urllib.request.Request(url, data=body, method="POST")
-    req.add_header("Authorization", f"Bearer {sub['dot_api_key']}")
-    req.add_header("Content-Type", "application/json")
+    # 先本地渲染一张预览确认字体/布局正常（失败时快速暴露，避免推坏屏）
+    try:
+        generate_image(poem, weather, date_str)
+    except Exception as e:
+        result["message"] = f"图片生成失败: {e}"
+        return result
 
     try:
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            resp_data = json.loads(resp.read().decode("utf-8"))
-            result["success"] = True
-            result["message"] = resp_data.get("message", "推送成功")
-    except urllib.error.HTTPError as e:
-        error_body = e.read().decode("utf-8") if e.fp else ""
-        try:
-            error_msg = json.loads(error_body).get("message", error_body)
-        except (json.JSONDecodeError, ValueError):
-            error_msg = error_body or e.reason
-        result["message"] = f"Dot. API 错误 {e.code}: {error_msg}"
-    except urllib.error.URLError as e:
-        result["message"] = f"无法连接 Dot. API: {e.reason}"
-    except Exception as e:
-        result["message"] = f"推送异常: {e}"
+        msg = push_to_device(sub["dot_api_key"], sub["device_id"], poem, weather, date_str)
+        result["success"] = True
+        result["message"] = msg
+    except RuntimeError as e:
+        result["message"] = f"推送失败: {e}"
 
     return result
 
@@ -210,9 +194,9 @@ def push_all_subscribers():
 
 @app.route("/")
 def index():
-    """首页：说明文档"""
+    """首页：托管推送服务的注册引导"""
     stats = db.get_stats()
-    return render_template("index.html", stats=stats)
+    return render_template("push_index.html", stats=stats)
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -333,6 +317,52 @@ def manage(token):
 def api_cities():
     """城市列表 API（供前端动态加载）"""
     return jsonify(CITIES)
+
+
+@app.route("/cron/push")
+def cron_push():
+    """定时推送端点：供外部定时器（Render Cron Job / GitHub Actions）每日调用
+
+    安全：需要 ?token=xxx 与环境变量 CRON_TOKEN 一致，防止被滥用。
+
+    返回:
+        JSON: {success, pushed, failed}
+    """
+    token = os.environ.get("CRON_TOKEN", "")
+    if token and request.args.get("token") != token:
+        return jsonify({"success": False, "error": "token 无效"}), 403
+
+    subs = db.get_active_subscriptions()
+    results = []
+    for sub in subs:
+        r = push_to_subscriber(sub)
+        status = "success" if r["success"] else "failed"
+        db.record_push(
+            subscription_id=sub["id"],
+            device_id=sub["device_id"],
+            poem_title=r["poem_title"],
+            poem_author=r["poem_author"],
+            weather_desc=r["weather_desc"],
+            temperature=r["temperature"],
+            status=status,
+            error_msg=None if r["success"] else r["message"],
+        )
+        results.append({
+            "device_id": sub["device_id"],
+            "city": sub["city"],
+            "success": r["success"],
+            "message": r["message"],
+            "poem": f'{r.get("poem_author", "")}《{r.get("poem_title", "")}》',
+        })
+
+    pushed = sum(1 for r in results if r["success"])
+    return jsonify({
+        "success": True,
+        "total": len(results),
+        "pushed": pushed,
+        "failed": len(results) - pushed,
+        "results": results,
+    })
 
 
 # ── 启动 ──
