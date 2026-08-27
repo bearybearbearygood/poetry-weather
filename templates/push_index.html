@@ -8,15 +8,16 @@
 </section>
 
 <section class="preview">
-    <div class="device-mockup" style="width:296px;height:152px;display:flex;align-items:center;justify-content:center;border:1px dashed #ccc;border-radius:4px;background:#fafafa;color:#999;font-size:13px;">
-        每日自动生成 296×152 诗词图片<br>推送至你的墨水屏
+    <div class="device-mockup">
+        <img src="{{ url_for('static', filename='push_demo.png') }}" alt="墨水屏显示效果示意" width="296" height="152">
     </div>
     <p class="preview-caption">墨水屏显示效果示意（每日自动生成并推送）</p>
 </section>
 
 <!-- 注册入口 -->
 <section class="cta">
-    <h2>免费订阅，一次注册</h2>
+    <h2>今年免费订阅，一次注册</h2>
+    <p>本服务 2026 年内（至 12 月 31 日）免费试用；2027 年起将调整订阅方式，届时会在管理页面提前通知。</p>
     <p>填写你的 Dot. API 密钥和设备序列号，之后每天自动收到一首与天气相配的古诗词图片。</p>
     <a href="{{ url_for('register') }}" class="btn btn-primary btn-large">立即注册</a>
 </section>
@@ -70,7 +71,7 @@
     </div>
     <div class="feature-card">
         <div class="feature-icon">自动</div>
-        <h3>一次订阅终身更新</h3>
+        <h3>一次订阅，持续更新</h3>
         <p>注册后服务端每天自动推送。服务升级、诗词库扩充、布局优化都无需你再操作，自动生效。</p>
     </div>
 </section>
