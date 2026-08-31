@@ -1,16 +1,32 @@
-# 诗词天气 v2.5
+# 诗词天气 v2.7.1
 
 根据每日天气自动匹配古诗词，推送到 Dot. 墨水屏设备。
 
 晴天有晴诗，雨天有雨诗，高温有夏诗，严寒有冬诗。每天在墨水屏上静静呈现一首应景的古诗词，搭配当日天气信息。
 
-## v2.5 更新
+## 近期更新
 
-- **内置中文字体**：自带 500KB 的 Noto Sans CJK SC 子集字体（OFL 协议），覆盖全部诗词库 + 界面字符，**无需在系统安装中文字体**，开箱即用。
+### v2.7.1（2026-08-31）
+- **首页示意图优化**：替换为墨水屏实物照片，能直观看到真实显示效果。
+- **免费订阅措辞调整**：明确 2026 年内免费，2027 年起调整订阅方式。
+- **导航清理**：移除两个不存在的旧链接。
+
+### v2.7（2026-08-26）—— 重要里程碑
+- **托管推送服务**：服务端代为管理，**朋友只要在 Dot. App 添加「图像 API」槽位 + 注册一次，永久自动更新**。你升级服务端 = 所有注册朋友自动获得新版排版、修复、新诗。
+- `/cron/push` 端点（CRON_TOKEN 保护）：供 Render Cron Job / GitHub Actions 每日定时批量推送所有订阅。
+- 推送去重：每人独立 20 天窗口，避免重复。
+
+### v2.6（2026-08-26）
+- **字体子集化补 `%` 字形**：此前漏列半角 % 导致湿度显示丢 %，PIL 仍按字符宽度测量造成视觉双空格。
+- **底部日期行紧凑布局**：日期、星期、农历、节气之间改用无空格 `·` 拼接（带空格 + 节气 318px 溢出 296px 屏幕，无空格版仅 234px）。
+
+### v2.5（2026-08-25）
+- **内置中文字体**：自带 503KB 的 Noto Sans CJK SC 子集字体（OFL 协议），覆盖全部诗词库 + 界面字符，**无需在系统安装中文字体**，开箱即用。
 - **天气判断更准**：取「实时 + 当天预报（全天综合 + 白天）三者中严重度最高者」，避免雷阵雨来临前推送时刻恰好是晴而误推晴天诗。
-- **字体查找更稳健**：找不到可用中文字体时直接报错并提示，而不是静默回退到默认字体把中文糊成黑条。
 
 ## 效果展示
+
+![墨水屏实物效果](static/push_demo.png)
 
 ```
 ┌─────────────────────────────────┐
@@ -20,23 +36,45 @@
 │       炎蒸毒我肠。              │ ← 诗词 20px 居中
 │      ——杜甫《夏夜叹》           │ ← 出处 16px 居中
 │                                 │
-│   紫外线很弱 · 空气优 · 8月12日 │ ← 底部 14px 右对齐
+│   8月12日·周一·农历七月十九     │ ← 底部 14px 右对齐
 └─────────────────────────────────┘
        296×152px 墨水屏
 ```
 
-## 工作原理
+## 两种部署方式
 
+| 方式 | 适合 | 朋友体验 |
+|---|---|---|
+| **托管推送服务**（推荐） | 部署到公网服务给多人用 | 一次注册，永久自动更新，**无需发包** |
+| 命令行直推 | 个人使用、自己定制 | 自己 cron 定时 |
+
+### 方式一：托管推送服务（多用户，推荐）
+
+部署 `server.py` 到 Render / Railway / VPS，**朋友只需在 Dot. App 添加「图像 API」内容槽位 + 打开注册页填入自己的 API Key + 设备号 + 城市**，之后服务端每天自动生成 296×152 诗词图片并推送到每个朋友的设备。
+
+**你升级代码 → 重新部署 → 朋友端自动变新内容，零操作。**
+
+#### 部署到 Render（10 分钟）
+
+1. 登录 [Render](https://dashboard.render.com) → New → **Web Service**
+2. 连接 GitHub 仓库 `bearybearbearygood/poetry-weather`（分支 main）
+3. Build/Start Command 留空（仓库自带 Dockerfile，自动启动 server.py）
+4. 设置环境变量：
+   - `CAIYUN_TOKEN` = `你的彩云天气 Token`
+   - `CRON_TOKEN` = 一个随机字符串（保护 `/cron/push` 端点，不要公开）
+5. Deploy 完成后拿到公网 URL（形如 `https://xxx.onrender.com`）
+
+#### 配置定时任务（每天自动推送）
+
+在 Render → New → **Cron Job**，命令：
+```bash
+curl "https://你的URL.onrender.com/cron/push?token=你的CRON_TOKEN"
 ```
-彩云天气 API → 获取实时天气 → 匹配古诗词 → 生成图片/RSS
-                    ↓                              ↓
-            Dot. Image API 直推            Dot. 设备定时拉取 RSS
-            （单用户，main.py）           （多用户，rss_server.py）
-```
+时间设为每天 UTC 1:00（= 北京时间 9:00）。
 
-## 快速部署
+> 免费版 15 分钟无请求会休眠，第一次访问冷启动 30-60 秒。定时器每天触发即可唤醒。
 
-### 方式一：命令行直推（单用户，推荐个人使用）
+### 方式二：命令行直推（个人使用）
 
 通过 Dot. Image API 生成图片直接推送到设备，像素级控制排版。
 
@@ -59,29 +97,6 @@ crontab -e
 
 > **注意**：Image API 模式需要在 Dot. App 中为设备添加「图像 API」内容槽位到循环任务。
 
-### 方式二：RSS 服务（多用户）
-
-部署 Web 服务，用户在 Dot. App 中添加 RSS 链接即可订阅。
-
-```bash
-# Docker 部署（推荐）
-cp .env.example .env
-# 编辑 .env 填入 CAIYUN_TOKEN
-docker-compose up -d
-# 访问 http://你的服务器IP:8080
-
-# 或直接运行
-pip install -r requirements.txt
-export CAIYUN_TOKEN=你的彩云天气Token
-python rss_server.py
-```
-
-RSS 链接格式：
-- `http://域名/rss` — 默认北京
-- `http://域名/rss?city=上海` — 指定城市
-- `http://域名/rss?lng=121.47&lat=31.23` — 自定义经纬度
-- `http://域名/rss?edition=ci` — 宋词版（默认 general 通用古诗词）
-
 ## 配置说明
 
 ### config.json（单用户模式）
@@ -95,28 +110,33 @@ RSS 链接格式：
 | `dot_api_key` | Dot. API 密钥 | `dot_app_xxx` |
 | `device_id` | 设备序列号 | `ABCD1234ABCD` |
 
-### 环境变量（RSS 服务）
+### 环境变量（托管推送服务）
 
-| 变量 | 说明 | 默认值 |
-|------|------|--------|
-| `CAIYUN_TOKEN` | 彩云天气 Token | 从 config.json 读取 |
-| `PORT` | Web 服务端口 | `8080` |
-| `FLASK_SECRET_KEY` | Flask 密钥 | 内置默认值 |
+| 变量 | 说明 | 必填 |
+|------|------|------|
+| `CAIYUN_TOKEN` | 彩云天气 Token | ✅ |
+| `CRON_TOKEN` | 保护 `/cron/push` 端点 | ✅ |
+| `PORT` | Web 服务端口 | 默认 8080 |
+| `FLASK_SECRET_KEY` | Flask 密钥 | 默认内置 |
 
 ## 项目结构
 
 ```
 诗词天气/
 ├── main.py              # 单用户入口（Image API 直推）
-├── rss_server.py        # RSS Feed 服务（Flask，多用户）
+├── server.py            # 托管推送服务（Flask，多用户注册+批量推图）
+├── rss_server.py        # RSS Feed 服务（Flask，多用户拉取）
 ├── weather.py           # 彩云天气 API 客户端
 ├── dot_api.py           # Dot. 设备 Image API 客户端（Pillow 生成图片）
 ├── poetry.py            # 诗词匹配模块
 ├── poetry.json          # 通用诗词库（123 首，13 类天气）
 ├── poetry_ci.json       # 宋词库（37 首，13 类天气）
 ├── cities.json          # 中国 50 个主要城市经纬度
-├── templates/           # Web 页面
-├── static/              # 样式表
+├── db.py                # 托管服务订阅数据库（SQLite）
+├── templates/           # Web 页面（托管服务首页、注册页、管理页）
+├── static/              # 样式表 + 首页示意图
+├── fonts/               # 内置子集字体（poetry-weather.ttf，503KB）
+├── scripts/             # 字体子集化脚本
 ├── Dockerfile           # Docker 镜像构建
 ├── docker-compose.yml   # Docker Compose 部署
 ├── requirements.txt     # Python 依赖
@@ -124,16 +144,28 @@ RSS 链接格式：
 └── .env.example         # 环境变量模板
 ```
 
+## 工作原理
+
+```
+彩云天气 API → 获取实时天气 → 匹配古诗词 → 生成 296×152 PNG
+                    ↓                              ↓
+        托管服务：定时批量推图      单用户：main.py 直接推图
+        （朋友零操作，自动更新）     （自己 crontab 定时）
+                    ↓
+            Dot. Image API 直推
+            推送至每个订阅者的设备
+```
+
 ## 技术细节
 
-- **天气数据**：彩云天气 API v2.6，获取实时温度、湿度、AQI、紫外线、舒适度
+- **天气数据**：彩云天气 API v2.6，获取实时温度、湿度、AQI、舒适度
 - **图片生成**：Pillow 生成 296×152 灰度 PNG，`textbbox` 测量文字宽度实现像素级居中
-- **假粗体**：内置 Noto Sans CJK SC 子集字体 + 水平/垂直偏移重绘，笔画增粗约 1.5 倍
-- **节气显示**：24 节气查表，当天是节气日时在顶部显示
-- **天气类型**：v2.5 起取「实时 + 当天预报」三者中严重度最高者
+- **内置字体**：Noto Sans CJK SC 子集化（1112 字符，503KB），包含诗词库全字符 + UI 字符（含半角 `%`）
+- **节气显示**：lunar_python 精确计算，**仅节气当天显示**
+- **天气类型**：取「实时 + 当天预报（全天综合 + 白天）三者中严重度最高者」，严重度相同优先实时
+- **底部日期行**：用 `·` 无空格拼接，14px 右对齐
 - **诗词匹配**：13 种天气/温度类型触发，季节优先，每日种子去重
-- **多版本文库**：`edition` 参数切换不同诗词 JSON，匹配引擎与触发逻辑完全复用
-- **RSS 缓存**：同一天同一城市只请求一次天气 API
+- **多版本文库**：`edition` 参数切换不同诗词 JSON（general 通用 / ci 宋词）
 
 ### 诗词匹配优先级
 
@@ -144,8 +176,10 @@ RSS 链接格式：
 ## 依赖
 
 - Python 3.10+
-- `flask`（RSS 服务）
-- `Pillow`（Image API 图片生成，**v2.5 起内置中文字体，不再依赖系统字体**）
+- `flask`（托管服务 / RSS）
+- `APScheduler`（托管服务定时调度）
+- `Pillow`（Image API 图片生成）
+- `lunardate` / `lunar_python`（节气计算）
 
 ## License
 

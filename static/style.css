@@ -165,6 +165,14 @@ body {
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
 
+.device-mockup img {
+    display: block;
+    width: 296px;
+    height: 152px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
 .device-screen {
     width: 296px;
     height: 152px;
