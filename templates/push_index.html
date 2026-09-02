@@ -4,21 +4,20 @@
 {% block content %}
 <section class="hero">
     <h1>诗词天气</h1>
-    <p class="subtitle">根据每日天气自动匹配古诗词<br>以精美图片推送到你的 Dot. 墨水屏</p>
+    <p class="subtitle">晨昏雨雪，皆有诗应。<br>每日根据你所在城市的天气，匹配一首古诗词，推送到你的 Dot. 墨水屏。</p>
 </section>
 
 <section class="preview">
     <div class="device-mockup">
-        <img src="{{ url_for('static', filename='push_demo.png') }}" alt="墨水屏显示效果示意" width="296" height="152">
+        <img src="{{ url_for('static', filename='push_demo.png') }}" alt="墨水屏显示效果实拍" width="512" height="384">
     </div>
-    <p class="preview-caption">墨水屏显示效果示意（每日自动生成并推送）</p>
+    <p class="preview-caption">墨水屏显示效果（实拍）</p>
 </section>
 
 <!-- 注册入口 -->
 <section class="cta">
-    <h2>今年免费订阅，一次注册</h2>
-    <p>本服务 2026 年内（至 12 月 31 日）免费试用；2027 年起将调整订阅方式，届时会在管理页面提前通知。</p>
-    <p>填写你的 Dot. API 密钥和设备序列号，之后每天自动收到一首与天气相配的古诗词图片。</p>
+    <h2>开始订阅诗词天气</h2>
+    <p>填写你的 Dot. API 密钥和设备序列号，注册后每天自动收到一首与天气相配的古诗词图片，无需任何操作。</p>
     <a href="{{ url_for('register') }}" class="btn btn-primary btn-large">立即注册</a>
 </section>
 
@@ -61,18 +60,18 @@
 <section class="features">
     <div class="feature-card">
         <div class="feature-icon">天气</div>
-        <h3>实时天气驱动</h3>
-        <p>接入彩云天气 API，实时获取温度、湿度、空气质量、舒适度。晴选晴诗，雨选雨诗，高温选夏诗，严寒选冬诗。</p>
+        <h3>实时天气</h3>
+        <p>接入彩云天气 API，实时获取温度、湿度、空气质量与体感舒适度，自动判断晴雨、冷热、雾霾等天气状况。</p>
     </div>
     <div class="feature-card">
         <div class="feature-icon">诗词</div>
-        <h3>精美图片排版</h3>
-        <p>296×152 墨水屏定制排版：顶部天气信息，中部诗词居中，底部日期农历节气。内置中文字体，无需安装。</p>
+        <h3>应景诗词</h3>
+        <p>内置历代经典古诗词库，按天气类型与季节精准匹配：晴配晴诗、雨配雨诗，节气日还会挑选对应节气的诗句。每首都附作者出处，同一城市每天都不重复。</p>
     </div>
     <div class="feature-card">
         <div class="feature-icon">自动</div>
-        <h3>一次订阅，持续更新</h3>
-        <p>注册后服务端每天自动推送。服务升级、诗词库扩充、布局优化都无需你再操作，自动生效。</p>
+        <h3>一次订阅</h3>
+        <p>注册后服务端每天自动推送。服务升级、诗词库扩充、版式优化都自动生效，无需你任何操作。</p>
     </div>
 </section>
 {% endblock %}

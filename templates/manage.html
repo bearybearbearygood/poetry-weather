@@ -5,6 +5,10 @@
 <section class="manage-section">
     <h1>我的订阅</h1>
 
+    <div class="form-banner">
+        <p><strong>请保存此页链接</strong>，日后管理、修改城市、注销订阅都需要它。如果链接丢失，本服务无法找回（出于安全考虑），需要重新注册。</p>
+    </div>
+
     <div class="sub-card">
         <div class="sub-info">
             <div class="sub-row">
@@ -49,9 +53,9 @@
             </details>
 
             <form method="POST" action="{{ url_for('manage', token=token) }}" class="inline-form"
-                  onsubmit="return confirm('确定要取消订阅吗？取消后不再每日推送。')">
+                  onsubmit="return confirm('确定要注销订阅吗？注销后将立即停止每日推送，并删除你的订阅记录。')">
                 <input type="hidden" name="action" value="delete">
-                <button type="submit" class="btn btn-danger">取消订阅</button>
+                <button type="submit" class="btn btn-danger">注销订阅</button>
             </form>
         </div>
         {% endif %}

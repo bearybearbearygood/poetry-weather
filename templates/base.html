@@ -8,10 +8,15 @@
 </head>
 <body>
     <nav class="nav">
-        <a href="{{ url_for('index') }}" class="nav-logo">诗词天气</a>
-        <div class="nav-links">
-            <a href="{{ url_for('index') }}">首页</a>
+        <div class="nav-left">
+            {% if request.endpoint != 'index' %}
+            <a href="{{ url_for('index') }}" class="nav-back" aria-label="返回首页">
+                <span class="nav-back-arrow">←</span> 返回首页
+            </a>
+            {% endif %}
         </div>
+        <a href="{{ url_for('index') }}" class="nav-logo">诗词天气</a>
+        <div class="nav-right"></div>
     </nav>
 
     <main class="container">
