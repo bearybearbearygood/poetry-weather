@@ -1114,6 +1114,19 @@ body {
 }
 
 /* ───────── 使用指南页 ───────── */
+/* 指南页统一使用非衬线字体（覆盖全局衬线标题） */
+.guide,
+.guide h1,
+.guide h2,
+.guide h3,
+.guide p,
+.guide li,
+.guide .step-num,
+.guide .step-content h3,
+.guide .steps-more a {
+    font-family: var(--font-sans);
+}
+
 .guide-head {
     text-align: center;
     padding: 36px 0 28px;
@@ -1121,11 +1134,11 @@ body {
 }
 
 .guide-head h1 {
-    font-family: var(--font-serif);
-    font-size: 36px;
+    font-family: var(--font-sans);
+    font-size: 32px;
     font-weight: 700;
-    letter-spacing: 10px;
-    margin-left: 10px;
+    letter-spacing: 8px;
+    margin-left: 8px;
     color: var(--color-text);
     display: inline-block;
 }
@@ -1141,12 +1154,12 @@ body {
 }
 
 .guide-lead {
-    font-family: var(--font-serif);
+    font-family: var(--font-sans);
     font-size: 15px;
     color: var(--color-text-light);
     line-height: 1.9;
-    letter-spacing: 1px;
-    margin-top: 18px;
+    letter-spacing: 0.5px;
+    margin-top: 16px;
 }
 
 .guide-block {
@@ -1155,71 +1168,47 @@ body {
 }
 
 .guide-block h2 {
-    font-family: var(--font-serif);
-    font-size: 20px;
-    font-weight: 600;
+    font-family: var(--font-sans);
+    font-size: 19px;
+    font-weight: 700;
     color: var(--color-text);
-    letter-spacing: 3px;
+    letter-spacing: 2px;
     margin-bottom: 20px;
     padding-left: 14px;
     border-left: 3px solid var(--color-primary);
     line-height: 1.4;
 }
 
-/* 准备清单两栏 */
-.prep-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-}
-
-.prep-card {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border-soft);
-    border-radius: var(--radius);
-    padding: 20px 22px;
-}
-
-.prep-card h3 {
-    font-family: var(--font-serif);
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--color-text);
-    letter-spacing: 2px;
-    margin-bottom: 12px;
-}
-
-/* 通用列表 */
+/* 通用列表（圆点与文字首行对齐，换行悬挂缩进） */
 .guide-list {
     list-style: none;
     padding: 0;
 }
 
 .guide-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
     font-size: 14px;
     color: var(--color-text-light);
-    line-height: 1.8;
-    padding: 3px 0 3px 18px;
-    position: relative;
+    line-height: 1.85;
+    padding: 4px 0;
+    text-align: left;
 }
 
 .guide-list li::before {
-    content: "·";
-    position: absolute;
-    left: 4px;
-    top: 1px;
-    color: var(--color-primary);
-    font-size: 18px;
-    line-height: 22px;
+    content: "";
+    flex: 0 0 auto;
+    width: 4px;
+    height: 4px;
+    margin-top: 0.78em;
+    border-radius: 50%;
+    background: var(--color-primary);
 }
 
 .guide-list li strong {
     color: var(--color-text);
     font-weight: 600;
-}
-
-.guide-list-muted li {
-    color: var(--color-text-muted);
 }
 
 .guide-list-roomy li {
@@ -1235,44 +1224,32 @@ body {
     margin-top: 16px;
 }
 
-/* 步骤内的操作路径 */
+/* 步骤内的操作路径（纯文本，不用色块） */
 .path {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    column-gap: 6px;
-    row-gap: 9px;
-    margin: 12px 0 4px;
-}
-
-.path-step {
-    display: inline-block;
-    padding: 4px 10px;
-    background: var(--color-primary-bg);
-    border: 1px solid var(--color-border);
-    border-radius: 2px;
-    font-size: 13px;
+    font-size: 13.5px;
+    font-weight: 500;
     color: var(--color-primary);
-    line-height: 1.5;
-    white-space: nowrap;
+    line-height: 1.95;
+    margin: 8px 0 2px;
+    text-align: left;
 }
 
-.path-arrow {
+.path .sep {
     color: var(--color-text-muted);
-    font-size: 15px;
-    line-height: 1;
+    font-weight: 400;
 }
 
 .step-warn {
     font-size: 13.5px;
     color: var(--color-warning);
-    background: var(--color-warning-bg);
-    border-left: 2px solid var(--color-warning);
-    border-radius: 2px;
-    padding: 8px 12px;
-    margin-bottom: 4px;
-    line-height: 1.7;
+    margin: 6px 0 2px;
+    line-height: 1.75;
     text-align: left;
+}
+
+.step-warn::before {
+    content: "注意：";
+    font-weight: 600;
 }
 
 .step-note {
@@ -1301,6 +1278,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 14px;
+    counter-reset: faq;
 }
 
 .faq-item {
@@ -1312,54 +1290,46 @@ body {
 }
 
 .faq-q {
-    font-family: var(--font-serif);
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    counter-increment: faq;
+    font-family: var(--font-sans);
     font-size: 15.5px;
     font-weight: 600;
     color: var(--color-text);
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
     margin-bottom: 8px;
-    padding-left: 25px;
-    position: relative;
     line-height: 1.6;
 }
 
 .faq-q::before {
-    content: "问";
-    position: absolute;
-    left: 0;
-    top: 3px;
-    width: 16px;
-    height: 16px;
-    line-height: 16px;
-    text-align: center;
-    background: var(--color-primary);
-    color: #fff;
-    border-radius: 1px;
-    font-size: 10px;
+    content: counter(faq, decimal-leading-zero);
+    flex: 0 0 22px;
+    font-size: 13px;
+    font-weight: 700;
     letter-spacing: 0;
+    color: var(--color-primary);
+    font-variant-numeric: tabular-nums;
 }
 
 .faq-a {
     font-size: 14px;
     color: var(--color-text-light);
     line-height: 1.85;
-    padding-left: 25px;
+    padding-left: 32px; /* 22px 编号 + 10px 间距，与问题文字左对齐 */
     text-align: left;
 }
 
 @media (max-width: 640px) {
     .guide-head h1 {
-        font-size: 28px;
-        letter-spacing: 6px;
+        font-size: 26px;
+        letter-spacing: 5px;
+        margin-left: 5px;
     }
 
-    .prep-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .path-step {
-        font-size: 12px;
-        padding: 3px 8px;
+    .path {
+        font-size: 13px;
     }
 
     .faq-item {
