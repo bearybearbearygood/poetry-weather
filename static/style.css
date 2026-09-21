@@ -192,6 +192,17 @@ body {
     border-radius: 1px;
 }
 
+/* 副标题首行（短句，字号更大、字距更疏） */
+.subtitle-lead {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    color: var(--color-text-light);
+    letter-spacing: 3px;
+    line-height: 1.7;
+    margin-bottom: 6px;
+    font-weight: 400;
+}
+
 .subtitle {
     font-family: var(--font-serif);
     font-size: 16px;
@@ -254,7 +265,7 @@ body {
 .btn-large {
     padding: 14px 40px;
     font-size: 16px;
-    font-family: var(--font-serif);
+    font-family: var(--font-sans);
     font-weight: 500;
 }
 
@@ -585,6 +596,11 @@ body {
     margin-bottom: 28px;
     line-height: 1.8;
     font-size: 15px;
+}
+
+/* 首页：设置指南入口按钮 */
+.guide-entry {
+    text-align: center;
 }
 
 /* ───────── 表单 ───────── */
@@ -982,6 +998,11 @@ body {
     .hero h1 {
         font-size: 34px;
         letter-spacing: 8px;
+    }
+
+    .subtitle-lead {
+        font-size: 20px;
+        letter-spacing: 2px;
     }
 
     .nav-logo {

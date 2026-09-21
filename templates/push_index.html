@@ -4,7 +4,8 @@
 {% block content %}
 <section class="hero">
     <h1>诗词天气</h1>
-    <p class="subtitle">晨昏雨雪，皆有诗应。<br>每日根据你所在城市的天气，匹配一首古诗词，推送到你的 Dot. 墨水屏。</p>
+    <p class="subtitle-lead">晨昏雨雪，皆有诗应</p>
+    <p class="subtitle">每日根据你所在城市的天气，匹配一首古诗词，推送到你的 Dot. 墨水屏</p>
 </section>
 
 <section class="preview">
@@ -21,42 +22,9 @@
     <a href="{{ url_for('register') }}" class="btn btn-primary btn-large">立即注册</a>
 </section>
 
-<!-- 使用步骤 -->
-<section class="steps">
-    <h2>如何使用</h2>
-    <div class="step-list">
-        <div class="step">
-            <div class="step-num">1</div>
-            <div class="step-content">
-                <h3>添加「图像 API」槽位</h3>
-                <p>打开 Dot. App → 内容工坊 → 添加「图像 API」到设备循环任务。</p>
-            </div>
-        </div>
-        <div class="step">
-            <div class="step-num">2</div>
-            <div class="step-content">
-                <h3>获取 API 密钥</h3>
-                <p>Dot. App → 更多 → API 密钥 → 创建，复制 <code>dot_app_</code> 开头的密钥。</p>
-            </div>
-        </div>
-        <div class="step">
-            <div class="step-num">3</div>
-            <div class="step-content">
-                <h3>复制设备序列号</h3>
-                <p>Dot. App → 更多 → 设备列表 → 选择设备 → 复制 12 位设备序列号。</p>
-            </div>
-        </div>
-        <div class="step">
-            <div class="step-num">4</div>
-            <div class="step-content">
-                <h3>注册订阅</h3>
-                <p>点击上方「立即注册」，填入密钥、序列号和城市。之后每天自动推送，无需任何操作。</p>
-            </div>
-        </div>
-    </div>
-    <p class="steps-more">
-        <a href="{{ url_for('guide') }}">查看完整设置指南（含操作路径与常见问题）→</a>
-    </p>
+<!-- 设置指南入口 -->
+<section class="guide-entry">
+    <a href="{{ url_for('guide') }}" class="btn btn-secondary btn-large">查看设置指南</a>
 </section>
 
 <!-- 功能特点 -->
