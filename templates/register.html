@@ -16,7 +16,7 @@
             <input type="text" id="dot_api_key" name="dot_api_key"
                    placeholder="dot_app_xxxxxxxxxxxx" required
                    autocomplete="off">
-            <small>在 Dot. App「我的」-「开发者」中创建</small>
+            <small>Dot. App → 底部「更多」→「API 密钥」→ 创建 API Key，复制 <code>dot_app_</code> 开头的密钥</small>
         </div>
 
         <div class="form-group">
@@ -24,7 +24,7 @@
             <input type="text" id="device_id" name="device_id"
                    placeholder="ABCD1234ABCD" required
                    autocomplete="off">
-            <small>在 Dot. App「我的设备」中查看，12 位字母数字</small>
+            <small>Dot. App → 底部「更多」→ 头像下方的设备列表 → 选择设备 → 下滑「设备序列号」，12 位字母数字</small>
         </div>
 
         <div class="form-group">
@@ -67,7 +67,7 @@
             <li>设备已接通电源并连接网络</li>
             <li>API 密钥和设备序列号填写正确</li>
         </ul>
-        <p>遇到问题？请检查设备循环任务中是否已添加「图像 API」内容。</p>
+        <p>不清楚怎么操作？<a href="{{ url_for('guide') }}">查看完整使用指南 →</a></p>
     </div>
 </section>
 {% endblock %}

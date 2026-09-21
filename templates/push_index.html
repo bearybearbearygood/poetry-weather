@@ -17,7 +17,7 @@
 <!-- 注册入口 -->
 <section class="cta">
     <h2>开始订阅诗词天气</h2>
-    <p>填写你的 Dot. API 密钥和设备序列号，注册后每天自动收到一首与天气相配的古诗词图片，无需任何操作。</p>
+    <p>填写你的 Dot. API 密钥和设备序列号，注册后每天上午 9 点自动收到一首与天气相配的古诗词图片。<br>不需要电脑，也不需要安装任何软件。</p>
     <a href="{{ url_for('register') }}" class="btn btn-primary btn-large">立即注册</a>
 </section>
 
@@ -54,6 +54,9 @@
             </div>
         </div>
     </div>
+    <p class="steps-more">
+        <a href="{{ url_for('guide') }}">查看完整设置指南（含操作路径与常见问题）→</a>
+    </p>
 </section>
 
 <!-- 功能特点 -->

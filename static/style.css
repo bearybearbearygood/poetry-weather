@@ -496,6 +496,27 @@ body {
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
+.steps-more {
+    text-align: center;
+    margin-top: 24px;
+}
+
+.steps-more a {
+    font-family: var(--font-serif);
+    font-size: 14px;
+    color: var(--color-primary);
+    text-decoration: none;
+    letter-spacing: 1px;
+    border-bottom: 1px dashed var(--color-border);
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+}
+
+.steps-more a:hover {
+    color: var(--color-primary-light);
+    border-bottom-color: var(--color-primary-light);
+}
+
 /* ───────── 统计栏（rss 页用到） ───────── */
 .stats-bar {
     display: flex;
@@ -746,6 +767,25 @@ body {
     font-size: 13px;
     color: var(--color-text-light);
     margin-top: 12px;
+}
+
+.form-help a {
+    color: var(--color-primary);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--color-border);
+}
+
+.form-help a:hover {
+    color: var(--color-primary-light);
+}
+
+.form-group small code {
+    background: var(--color-primary-bg);
+    color: var(--color-primary);
+    padding: 1px 4px;
+    border-radius: 2px;
+    font-size: 11.5px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 /* ───────── Flash 消息 ───────── */
@@ -1070,5 +1110,259 @@ body {
 
     .rss-generator {
         padding: 24px 16px;
+    }
+}
+
+/* ───────── 使用指南页 ───────── */
+.guide-head {
+    text-align: center;
+    padding: 36px 0 28px;
+    position: relative;
+}
+
+.guide-head h1 {
+    font-family: var(--font-serif);
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: 10px;
+    margin-left: 10px;
+    color: var(--color-text);
+    display: inline-block;
+}
+
+.guide-head h1::after {
+    content: "";
+    display: block;
+    width: 48px;
+    height: 2px;
+    margin: 16px auto 0;
+    background: var(--color-primary);
+    border-radius: 1px;
+}
+
+.guide-lead {
+    font-family: var(--font-serif);
+    font-size: 15px;
+    color: var(--color-text-light);
+    line-height: 1.9;
+    letter-spacing: 1px;
+    margin-top: 18px;
+}
+
+.guide-block {
+    margin: 48px 0;
+    text-align: left;
+}
+
+.guide-block h2 {
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--color-text);
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+    padding-left: 14px;
+    border-left: 3px solid var(--color-primary);
+    line-height: 1.4;
+}
+
+/* 准备清单两栏 */
+.prep-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.prep-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+}
+
+.prep-card h3 {
+    font-family: var(--font-serif);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-text);
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+}
+
+/* 通用列表 */
+.guide-list {
+    list-style: none;
+    padding: 0;
+}
+
+.guide-list li {
+    font-size: 14px;
+    color: var(--color-text-light);
+    line-height: 1.8;
+    padding: 3px 0 3px 18px;
+    position: relative;
+}
+
+.guide-list li::before {
+    content: "·";
+    position: absolute;
+    left: 4px;
+    top: 1px;
+    color: var(--color-primary);
+    font-size: 18px;
+    line-height: 22px;
+}
+
+.guide-list li strong {
+    color: var(--color-text);
+    font-weight: 600;
+}
+
+.guide-list-muted li {
+    color: var(--color-text-muted);
+}
+
+.guide-list-roomy li {
+    font-size: 14.5px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+.guide-note {
+    font-size: 13px;
+    color: var(--color-text-muted);
+    line-height: 1.75;
+    margin-top: 16px;
+}
+
+/* 步骤内的操作路径 */
+.path {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 6px;
+    row-gap: 9px;
+    margin: 12px 0 4px;
+}
+
+.path-step {
+    display: inline-block;
+    padding: 4px 10px;
+    background: var(--color-primary-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 2px;
+    font-size: 13px;
+    color: var(--color-primary);
+    line-height: 1.5;
+    white-space: nowrap;
+}
+
+.path-arrow {
+    color: var(--color-text-muted);
+    font-size: 15px;
+    line-height: 1;
+}
+
+.step-warn {
+    font-size: 13.5px;
+    color: var(--color-warning);
+    background: var(--color-warning-bg);
+    border-left: 2px solid var(--color-warning);
+    border-radius: 2px;
+    padding: 8px 12px;
+    margin-bottom: 4px;
+    line-height: 1.7;
+    text-align: left;
+}
+
+.step-note {
+    font-size: 12.5px;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin-top: 8px;
+    text-align: left;
+}
+
+.step-note code {
+    background: var(--color-primary-bg);
+    color: var(--color-primary);
+    padding: 1px 5px;
+    border-radius: 2px;
+    font-size: 12px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.step-cta {
+    margin-top: 18px;
+}
+
+/* 常见问题 */
+.faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.faq-item {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius);
+    padding: 18px 22px 20px;
+    text-align: left;
+}
+
+.faq-q {
+    font-family: var(--font-serif);
+    font-size: 15.5px;
+    font-weight: 600;
+    color: var(--color-text);
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    padding-left: 25px;
+    position: relative;
+    line-height: 1.6;
+}
+
+.faq-q::before {
+    content: "问";
+    position: absolute;
+    left: 0;
+    top: 3px;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    background: var(--color-primary);
+    color: #fff;
+    border-radius: 1px;
+    font-size: 10px;
+    letter-spacing: 0;
+}
+
+.faq-a {
+    font-size: 14px;
+    color: var(--color-text-light);
+    line-height: 1.85;
+    padding-left: 25px;
+    text-align: left;
+}
+
+@media (max-width: 640px) {
+    .guide-head h1 {
+        font-size: 28px;
+        letter-spacing: 6px;
+    }
+
+    .prep-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .path-step {
+        font-size: 12px;
+        padding: 3px 8px;
+    }
+
+    .faq-item {
+        padding: 16px 16px 18px;
     }
 }

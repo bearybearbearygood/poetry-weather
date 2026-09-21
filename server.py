@@ -199,6 +199,12 @@ def index():
     return render_template("push_index.html", stats=stats)
 
 
+@app.route("/guide")
+def guide():
+    """使用指南页：从零开始设置墨水屏的完整步骤 + 常见问题"""
+    return render_template("guide.html")
+
+
 @app.route("/register", methods=["GET", "POST"])
 def register():
     """注册页"""

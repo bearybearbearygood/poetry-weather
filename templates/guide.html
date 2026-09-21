@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+{% block title %}使用指南 - 诗词天气{% endblock %}
+
+{% block content %}
+<section class="guide">
+    <header class="guide-head">
+        <h1>使用指南</h1>
+        <p class="guide-lead">从零到每天收到推送，大约 3 分钟。设置一次，之后不用再管。</p>
+    </header>
+
+    <!-- 开始之前 -->
+    <div class="guide-block">
+        <h2>开始之前</h2>
+        <div class="prep-grid">
+            <div class="prep-card">
+                <h3>你需要</h3>
+                <ul class="guide-list">
+                    <li>一台 Dot. 墨水屏设备</li>
+                    <li>手机上的 Dot. App（用来操作设备）</li>
+                </ul>
+            </div>
+            <div class="prep-card">
+                <h3>你不需要</h3>
+                <ul class="guide-list guide-list-muted">
+                    <li>不需要电脑</li>
+                    <li>不需要安装任何软件</li>
+                    <li>不需要注册账号密码</li>
+                </ul>
+            </div>
+        </div>
+        <p class="guide-note">推送在服务端完成，你的电脑开不开机都不影响。</p>
+    </div>
+
+    <!-- 设置步骤 -->
+    <div class="guide-block">
+        <h2>设置步骤</h2>
+        <div class="step-list">
+
+            <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                    <h3>在 Dot. App 里添加「图像 API」槽位</h3>
+                    <p class="step-warn">这一步不能跳过。设备只有在循环任务里放了「图像 API」，才有位置显示推送过来的图片。</p>
+                    <div class="path">
+                        <span class="path-step">打开 Dot. App</span>
+                        <span class="path-arrow">›</span>
+                        <span class="path-step">进入你的设备</span>
+                        <span class="path-arrow">›</span>
+                        <span class="path-step">内容工坊</span>
+                        <span class="path-arrow">›</span>
+                        <span class="path-step">循环任务</span>
+                        <span class="path-arrow">›</span>
+                        <span class="path-step">添加「图像 API」</span>
+                        <span class="path-arrow">›</span>
+                        <span class="path-step">保存</span>
+                    </div>
+                    <p class="step-note">部分版本的 App 里，「内容工坊」显示为「内容管理」。</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                    <h3>创建 Dot. API 密钥</h3>
+                    <p>这串密钥用来让服务端把图片推到你的设备上。</p>
+                    <div class="path">
+                        <span class="path-step">打开 Dot. App</span>
+                        <span class="path-arrow">›</span>
+                        <span class="path-step">底部「更多」</span>
+                        <span class="path-arrow">›</span>
+                        <span class="path-step">API 密钥</span>
+                        <span class="path-arrow">›</span>
+                        <span class="path-step">创建 API Key</span>
+                        <span class="path-arrow">›</span>
+                        <span class="path-step">复制</span>
+                    </div>
+                    <p class="step-note">复制到的是一串 <code>dot_app_</code> 开头的字符。找不到「API 密钥」入口的话，先把 Dot. App 更新到最新版。</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                    <h3>复制设备序列号</h3>
+                    <p>用来指定推送的目标设备，如果你只有一台设备，记这一次就行。</p>
+                    <div class="path">
+                        <span class="path-step">打开 Dot. App</span>
+                        <span class="path-arrow">›</span>
+                        <span class="path-step">底部「更多」</span>
+                        <span class="path-arrow">›</span>
+                        <span class="path-step">头像下方的设备列表</span>
+                        <span class="path-arrow">›</span>
+                        <span class="path-step">选择你的设备</span>
+                        <span class="path-arrow">›</span>
+                        <span class="path-step">下滑找到「设备序列号」</span>
+                        <span class="path-arrow">›</span>
+                        <span class="path-step">点击复制</span>
+                    </div>
+                    <p class="step-note">是一串 12 位字母数字。</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-num">4</div>
+                <div class="step-content">
+                    <h3>在网页上注册</h3>
+                    <p>把刚才拿到的密钥和序列号填进注册页，再选一下你所在的城市（列表里没有的话可以填经纬度）。</p>
+                    <p>提交之后：屏幕上会立刻出现第一条诗词天气，稍等片刻自动刷新。页面会跳转到你的专属管理页，<strong>请把这个链接存进收藏夹</strong>，以后换城市、暂停推送都要用它。</p>
+                    <div class="step-cta">
+                        <a href="{{ url_for('register') }}" class="btn btn-primary btn-large">去注册</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 注册之后 -->
+    <div class="guide-block">
+        <h2>注册之后</h2>
+        <ul class="guide-list guide-list-roomy">
+            <li><strong>每天上午 9 点自动推送</strong>，你不用做任何事，电脑也不用开。</li>
+            <li>推送内容是当天实况天气 + 一首应景的古诗词，底部还有日期、农历和节气。</li>
+            <li>同一座城市最近 20 天不会重复推同一首诗。</li>
+            <li>服务端的改进（诗词库扩充、版式优化）自动生效，不用重新注册。</li>
+        </ul>
+    </div>
+
+    <!-- 管理订阅 -->
+    <div class="guide-block">
+        <h2>管理你的订阅</h2>
+        <p>用注册后生成的管理链接，你可以：</p>
+        <ul class="guide-list guide-list-roomy">
+            <li><strong>立即推送一次</strong> —— 想马上看看效果</li>
+            <li><strong>更换城市</strong> —— 出差、搬家之后改一下</li>
+            <li><strong>注销订阅</strong> —— 停止推送并删除你的订阅记录</li>
+        </ul>
+        <p class="guide-note">管理链接丢失了？出于安全考虑本服务无法找回，需要重新注册一次。</p>
+    </div>
+
+    <!-- 常见问题 -->
+    <div class="guide-block">
+        <h2>常见问题</h2>
+        <div class="faq-list">
+
+            <div class="faq-item">
+                <h3 class="faq-q">推送成功，但屏幕没变化？</h3>
+                <p class="faq-a">设备每个循环周期只显示一个内容。如果你的循环任务里还放了别的内容，诗词要轮到它才显示。另外检查一下有没有设置「固定内容」——固定内容的优先级比循环任务高，会一直占着屏幕，循环内容轮不上。</p>
+            </div>
+
+            <div class="faq-item">
+                <h3 class="faq-q">提示推送失败怎么办？</h3>
+                <p class="faq-a">最常见的原因是第一步没做——循环任务里没有「图像 API」槽位。其次是 API 密钥或设备序列号抄错了，可以对照指南重新核对一遍，再注册一次。</p>
+            </div>
+
+            <div class="faq-item">
+                <h3 class="faq-q">天气数据是哪来的？准不准？</h3>
+                <p class="faq-a">用的是彩云天气，按你注册时选的城市坐标获取，每天推送时实时拉取。温度、湿度、空气质量和当天天气状况都会影响选诗。</p>
+            </div>
+
+            <div class="faq-item">
+                <h3 class="faq-q">我的 API 密钥安全吗？</h3>
+                <p class="faq-a">密钥和设备序列号只用于向你的设备推送内容，不会用作其他用途，也不会展示给其他人。建议不要把密钥发到群里或公开的地方。</p>
+            </div>
+
+            <div class="faq-item">
+                <h3 class="faq-q">能给多台设备订阅吗？</h3>
+                <p class="faq-a">可以。每台设备用各自的设备序列号注册一次就行，城市可以分别设置。</p>
+            </div>
+
+            <div class="faq-item">
+                <h3 class="faq-q">不想用了怎么取消？</h3>
+                <p class="faq-a">打开你的管理链接，点「注销订阅」，推送立即停止，订阅记录也会删除。之后想再用随时重新注册。</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 底部 CTA -->
+    <section class="cta">
+        <h2>准备好了吗</h2>
+        <p>拿到 API 密钥和设备序列号，就可以开始了。</p>
+        <a href="{{ url_for('register') }}" class="btn btn-primary btn-large">立即注册</a>
+    </section>
+</section>
+{% endblock %}
