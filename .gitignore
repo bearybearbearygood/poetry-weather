@@ -18,3 +18,5 @@ poetry-weather.zip
 push.log
 fonts/*.otf
 scripts/__pycache__/
+*.bak
+*.bak-*

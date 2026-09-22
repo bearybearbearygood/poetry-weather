@@ -129,6 +129,136 @@
         "西湖歌舞几时休。"
       ],
       "season": "all"
+    },
+    {
+      "title": "秋词·其二",
+      "dynasty": "唐",
+      "author": "刘禹锡",
+      "lines": [
+        "山明水净夜来霜，",
+        "数树深红出浅黄。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "长安秋望",
+      "dynasty": "唐",
+      "author": "杜牧",
+      "lines": [
+        "楼倚霜树外，",
+        "镜天无一毫。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "赠刘景文",
+      "dynasty": "宋",
+      "author": "苏轼",
+      "lines": [
+        "荷尽已无擎雨盖，",
+        "菊残犹有傲霜枝。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "野望",
+      "dynasty": "唐",
+      "author": "王绩",
+      "lines": [
+        "树树皆秋色，",
+        "山山唯落晖。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "秋登宣城谢朓北楼",
+      "dynasty": "唐",
+      "author": "李白",
+      "lines": [
+        "江城如画里，",
+        "山晚望晴空。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "霜月",
+      "dynasty": "唐",
+      "author": "李商隐",
+      "lines": [
+        "初闻征雁已无蝉，",
+        "百尺楼高水接天。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "秋日登吴公台上寺远眺",
+      "dynasty": "唐",
+      "author": "刘长卿",
+      "lines": [
+        "古台摇落后，",
+        "秋入望乡心。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "秋夕",
+      "dynasty": "唐",
+      "author": "杜牧",
+      "lines": [
+        "银烛秋光冷画屏，",
+        "轻罗小扇扑流萤。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "钱塘湖春行",
+      "dynasty": "唐",
+      "author": "白居易",
+      "lines": [
+        "孤山寺北贾亭西，",
+        "水面初平云脚低。"
+      ],
+      "season": "spring"
+    },
+    {
+      "title": "游园不值",
+      "dynasty": "宋",
+      "author": "叶绍翁",
+      "lines": [
+        "春色满园关不住，",
+        "一枝红杏出墙来。"
+      ],
+      "season": "spring"
+    },
+    {
+      "title": "春宵",
+      "dynasty": "宋",
+      "author": "苏轼",
+      "lines": [
+        "春宵一刻值千金，",
+        "花有清香月有阴。"
+      ],
+      "season": "spring"
+    },
+    {
+      "title": "喜晴",
+      "dynasty": "宋",
+      "author": "范成大",
+      "lines": [
+        "连雨不知春去，",
+        "一晴方觉夏深。"
+      ],
+      "season": "summer"
+    },
+    {
+      "title": "元日",
+      "dynasty": "宋",
+      "author": "王安石",
+      "lines": [
+        "爆竹声中一岁除，",
+        "春风送暖入屠苏。"
+      ],
+      "season": "spring"
     }
   ],
   "partly_cloudy": [
@@ -231,6 +361,146 @@
         "阴阳割昏晓。"
       ],
       "season": "all"
+    },
+    {
+      "title": "秋夜曲",
+      "dynasty": "唐",
+      "author": "王维",
+      "lines": [
+        "桂魄初生秋露微，",
+        "轻罗已薄未更衣。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "秋登兰山寄张五",
+      "dynasty": "唐",
+      "author": "孟浩然",
+      "lines": [
+        "北山白云里，",
+        "隐者自怡悦。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "早秋",
+      "dynasty": "唐",
+      "author": "许浑",
+      "lines": [
+        "遥夜泛清瑟，",
+        "西风生翠萝。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "忆江上吴处士",
+      "dynasty": "唐",
+      "author": "贾岛",
+      "lines": [
+        "秋风生渭水，",
+        "落叶满长安。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "齐安郡后池绝句",
+      "dynasty": "唐",
+      "author": "杜牧",
+      "lines": [
+        "菱透浮萍绿锦池，",
+        "夏莺千啭弄蔷薇。"
+      ],
+      "season": "summer"
+    },
+    {
+      "title": "三衢道中",
+      "dynasty": "宋",
+      "author": "曾几",
+      "lines": [
+        "梅子黄时日日晴，",
+        "小溪泛尽却山行。"
+      ],
+      "season": "summer"
+    },
+    {
+      "title": "村晚",
+      "dynasty": "宋",
+      "author": "雷震",
+      "lines": [
+        "草满池塘水满陂，",
+        "山衔落日浸寒漪。"
+      ],
+      "season": "summer"
+    },
+    {
+      "title": "行香子",
+      "dynasty": "宋",
+      "author": "秦观",
+      "lines": [
+        "树绕村庄，",
+        "水满陂塘。"
+      ],
+      "season": "spring"
+    },
+    {
+      "title": "春夜洛城闻笛",
+      "dynasty": "唐",
+      "author": "李白",
+      "lines": [
+        "谁家玉笛暗飞声，",
+        "散入春风满洛城。"
+      ],
+      "season": "spring"
+    },
+    {
+      "title": "社日",
+      "dynasty": "唐",
+      "author": "王驾",
+      "lines": [
+        "鹅湖山下稻粱肥，",
+        "豚栅鸡栖半掩扉。"
+      ],
+      "season": "spring"
+    },
+    {
+      "title": "惠崇春江晚景",
+      "dynasty": "宋",
+      "author": "苏轼",
+      "lines": [
+        "竹外桃花三两枝，",
+        "春江水暖鸭先知。"
+      ],
+      "season": "spring"
+    },
+    {
+      "title": "观猎",
+      "dynasty": "唐",
+      "author": "王维",
+      "lines": [
+        "风劲角弓鸣，",
+        "将军猎渭城。"
+      ],
+      "season": "winter"
+    },
+    {
+      "title": "宿建德江",
+      "dynasty": "唐",
+      "author": "孟浩然",
+      "lines": [
+        "野旷天低树，",
+        "江清月近人。"
+      ],
+      "season": "all"
+    },
+    {
+      "title": "凉州词",
+      "dynasty": "唐",
+      "author": "王之涣",
+      "lines": [
+        "黄河远上白云间，",
+        "一片孤城万仞山。"
+      ],
+      "season": "all"
     }
   ],
   "cloudy": [
@@ -323,6 +593,136 @@
         "轻烟老树寒鸦。"
       ],
       "season": "autumn"
+    },
+    {
+      "title": "秋兴八首·其一",
+      "dynasty": "唐",
+      "author": "杜甫",
+      "lines": [
+        "玉露凋伤枫树林，",
+        "巫山巫峡气萧森。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "风雨",
+      "dynasty": "唐",
+      "author": "李商隐",
+      "lines": [
+        "黄叶仍风雨，",
+        "青楼自管弦。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "秋雨夜眠",
+      "dynasty": "唐",
+      "author": "白居易",
+      "lines": [
+        "凉冷三秋夜，",
+        "安闲一老翁。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "秋夜独坐",
+      "dynasty": "唐",
+      "author": "王维",
+      "lines": [
+        "雨中山果落，",
+        "灯下草虫鸣。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "题扬州禅智寺",
+      "dynasty": "唐",
+      "author": "杜牧",
+      "lines": [
+        "雨过一蝉噪，",
+        "飘萧松桂秋。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "秋夜寄邱员外",
+      "dynasty": "唐",
+      "author": "韦应物",
+      "lines": [
+        "怀君属秋夜，",
+        "散步咏凉天。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "村夜",
+      "dynasty": "唐",
+      "author": "白居易",
+      "lines": [
+        "霜草苍苍虫切切，",
+        "村南村北行人绝。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "春望",
+      "dynasty": "唐",
+      "author": "杜甫",
+      "lines": [
+        "国破山河在，",
+        "城春草木深。"
+      ],
+      "season": "spring"
+    },
+    {
+      "title": "春雨",
+      "dynasty": "唐",
+      "author": "李商隐",
+      "lines": [
+        "怅卧新春白袷衣，",
+        "白门寥落意多违。"
+      ],
+      "season": "spring"
+    },
+    {
+      "title": "南湖早春",
+      "dynasty": "唐",
+      "author": "白居易",
+      "lines": [
+        "风回云断雨初晴，",
+        "返照湖边暖复明。"
+      ],
+      "season": "spring"
+    },
+    {
+      "title": "闲居初夏午睡起",
+      "dynasty": "宋",
+      "author": "杨万里",
+      "lines": [
+        "梅子留酸软齿牙，",
+        "芭蕉分绿与窗纱。"
+      ],
+      "season": "summer"
+    },
+    {
+      "title": "送友人",
+      "dynasty": "唐",
+      "author": "李白",
+      "lines": [
+        "青山横北郭，",
+        "白水绕东城。"
+      ],
+      "season": "all"
+    },
+    {
+      "title": "题宣州开元寺水阁",
+      "dynasty": "唐",
+      "author": "杜牧",
+      "lines": [
+        "六朝文物草连空，",
+        "天淡云闲今古同。"
+      ],
+      "season": "all"
     }
   ],
   "rain": [
@@ -475,6 +875,86 @@
         "铁马冰河入梦来。"
       ],
       "season": "winter"
+    },
+    {
+      "title": "早春呈水部张十八员外",
+      "dynasty": "唐",
+      "author": "韩愈",
+      "lines": [
+        "天街小雨润如酥，",
+        "草色遥看近却无。"
+      ],
+      "season": "spring"
+    },
+    {
+      "title": "菩萨蛮",
+      "dynasty": "唐",
+      "author": "韦庄",
+      "lines": [
+        "春水碧于天，",
+        "画船听雨眠。"
+      ],
+      "season": "spring"
+    },
+    {
+      "title": "定风波",
+      "dynasty": "宋",
+      "author": "苏轼",
+      "lines": [
+        "莫听穿林打叶声，",
+        "何妨吟啸且徐行。"
+      ],
+      "season": "spring"
+    },
+    {
+      "title": "剑门道中遇微雨",
+      "dynasty": "宋",
+      "author": "陆游",
+      "lines": [
+        "衣上征尘杂酒痕，",
+        "远游无处不消魂。"
+      ],
+      "season": "all"
+    },
+    {
+      "title": "微雨",
+      "dynasty": "唐",
+      "author": "李商隐",
+      "lines": [
+        "初随林霭动，",
+        "稍共夜凉分。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "夜雨",
+      "dynasty": "唐",
+      "author": "白居易",
+      "lines": [
+        "早蛩啼复歇，",
+        "残灯灭又明。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "宿骆氏亭寄怀崔雍崔衮",
+      "dynasty": "唐",
+      "author": "李商隐",
+      "lines": [
+        "秋阴不散霜飞晚，",
+        "留得枯荷听雨声。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "虞美人·听雨",
+      "dynasty": "宋",
+      "author": "蒋捷",
+      "lines": [
+        "少年听雨歌楼上，",
+        "红烛昏罗帐。"
+      ],
+      "season": "all"
     }
   ],
   "heavy_rain": [
@@ -557,6 +1037,66 @@
         "新开一夜风。"
       ],
       "season": "spring"
+    },
+    {
+      "title": "秋雨叹",
+      "dynasty": "唐",
+      "author": "杜甫",
+      "lines": [
+        "雨中百草秋烂死，",
+        "阶下决明颜色鲜。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "秋雨叹·其三",
+      "dynasty": "唐",
+      "author": "杜甫",
+      "lines": [
+        "长安布衣谁比数，",
+        "反锁衡门守环堵。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "苏秀道中",
+      "dynasty": "宋",
+      "author": "曾几",
+      "lines": [
+        "一夕骄阳转作霖，",
+        "梦回凉冷润衣襟。"
+      ],
+      "season": "summer"
+    },
+    {
+      "title": "溪上遇雨",
+      "dynasty": "唐",
+      "author": "崔道融",
+      "lines": [
+        "坐看黑云衔猛雨，",
+        "喷洒前山此独晴。"
+      ],
+      "season": "summer"
+    },
+    {
+      "title": "赋得暮雨送李曹",
+      "dynasty": "唐",
+      "author": "韦应物",
+      "lines": [
+        "漠漠帆来重，",
+        "冥冥鸟去迟。"
+      ],
+      "season": "all"
+    },
+    {
+      "title": "山石",
+      "dynasty": "唐",
+      "author": "韩愈",
+      "lines": [
+        "升堂坐阶新雨足，",
+        "芭蕉叶大栀子肥。"
+      ],
+      "season": "summer"
     }
   ],
   "snow": [
@@ -669,6 +1209,76 @@
         "有雪无诗俗了人。"
       ],
       "season": "winter"
+    },
+    {
+      "title": "终南望余雪",
+      "dynasty": "唐",
+      "author": "祖咏",
+      "lines": [
+        "终南阴岭秀，",
+        "积雪浮云端。"
+      ],
+      "season": "winter"
+    },
+    {
+      "title": "春雪",
+      "dynasty": "唐",
+      "author": "韩愈",
+      "lines": [
+        "新年都未有芳华，",
+        "二月初惊见草芽。"
+      ],
+      "season": "spring"
+    },
+    {
+      "title": "冬晚对雪忆胡居士家",
+      "dynasty": "唐",
+      "author": "王维",
+      "lines": [
+        "隔牖风惊竹，",
+        "开门雪满山。"
+      ],
+      "season": "winter"
+    },
+    {
+      "title": "对雪",
+      "dynasty": "唐",
+      "author": "李商隐",
+      "lines": [
+        "旋扑珠帘过粉墙，",
+        "轻于柳絮重于霜。"
+      ],
+      "season": "winter"
+    },
+    {
+      "title": "阁夜",
+      "dynasty": "唐",
+      "author": "杜甫",
+      "lines": [
+        "岁暮阴阳催短景，",
+        "天涯霜雪霁寒宵。"
+      ],
+      "season": "winter"
+    },
+    {
+      "title": "渔家傲·雪里已知春信至",
+      "dynasty": "宋",
+      "author": "李清照",
+      "lines": [
+        "雪里已知春信至，",
+        "寒梅点缀琼枝腻。"
+      ],
+      "season": "winter"
+    },
+    {
+      "title": "卖炭翁",
+      "dynasty": "唐",
+      "author": "白居易",
+      "lines": [
+        "夜来城外一尺雪，",
+        "晓驾炭车辗冰辙。"
+      ],
+      "season": "winter"
     }
   ],
   "heavy_snow": [
@@ -749,6 +1359,66 @@
       "lines": [
         "黄叶萧萧壮士悲，",
         "白雪漫漫征人寒。"
+      ],
+      "season": "winter"
+    },
+    {
+      "title": "天山雪歌送萧治归京",
+      "dynasty": "唐",
+      "author": "岑参",
+      "lines": [
+        "天山雪云常不开，",
+        "千峰万岭雪崔嵬。"
+      ],
+      "season": "winter"
+    },
+    {
+      "title": "左迁至蓝关示侄孙湘",
+      "dynasty": "唐",
+      "author": "韩愈",
+      "lines": [
+        "云横秦岭家何在，",
+        "雪拥蓝关马不前。"
+      ],
+      "season": "winter"
+    },
+    {
+      "title": "燕歌行",
+      "dynasty": "唐",
+      "author": "高适",
+      "lines": [
+        "大漠穷秋塞草腓，",
+        "孤城落日斗兵稀。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "雪后书北台壁",
+      "dynasty": "宋",
+      "author": "苏轼",
+      "lines": [
+        "黄昏犹作雨纤纤，",
+        "夜静无风势转严。"
+      ],
+      "season": "winter"
+    },
+    {
+      "title": "对雪",
+      "dynasty": "唐",
+      "author": "杜甫",
+      "lines": [
+        "乱云低薄暮，",
+        "急雪舞回风。"
+      ],
+      "season": "winter"
+    },
+    {
+      "title": "轮台歌奉送封大夫出师西征",
+      "dynasty": "唐",
+      "author": "岑参",
+      "lines": [
+        "四边伐鼓雪海涌，",
+        "三军大呼阴山动。"
       ],
       "season": "winter"
     }
@@ -843,6 +1513,76 @@
         "江入大荒流。"
       ],
       "season": "all"
+    },
+    {
+      "title": "题西林壁",
+      "dynasty": "宋",
+      "author": "苏轼",
+      "lines": [
+        "横看成岭侧成峰，",
+        "远近高低各不同。"
+      ],
+      "season": "all"
+    },
+    {
+      "title": "汉江临泛",
+      "dynasty": "唐",
+      "author": "王维",
+      "lines": [
+        "江流天地外，",
+        "山色有无中。"
+      ],
+      "season": "all"
+    },
+    {
+      "title": "过故人庄",
+      "dynasty": "唐",
+      "author": "孟浩然",
+      "lines": [
+        "绿树村边合，",
+        "青山郭外斜。"
+      ],
+      "season": "all"
+    },
+    {
+      "title": "渭川田家",
+      "dynasty": "唐",
+      "author": "王维",
+      "lines": [
+        "斜阳照墟落，",
+        "穷巷牛羊归。"
+      ],
+      "season": "all"
+    },
+    {
+      "title": "青溪",
+      "dynasty": "唐",
+      "author": "王维",
+      "lines": [
+        "声喧乱石中，",
+        "色静深松里。"
+      ],
+      "season": "all"
+    },
+    {
+      "title": "滕王阁诗",
+      "dynasty": "唐",
+      "author": "王勃",
+      "lines": [
+        "画栋朝飞南浦云，",
+        "珠帘暮卷西山雨。"
+      ],
+      "season": "all"
+    },
+    {
+      "title": "宿业师山房待丁大不至",
+      "dynasty": "唐",
+      "author": "孟浩然",
+      "lines": [
+        "夕阳度西岭，",
+        "群壑倏已暝。"
+      ],
+      "season": "all"
     }
   ],
   "haze": [
@@ -915,6 +1655,116 @@
         "纷纷开且落。"
       ],
       "season": "spring"
+    },
+    {
+      "title": "春江花月夜",
+      "dynasty": "唐",
+      "author": "张若虚",
+      "lines": [
+        "春江潮水连海平，",
+        "海上明月共潮生。"
+      ],
+      "season": "spring"
+    },
+    {
+      "title": "寄扬州韩绰判官",
+      "dynasty": "唐",
+      "author": "杜牧",
+      "lines": [
+        "青山隐隐水迢迢，",
+        "秋尽江南草未凋。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "锦瑟",
+      "dynasty": "唐",
+      "author": "李商隐",
+      "lines": [
+        "沧海月明珠有泪，",
+        "蓝田日暖玉生烟。"
+      ],
+      "season": "all"
+    },
+    {
+      "title": "水调歌头",
+      "dynasty": "宋",
+      "author": "苏轼",
+      "lines": [
+        "明月几时有，",
+        "把酒问青天。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "鹊桥仙",
+      "dynasty": "宋",
+      "author": "秦观",
+      "lines": [
+        "纤云弄巧，",
+        "飞星传恨。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "商山早行",
+      "dynasty": "唐",
+      "author": "温庭筠",
+      "lines": [
+        "鸡声茅店月，",
+        "人迹板桥霜。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "田园乐",
+      "dynasty": "唐",
+      "author": "王维",
+      "lines": [
+        "桃红复含宿雨，",
+        "柳绿更带朝烟。"
+      ],
+      "season": "spring"
+    },
+    {
+      "title": "醉花阴",
+      "dynasty": "宋",
+      "author": "李清照",
+      "lines": [
+        "薄雾浓云愁永昼，",
+        "瑞脑消金兽。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "海棠",
+      "dynasty": "宋",
+      "author": "苏轼",
+      "lines": [
+        "东风袅袅泛崇光，",
+        "香雾空蒙月转廊。"
+      ],
+      "season": "spring"
+    },
+    {
+      "title": "梦游天姥吟留别",
+      "dynasty": "唐",
+      "author": "李白",
+      "lines": [
+        "云青青兮欲雨，",
+        "水澹澹兮生烟。"
+      ],
+      "season": "all"
+    },
+    {
+      "title": "宿桐庐江寄广陵旧游",
+      "dynasty": "唐",
+      "author": "孟浩然",
+      "lines": [
+        "山暝听猿愁，",
+        "沧江急夜流。"
+      ],
+      "season": "autumn"
     }
   ],
   "wind": [
@@ -1007,6 +1857,76 @@
         "千金买亦无。"
       ],
       "season": "spring"
+    },
+    {
+      "title": "宣州谢朓楼饯别校书叔云",
+      "dynasty": "唐",
+      "author": "李白",
+      "lines": [
+        "长风万里送秋雁，",
+        "对此可以酣高楼。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "秋风引",
+      "dynasty": "唐",
+      "author": "刘禹锡",
+      "lines": [
+        "何处秋风至，",
+        "萧萧送雁群。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "天末怀李白",
+      "dynasty": "唐",
+      "author": "杜甫",
+      "lines": [
+        "凉风起天末，",
+        "君子意如何。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "咏风",
+      "dynasty": "唐",
+      "author": "王勃",
+      "lines": [
+        "肃肃凉风生，",
+        "加我林壑清。"
+      ],
+      "season": "all"
+    },
+    {
+      "title": "旅夜书怀",
+      "dynasty": "唐",
+      "author": "杜甫",
+      "lines": [
+        "细草微风岸，",
+        "危樯独夜舟。"
+      ],
+      "season": "all"
+    },
+    {
+      "title": "夜上受降城闻笛",
+      "dynasty": "唐",
+      "author": "李益",
+      "lines": [
+        "回乐峰前沙似雪，",
+        "受降城外月如霜。"
+      ],
+      "season": "winter"
+    },
+    {
+      "title": "塞上听吹笛",
+      "dynasty": "唐",
+      "author": "高适",
+      "lines": [
+        "雪净胡天牧马还，",
+        "月明羌笛戍楼间。"
+      ],
+      "season": "winter"
     }
   ],
   "dust": [
@@ -1087,6 +2007,66 @@
       "lines": [
         "明月出天山，",
         "苍茫云海间。"
+      ],
+      "season": "all"
+    },
+    {
+      "title": "塞下曲",
+      "dynasty": "唐",
+      "author": "王昌龄",
+      "lines": [
+        "饮马渡秋水，",
+        "水寒风似刀。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "塞下曲",
+      "dynasty": "唐",
+      "author": "李白",
+      "lines": [
+        "五月天山雪，",
+        "无花只有寒。"
+      ],
+      "season": "summer"
+    },
+    {
+      "title": "兵车行",
+      "dynasty": "唐",
+      "author": "杜甫",
+      "lines": [
+        "牵衣顿足拦道哭，",
+        "尘埃不见咸阳桥。"
+      ],
+      "season": "all"
+    },
+    {
+      "title": "碛中作",
+      "dynasty": "唐",
+      "author": "岑参",
+      "lines": [
+        "走马西来欲到天，",
+        "辞家见月两回圆。"
+      ],
+      "season": "all"
+    },
+    {
+      "title": "征人怨",
+      "dynasty": "唐",
+      "author": "柳中庸",
+      "lines": [
+        "岁岁金河复玉关，",
+        "朝朝马策与刀环。"
+      ],
+      "season": "all"
+    },
+    {
+      "title": "出塞",
+      "dynasty": "唐",
+      "author": "王昌龄",
+      "lines": [
+        "秦时明月汉时关，",
+        "万里长征人未还。"
       ],
       "season": "all"
     }
@@ -1391,6 +2371,86 @@
       "lines": [
         "客从长安来，",
         "还归长安去。"
+      ],
+      "season": "winter"
+    },
+    {
+      "title": "自京赴奉先县咏怀五百字",
+      "dynasty": "唐",
+      "author": "杜甫",
+      "lines": [
+        "霜严衣带断，",
+        "指直不得结。"
+      ],
+      "season": "winter"
+    },
+    {
+      "title": "寒地百姓吟",
+      "dynasty": "唐",
+      "author": "孟郊",
+      "lines": [
+        "无火炙地眠，",
+        "半夜皆立号。"
+      ],
+      "season": "winter"
+    },
+    {
+      "title": "声声慢",
+      "dynasty": "宋",
+      "author": "李清照",
+      "lines": [
+        "寻寻觅觅，",
+        "冷冷清清。"
+      ],
+      "season": "autumn"
+    },
+    {
+      "title": "岁暮归南山",
+      "dynasty": "唐",
+      "author": "孟浩然",
+      "lines": [
+        "白发催年老，",
+        "青阳逼岁除。"
+      ],
+      "season": "winter"
+    },
+    {
+      "title": "除夜作",
+      "dynasty": "唐",
+      "author": "高适",
+      "lines": [
+        "旅馆寒灯独不眠，",
+        "客心何事转凄然。"
+      ],
+      "season": "winter"
+    },
+    {
+      "title": "戏答元珍",
+      "dynasty": "宋",
+      "author": "欧阳修",
+      "lines": [
+        "春风疑不到天涯，",
+        "二月山城未见花。"
+      ],
+      "season": "winter"
+    },
+    {
+      "title": "卜算子·咏梅",
+      "dynasty": "宋",
+      "author": "陆游",
+      "lines": [
+        "驿外断桥边，",
+        "寂寞开无主。"
+      ],
+      "season": "winter"
+    },
+    {
+      "title": "山园小梅",
+      "dynasty": "宋",
+      "author": "林逋",
+      "lines": [
+        "众芳摇落独暄妍，",
+        "占尽风情向小园。"
       ],
       "season": "winter"
     }
