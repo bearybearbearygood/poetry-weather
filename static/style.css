@@ -112,7 +112,7 @@ body {
 }
 
 .nav-logo {
-    font-family: var(--font-serif);
+    font-family: var(--font-sans);
     font-size: 22px;
     font-weight: 600;
     color: var(--color-text);
@@ -170,7 +170,7 @@ body {
 }
 
 .hero h1 {
-    font-family: var(--font-serif);
+    font-family: var(--font-sans);
     font-size: 48px;
     font-weight: 700;
     letter-spacing: 12px;     /* 留白疏朗 */
@@ -194,7 +194,7 @@ body {
 
 /* 副标题首行（短句，字号更大、字距更疏） */
 .subtitle-lead {
-    font-family: var(--font-serif);
+    font-family: var(--font-sans);
     font-size: 22px;
     color: var(--color-text-light);
     letter-spacing: 3px;
@@ -204,7 +204,7 @@ body {
 }
 
 .subtitle {
-    font-family: var(--font-serif);
+    font-family: var(--font-sans);
     font-size: 16px;
     color: var(--color-text-light);
     margin-bottom: 32px;
@@ -394,7 +394,7 @@ body {
     border-radius: 2px;          /* 方章 */
     background: var(--color-primary-bg);
     color: var(--color-primary);
-    font-family: var(--font-serif);
+    font-family: var(--font-sans);
     font-size: 14px;
     font-weight: 600;
     margin-bottom: 14px;
@@ -403,7 +403,7 @@ body {
 }
 
 .feature-card h3 {
-    font-family: var(--font-serif);
+    font-family: var(--font-sans);
     font-size: 17px;
     font-weight: 600;
     margin-bottom: 8px;
@@ -582,7 +582,7 @@ body {
 }
 
 .cta h2 {
-    font-family: var(--font-serif);
+    font-family: var(--font-sans);
     font-size: 24px;
     font-weight: 600;
     margin-bottom: 12px;
@@ -591,16 +591,23 @@ body {
 }
 
 .cta p {
-    font-family: var(--font-serif);
+    font-family: var(--font-sans);
     color: var(--color-text-light);
     margin-bottom: 28px;
     line-height: 1.8;
     font-size: 15px;
 }
 
-/* 首页：设置指南入口按钮 */
-.guide-entry {
-    text-align: center;
+/* 首页：CTA 双按钮并列（立即注册 + 使用指南，等宽） */
+.cta-actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.cta-actions .btn {
+    min-width: 160px;
 }
 
 /* ───────── 表单 ───────── */
@@ -610,7 +617,7 @@ body {
 }
 
 .form-section h1 {
-    font-family: var(--font-serif);
+    font-family: var(--font-sans);
     font-size: 28px;
     font-weight: 600;
     text-align: center;
