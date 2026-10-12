@@ -55,9 +55,11 @@
         </details>
 
         <div class="form-notice">
-            <p>注册要把 Dot. API 密钥交给服务端保存——推送是服务端每天替你发起的，密钥必须留在服务端。
-                <strong>密钥在服务端是明文存储的</strong>，这个服务是个人项目、没有安全认证。</p>
-            <p>能接受再注册。完整说明见<a href="{{ url_for('guide') }}#data">数据与密钥说明</a>；你随时能在 Dot. App 里删掉这枚密钥，它立刻失效。</p>
+            <p>推送由服务端每天定时发起，所以注册时需要把 Dot. API 密钥交给服务端保存。有一点想提前讲明：
+                <strong>密钥在服务端是明文存储的</strong>，这个服务也是个人做的小项目，没有经过安全认证。</p>
+            <p>如果这一点让你不太放心，完全可以理解——你随时能在 Dot. App 里删掉这枚密钥，让它立刻失效；
+                也可以看看<a href="{{ url_for('guide') }}#selfhost">另一种自己部署的方式</a>，密钥不必交给任何人。
+                完整说明见<a href="{{ url_for('guide') }}#data">数据与密钥说明</a>。</p>
         </div>
 
         <button type="submit" class="btn btn-primary btn-large btn-block">注册并推送</button>
@@ -71,7 +73,7 @@
             <li>API 密钥和设备序列号填写正确</li>
         </ul>
         <p>不清楚怎么操作？<a href="{{ url_for('guide') }}">查看完整使用指南 →</a></p>
-        <p>介意把密钥交给服务端？<a href="{{ url_for('guide') }}#selfhost">可以自己部署一份 →</a></p>
+        <p>也可以自己部署一份，密钥只存在你自己的机器上 → <a href="{{ url_for('guide') }}#selfhost">看看怎么做</a></p>
     </div>
 </section>
 {% endblock %}

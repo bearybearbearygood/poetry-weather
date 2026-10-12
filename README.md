@@ -4,6 +4,44 @@
 
 晴天有晴诗，雨天有雨诗，高温有夏诗，严寒有冬诗。每天在墨水屏上静静呈现一首应景的古诗词，搭配当日天气信息。
 
+## 安装（WorkBuddy / Codex / Claude）
+
+仓库里内置了可直接安装的 skill 包：**`skills/poetry-weather/`**（含 SKILL.md、子集字体、诗词库与全部脚本，约 756KB）。
+
+### 方式一：一句话交给 AI（推荐）
+
+把这句话发给 AI：
+
+> 帮我安装这个 skill：https://github.com/bearybearbearygood/poetry-weather
+
+Agent 应当做的事：`git clone` 本仓库 → 把 `skills/poetry-weather/` 整个目录复制到技能目录：
+
+| 环境 | 技能目录 |
+|---|---|
+| WorkBuddy | `~/.workbuddy/skills/poetry-weather/` |
+| Claude Code | `~/.claude/skills/poetry-weather/` |
+| Codex | `~/.codex/skills/poetry-weather/` |
+| 通用（多 agent 共用） | `~/.agents/skills/poetry-weather/` |
+
+装好后对 AI 说「设置诗词天气推送」，按 `SKILL.md` 引导填 Dot. API 密钥 / 设备序列号 / 城市即可。
+
+### 方式二：WorkBuddy 图形界面
+
+设置 → 技能管理 → **从 Git 仓库导入** → 粘贴 `https://github.com/bearybearbearygood/poetry-weather`
+
+### 方式三：命令行（跨 agent）
+
+```bash
+npx skills@latest add bearybearbearygood/poetry-weather --skill poetry-weather -g
+```
+
+> ⚠️ `npx skills` 的目标 agent 列表里**没有** `~/.workbuddy/skills`（它认 `~/.codebuddy/skills`、`~/.claude/skills`、`~/.agents/skills` 等）。WorkBuddy 用户跑完这条命令还需要把 skill 复制到 `~/.workbuddy/skills/`，或直接用方式一 / 二。
+
+### 维护者注意
+
+- skill 包必须放在 `skills/<名字>/` 下，**不要在仓库根放 `SKILL.md`**——根目录的 `SKILL.md` 会被当成一个 skill 并**遮蔽**其下所有 skill。
+- 改动 `dot_api.py` / `poetry.py` / `poetry.json` / 字体后，记得同步复制到 `skills/poetry-weather/scripts/` 与 `skills/poetry-weather/fonts/`。
+
 ## 近期更新
 
 ### v2.11（2026-09-23）
