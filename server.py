@@ -310,8 +310,9 @@ def manage(token):
             return redirect(url_for("manage", token=token))
 
         elif action == "delete":
-            db.deactivate_subscription(token)
-            flash("已取消订阅，感谢使用诗词天气", "info")
+            # 真删：密钥、设备号、经纬度、推送历史一并从库中移除（兑现页面上的承诺）
+            db.delete_subscription(token)
+            flash("已注销，你的订阅记录和推送历史已从服务端删除", "info")
             return redirect(url_for("index"))
 
     # GET: 显示管理页

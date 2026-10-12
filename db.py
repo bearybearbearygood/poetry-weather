@@ -166,6 +166,28 @@ def deactivate_subscription(manage_token):
     conn.close()
 
 
+def delete_subscription(manage_token):
+    """彻底删除订阅（含推送历史）
+
+    注销即真删：密码本、设备序列号、经纬度、推送历史全部从库中移除，
+    不留备份。这是对用户「注销后删除我的记录」这一承诺的实现。
+    """
+    conn = get_db()
+    row = conn.execute(
+        "SELECT id FROM subscriptions WHERE manage_token = ?",
+        (manage_token,)
+    ).fetchone()
+    if not row:
+        conn.close()
+        return False
+
+    conn.execute("DELETE FROM push_history WHERE subscription_id = ?", (row["id"],))
+    conn.execute("DELETE FROM subscriptions WHERE id = ?", (row["id"],))
+    conn.commit()
+    conn.close()
+    return True
+
+
 def record_push(subscription_id, device_id, poem_title, poem_author,
                 weather_desc, temperature, status, error_msg=None):
     """记录推送历史"""

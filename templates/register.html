@@ -55,7 +55,9 @@
         </details>
 
         <div class="form-notice">
-            <p>你的 API 密钥和设备序列号仅用于向你的设备推送内容，不会用于其他用途。</p>
+            <p>注册要把 Dot. API 密钥交给服务端保存——推送是服务端每天替你发起的，密钥必须留在服务端。
+                <strong>密钥在服务端是明文存储的</strong>，这个服务是个人项目、没有安全认证。</p>
+            <p>能接受再注册。完整说明见<a href="{{ url_for('guide') }}#data">数据与密钥说明</a>；你随时能在 Dot. App 里删掉这枚密钥，它立刻失效。</p>
         </div>
 
         <button type="submit" class="btn btn-primary btn-large btn-block">注册并推送</button>
@@ -69,6 +71,7 @@
             <li>API 密钥和设备序列号填写正确</li>
         </ul>
         <p>不清楚怎么操作？<a href="{{ url_for('guide') }}">查看完整使用指南 →</a></p>
+        <p>介意把密钥交给服务端？<a href="{{ url_for('guide') }}#selfhost">可以自己部署一份 →</a></p>
     </div>
 </section>
 {% endblock %}

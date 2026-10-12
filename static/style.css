@@ -1207,29 +1207,29 @@ body {
     line-height: 1.4;
 }
 
-/* 通用列表（圆点与文字首行对齐，换行悬挂缩进） */
+/* 通用列表：圆点用行内元素参与首行排列，垂直居中、换行悬挂缩进。
+   不用 flex——flex 会把 <strong>/<code> 与文本拆成多个 item 并排成栏。 */
 .guide-list {
     list-style: none;
     padding: 0;
 }
 
 .guide-list li {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
     font-size: 14px;
     color: var(--color-text-light);
     line-height: 1.85;
-    padding: 4px 0;
+    padding: 4px 0 4px 14px;
+    text-indent: -14px;
     text-align: left;
 }
 
 .guide-list li::before {
     content: "";
-    flex: 0 0 auto;
+    display: inline-block;
     width: 4px;
     height: 4px;
-    margin-top: 0.78em;
+    margin-right: 10px;
+    vertical-align: middle;
     border-radius: 50%;
     background: var(--color-primary);
 }
@@ -1237,6 +1237,21 @@ body {
 .guide-list li strong {
     color: var(--color-text);
     font-weight: 600;
+}
+
+.guide-list li code {
+    background: var(--color-primary-bg);
+    color: var(--color-primary);
+    padding: 1px 5px;
+    border-radius: 2px;
+    font-size: 12.5px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    word-break: break-all;
+}
+
+/* 锚点跳转时躲开吸顶导航 */
+.guide-block[id] {
+    scroll-margin-top: 76px;
 }
 
 .guide-list-roomy li {

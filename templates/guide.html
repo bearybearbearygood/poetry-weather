@@ -91,6 +91,34 @@
         <p class="guide-note">管理链接丢失了？出于安全考虑本服务无法找回，需要重新注册一次。</p>
     </div>
 
+    <!-- 数据与密钥说明 -->
+    <div class="guide-block" id="data">
+        <h2>数据与密钥说明</h2>
+        <p>订阅版要把 Dot. API 密钥交给服务端。这里把存什么、风险在哪一次说清，你再决定用不用。</p>
+        <ul class="guide-list guide-list-roomy">
+            <li><strong>存什么</strong> —— Dot. API 密钥、设备序列号、城市（经纬度）、注册时间，以及每天推送的诗词记录</li>
+            <li><strong>为什么必须存密钥</strong> —— 推送由服务端每天定时发起，密钥只能留在服务端，没法只存在你自己手里</li>
+            <li><strong>存在哪</strong> —— 服务端的一个数据库文件里，只有服务端程序会读到它</li>
+            <li><strong>风险是什么</strong> —— 密钥是<strong>明文保存</strong>的。这是个人的业余项目，没有做过任何安全认证，也不承诺绝对不泄露。真被拿到，对方能往你的设备推内容，但读不到你的账号、其他设备或任何别的数据</li>
+            <li><strong>你随时能收回</strong> —— 在 Dot. App 或网页端 <code>dot.mindreset.tech/panel?tab=api-keys</code> 删掉这枚密钥，它立刻失效，我们再也推不了；那里还能看到它的最后使用时间</li>
+            <li><strong>注销即真删</strong> —— 点注销后，密钥、设备序列号、经纬度和推送历史都会从服务端删除，不留备份</li>
+        </ul>
+        <p class="guide-note">说白了：能接受就用订阅版，最省事，电脑不用开；不能接受就别交密钥，走下面那条自建的路。</p>
+    </div>
+
+    <!-- 自建部署 -->
+    <div class="guide-block" id="selfhost">
+        <h2>不想交密钥？自己部署一份</h2>
+        <p>把这份程序跑在你自己那里，密钥只存在你自己的机器上，不经过我们。</p>
+        <ul class="guide-list guide-list-roomy">
+            <li><strong>怎么做</strong> —— 从 GitHub 仓库 <code>bearybearbearygood/poetry-weather</code> 拉代码跑 <code>main.py</code>；不熟命令行的，也可以用 WorkBuddy skill 包，一句话装好</li>
+            <li><strong>代价一</strong> —— 每天推送的那一刻，你这台电脑要开机且联网；关机或断网那次就跳过</li>
+            <li><strong>代价二</strong> —— 升级得自己来：诗词库扩充、版式改版都不会自动同步过去，要重新装一次</li>
+            <li><strong>好处</strong> —— 密钥、城市、推送记录全在你自己机器上，谁也不用信</li>
+        </ul>
+        <p class="guide-note">两条路互不影响，用哪个都行，想换也能随时换。</p>
+    </div>
+
     <!-- 常见问题 -->
     <div class="guide-block">
         <h2>常见问题</h2>
@@ -113,7 +141,7 @@
 
             <div class="faq-item">
                 <h3 class="faq-q">我的 API 密钥安全吗？</h3>
-                <p class="faq-a">密钥和设备序列号只用于向你的设备推送内容，不会用作其他用途，也不会展示给其他人。建议不要把密钥发到群里或公开的地方。</p>
+                <p class="faq-a">实话实说：密钥在服务端是明文保存的，这个服务也没有安全认证。但它能做的事很有限——只能往你的设备推内容，读不到你的账号或其他数据，而且你随时能在 Dot. App 里删掉它，立刻失效。怎么权衡，见上面的<a href="#data">数据与密钥说明</a>；不想交密钥就走<a href="#selfhost">自建</a>那条路。</p>
             </div>
 
             <div class="faq-item">
