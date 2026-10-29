@@ -185,8 +185,29 @@ def fetch_weather(caiyun_token, lng, lat):
 
     # ── 风速 ──
     wind = realtime.get("wind", {})
-    wind_speed = wind.get("speed")
+    # 彩云 v2.6 的 wind.speed 单位是 km/h，这里统一换成 m/s，另保留原值
+    wind_speed_kmh = wind.get("speed")
+    wind_speed = round(wind_speed_kmh / 3.6, 1) if wind_speed_kmh is not None else None
     wind_direction = wind.get("direction")
+
+    # ── 气压 / 能见度 / 云量 / 降水 ──
+    pressure = realtime.get("pressure")
+    if pressure is not None:
+        pressure = round(pressure / 100)  # Pa → hPa
+    visibility = realtime.get("visibility")
+    cloudrate = realtime.get("cloudrate")
+    if cloudrate is not None:
+        cloudrate = round(cloudrate * 100)
+    precipitation = realtime.get("precipitation", {}).get("local", {})
+    precip_intensity = precipitation.get("intensity")
+    precip_status = precipitation.get("status", "")
+
+    # ── 日出日落 ──
+    sunrise = sunset = ""
+    astro = daily.get("astro") or []
+    if astro:
+        sunrise = (astro[0].get("sunrise") or {}).get("time", "")
+        sunset = (astro[0].get("sunset") or {}).get("time", "")
 
     # ── 空气质量 ──
     air_quality = realtime.get("air_quality", {})
@@ -202,6 +223,15 @@ def fetch_weather(caiyun_token, lng, lat):
     if "comfort" in life_index:
         comfort_index = life_index["comfort"].get("index")
         comfort_desc = COMFORT_MAP.get(comfort_index, "")
+
+    # ── 紫外线（实时）──
+    # 网页是用户随时打开，实时值就是他要的；下面 ultraviolet_desc 仍保留「全天峰值推算」口径，
+    # 那是给每天固定 9 点推送的设备端用的，两者不冲突。
+    uv_index = None
+    uv_desc = ""
+    if isinstance(life_index, dict) and "ultraviolet" in life_index:
+        uv_index = life_index["ultraviolet"].get("index")
+        uv_desc = life_index["ultraviolet"].get("desc", "")
 
     # ── 紫外线 ──
     # 彩云 daily.ultraviolet 为空（免费版不提供全天紫外线预报），realtime 紫外线是"当前时刻"值，
@@ -276,7 +306,17 @@ def fetch_weather(caiyun_token, lng, lat):
         "humidity": humidity,
         # 风
         "wind_speed": wind_speed,
+        "wind_speed_kmh": wind_speed_kmh,
         "wind_direction": wind_direction,
+        # 气压 / 能见度 / 云量 / 降水
+        "pressure": pressure,
+        "visibility": visibility,
+        "cloudrate": cloudrate,
+        "precip_intensity": precip_intensity,
+        "precip_status": precip_status,
+        # 日出日落
+        "sunrise": sunrise,
+        "sunset": sunset,
         # 空气质量
         "aqi": aqi_chn,
         "pm25": pm25,
@@ -285,6 +325,8 @@ def fetch_weather(caiyun_token, lng, lat):
         "comfort_index": comfort_index,
         "comfort_desc": comfort_desc,
         # 紫外线
+        "uv_index": uv_index,
+        "uv_desc": uv_desc,
         "ultraviolet_desc": ultraviolet_desc,
         # 触发列表（用于诗词匹配）
         "triggers": triggers,

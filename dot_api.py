@@ -160,6 +160,44 @@ def _draw_right(draw, text, y, font, fill=0, right_margin=5):
     _draw_bold(draw, (x, y), text, font, fill=fill)
 
 
+def _text_width(draw, text, font):
+    bbox = draw.textbbox((0, 0), text, font=font)
+    return bbox[2] - bbox[0]
+
+
+# 顶部行可用宽度：左边距 5，右边留 3（假粗体右偏 1px 占掉 1px）
+HEADER_LIMIT = SCREEN_W - 5 - 3
+
+
+def _fit_header(draw, font, segs):
+    """把顶部各段拼成一行，放不下时按「信息价值从低到高」依次舍弃。
+
+    segs 是 [(key, text)]，key ∈ {"temp", "hum", "desc", "aqi"}。
+
+    中长天气描述＋重污染会把整行推到 325px（如「8~15℃ 湿度60% 中度雾霾 空气重度污染」），
+    超出 296px 屏幕后被硬裁成「…空气重度污」。按以下顺序降级：
+      ① 原文 → ② AQI 去掉「空气」前缀 → ③ 舍弃湿度（健康信息比湿度更值得留）
+      → ④ 再舍弃 AQI → ⑤ 只留温度+天气
+    """
+    def compose(items):
+        return " ".join(t for _, t in items)
+
+    candidates = [segs]
+    candidates.append([(k, t[2:] if (k == "aqi" and t.startswith("空气")) else t) for k, t in segs])
+    for drop in ({"hum"}, {"hum", "aqi"}, {"hum", "aqi", "desc"}):
+        candidates.append([(k, t) for k, t in segs if k not in drop])
+
+    for cand in candidates:
+        if not cand:
+            continue
+        text = compose(cand)
+        if _text_width(draw, text, font) <= HEADER_LIMIT:
+            return text
+
+    # 极端兜底：只保留温度（再长也装得下）
+    return compose([(k, t) for k, t in segs if k == "temp"]) or compose(segs)
+
+
 # ── 二十四节气 ──
 # 用 lunar_python（寿星天文历移植）精确计算节气日，只在节气当天显示。
 # 此前用 (月,日) 硬编码表覆盖 ±1 天漂移，导致每个节气连续显示 3 天（错）。
@@ -220,23 +258,23 @@ def generate_image(poem, weather, date_str):
     f_sig = _get_font(FS_SIG)
 
     # ── 顶部：温度区间 + 湿度 + 天气 + 空气质量（左对齐，16px）──
-    parts = []
+    segs = []
     tmin = weather.get("temp_min")
     tmax = weather.get("temp_max")
     if tmin is not None and tmax is not None:
-        parts.append(f"{tmin}~{tmax}℃")
+        segs.append(("temp", f"{tmin}~{tmax}℃"))
     elif weather.get("temperature") is not None:
-        parts.append(f'{weather["temperature"]}℃')
+        segs.append(("temp", f'{weather["temperature"]}℃'))
     if weather.get("humidity") is not None:
-        parts.append(f"湿度{weather['humidity']}%")
+        segs.append(("hum", f"湿度{weather['humidity']}%"))
     if weather.get("description"):
-        parts.append(weather["description"])
+        segs.append(("desc", weather["description"]))
     aqi_desc = weather.get("aqi_desc")
     if aqi_desc:
-        parts.append(f"空气{aqi_desc}")
+        segs.append(("aqi", f"空气{aqi_desc}"))
     elif weather.get("aqi") is not None:
-        parts.append(f"AQI{weather['aqi']}")
-    header_text = " ".join(parts)
+        segs.append(("aqi", f"AQI{weather['aqi']}"))
+    header_text = _fit_header(draw, f_header, segs)
 
     _draw_bold(draw, (5, HEADER_Y), header_text, f_header)
 
