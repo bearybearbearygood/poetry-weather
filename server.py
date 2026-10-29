@@ -20,13 +20,15 @@
   PORT: Web 服务端口（默认 5000）
 """
 
+import io
 import json
 import os
 import sys
 import random
+import zipfile
 from datetime import datetime
 
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, send_file
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -324,6 +326,59 @@ def manage(token):
 def api_cities():
     """城市列表 API（供前端动态加载）"""
     return jsonify(CITIES)
+
+
+# ── skill 安装包下载 ──
+# 从 skills/poetry-weather/ 实时打包，代码一改包就跟着变，不存在包与代码不同步的问题。
+# 不提交二进制到仓库，也不需要在发版时手动重打包。
+_SKILL_DIR = os.path.join(SCRIPT_DIR, "skills", "poetry-weather")
+_SKILL_ZIP_CACHE = {"mtime": None, "blob": None}
+
+
+def _skill_dir_mtime(root):
+    latest = 0.0
+    for dirpath, dirnames, filenames in os.walk(root):
+        dirnames[:] = [d for d in dirnames if d != "__pycache__"]
+        for fn in filenames:
+            try:
+                latest = max(latest, os.path.getmtime(os.path.join(dirpath, fn)))
+            except OSError:
+                pass
+    return latest
+
+
+def _build_skill_zip(root):
+    """把 skill 目录打成 zip，根目录为 poetry-weather/"""
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED, compresslevel=1) as zf:
+        for dirpath, dirnames, filenames in os.walk(root):
+            dirnames[:] = [d for d in dirnames if d != "__pycache__"]
+            for fn in filenames:
+                if fn == ".DS_Store" or fn.endswith(".pyc"):
+                    continue
+                full = os.path.join(dirpath, fn)
+                arc = os.path.join("poetry-weather", os.path.relpath(full, root))
+                zf.write(full, arc)
+    return buf.getvalue()
+
+
+@app.route("/download/poetry-weather-skill.zip")
+def download_skill_zip():
+    """下载 skill 安装包（按目录 mtime 缓存，内容变更后自动重建）"""
+    if not os.path.isdir(_SKILL_DIR):
+        return jsonify({"success": False, "error": "skill 目录不存在"}), 404
+
+    mtime = _skill_dir_mtime(_SKILL_DIR)
+    if _SKILL_ZIP_CACHE["blob"] is None or _SKILL_ZIP_CACHE["mtime"] != mtime:
+        _SKILL_ZIP_CACHE["blob"] = _build_skill_zip(_SKILL_DIR)
+        _SKILL_ZIP_CACHE["mtime"] = mtime
+
+    return send_file(
+        io.BytesIO(_SKILL_ZIP_CACHE["blob"]),
+        mimetype="application/zip",
+        as_attachment=True,
+        download_name="poetry-weather-skill.zip",
+    )
 
 
 @app.route("/cron/push")

@@ -71,7 +71,7 @@ pip install -r requirements.txt
 }
 ```
 
-`edition` 字段当前只支持 `general`（137 首通用古诗词库，唐宋为主）。代码层已预留扩展位，未来增加宋词版时只需把 `poetry_ci.json` 放回 scripts/ 目录，在 `poetry.py` 的 `POETRY_PATHS` 加一行 `"ci": POETRY_CI_PATH`，并把 `main.py` 的 `SUPPORTED_EDITIONS` 加上 `"ci"` 即可。非法 edition 值会自动回退到 general 并打印警告。
+`edition` 字段当前只支持 `general`（311 条 / 唯一 297 首通用古诗词库，唐宋为主）。代码层已预留扩展位，未来增加宋词版时只需把 `poetry_ci.json` 放回 scripts/ 目录，在 `poetry.py` 的 `POETRY_PATHS` 加一行 `"ci": POETRY_CI_PATH`，并把 `main.py` 的 `SUPPORTED_EDITIONS` 加上 `"ci"` 即可。非法 edition 值会自动回退到 general 并打印警告。
 
 > 💡 **推荐：把 `config.json` 放在 skill 之外**。技能升级会刷新 skills/ 目录，可能覆盖脚本目录里的 config.json 与 history.json。建议把配置放在固定目录（如 `~/.workbuddy/poetry-weather/`），然后通过环境变量 `POETRY_WEATHER_CONFIG` 指定：
 >
@@ -116,7 +116,7 @@ cd scripts/
 | `dot_api.py` | Dot. 设备 API 客户端，用 Pillow 生成 296x152 图片并推送；节气用 lunar_python 精确计算（仅节气日显示） |
 | `weather.py` | 彩云天气 API 客户端，获取温度/湿度/AQI/紫外线等 |
 | `poetry.py` | 诗词匹配模块，按天气类型选诗；季节为"候选内优先"（非硬过滤），20 天去重窗口 + 窗口自适应 + LRU 兜底 |
-| `poetry.json` | 通用古诗词库（229 首，13 类天气，含 22 首高温诗，唐宋为主） |
+| `poetry.json` | 通用古诗词库（311 条 / 唯一 297 首，13 类天气，含 22 首高温诗，唐宋为主） |
 | `cities.json` | 中国 50 个主要城市经纬度 |
 | `requirements.txt` | Python 依赖 |
 | `add_poems.py` | 诗库追加工具（带校验：2 行、每行 5~9 字、季节合法、类别内不重复） |

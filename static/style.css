@@ -1289,6 +1289,36 @@ body {
     font-size: inherit;
 }
 
+/* 复制块：指令文字 + 一键复制按钮 */
+.copy-box {
+    margin: 12px 0 10px;
+}
+
+.copy-box .copy-line {
+    margin: 0;
+}
+
+.copy-btn {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 7px 18px;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--color-primary);
+    background: var(--color-primary-bg);
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background .15s, color .15s;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.copy-btn:hover,
+.copy-btn.is-done {
+    color: #fff;
+    background: var(--color-primary);
+}
+
 /* 步骤内的操作路径（纯文本，不用色块） */
 .path {
     font-size: 13.5px;

@@ -110,15 +110,23 @@
     <div class="guide-block" id="selfhost">
         <h2>自己部署一份（密钥留在你那里）</h2>
         <p>把这份程序装到你自己电脑上，密钥只存在你自己的机器里，不经过我们的服务器。适合对密钥比较在意，或者喜欢自己掌控一切的人。</p>
-        <p>在 WorkBuddy（或者 Codex、Claude）里把下面这句话发给 AI，它会自己把程序装好：</p>
-        <p class="copy-line">帮我安装这个 skill：https://github.com/bearybearbearygood/poetry-weather</p>
+        <p>在 WorkBuddy（或者 Claude Code、Codex）里，把下面这段完整发给 AI，它会自己下载装好：</p>
+
+        <div class="copy-box">
+            <p class="copy-line" id="install-cmd">帮我安装这个 skill：https://poetry-weather.onrender.com/download/poetry-weather-skill.zip。下载后解压，把 poetry-weather 整个目录放进你的技能目录，然后读 poetry-weather/SKILL.md，按它的引导继续。</p>
+            <button type="button" class="copy-btn" data-copy="install-cmd">复制</button>
+        </div>
+
+        <p class="step-note">AI 如果问「放哪个目录」，告诉它这三个里的一个：WorkBuddy 用 <code>~/.workbuddy/skills/</code>，Claude Code 用 <code>~/.claude/skills/</code>，Codex 用 <code>~/.codex/skills/</code>。</p>
+
         <ul class="guide-list guide-list-roomy">
             <li><strong>装完再配一次</strong> —— 接着跟 AI 说「设置诗词天气推送」，它会依次问你 Dot. API 密钥、设备序列号和城市，填完就开始每天推</li>
             <li><strong>每天要开机</strong> —— 推送的那一刻，这台电脑需要开着并联网；关机或断网的那次会跳过</li>
-            <li><strong>升级要手动</strong> —— 诗词库扩充、版式调整不会自动同步过来，需要让 AI 再装一次</li>
+            <li><strong>升级要手动</strong> —— 诗词库扩充、版式调整不会自动同步过来，用同一个链接重新装一次即可</li>
             <li><strong>好处</strong> —— 密钥、城市、推送记录全在你自己机器上，不用交给任何人</li>
         </ul>
-        <p class="guide-note">两条路互不影响，先试哪个都行，以后想换也可以随时换。</p>
+
+        <p class="guide-note">电脑能直接访问 GitHub 的话，用仓库地址装效果一样：<br><code>帮我安装这个 skill：https://github.com/bearybearbearygood/poetry-weather</code><br>国内不少网络访问不了 GitHub，所以默认给的是上面那个下载链接。</p>
     </div>
 
     <!-- 常见问题 -->
@@ -166,4 +174,51 @@
         <a href="{{ url_for('register') }}" class="btn btn-primary btn-large">立即注册</a>
     </section>
 </section>
+
+<script>
+(function () {
+    function fallbackCopy(text) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        ta.style.top = '0';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        ta.setSelectionRange(0, ta.value.length);
+        var ok = false;
+        try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        return ok;
+    }
+
+    document.querySelectorAll('.copy-btn').forEach(function (btn) {
+        var label = btn.textContent;
+        btn.addEventListener('click', function () {
+            var el = document.getElementById(btn.dataset.copy);
+            if (!el) return;
+            var text = el.textContent.trim();
+
+            function done(ok) {
+                btn.textContent = ok ? '已复制' : '请长按上方文字复制';
+                btn.classList.toggle('is-done', ok);
+                setTimeout(function () {
+                    btn.textContent = label;
+                    btn.classList.remove('is-done');
+                }, 2000);
+            }
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text)
+                    .then(function () { done(true); })
+                    .catch(function () { done(fallbackCopy(text)); });
+            } else {
+                done(fallbackCopy(text));
+            }
+        });
+    });
+})();
+</script>
 {% endblock %}
