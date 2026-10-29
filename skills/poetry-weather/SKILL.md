@@ -1,6 +1,6 @@
 ---
 name: poetry-weather
-version: 2.10
+version: 2.13
 description: 诗词天气推送 Skill（Image API 图片直推版，默认主入口）。根据用户所在城市的每日天气自动匹配一首古诗词，用 Pillow 生成 296x152 墨水屏图片推送到 Dot. 设备。当用户说"设置诗词天气推送"、"安装诗词天气"、"Dot. 诗词"、"天气诗词"、"诗词天气"时触发。需要用户提供 Dot. API Key、设备序列号和所在城市。注意：本 skill 是图片版；纯文本推送/Text API/RSS 内容场景请用 poetry-weather-push（文本版）。
 agent_created: true
 ---

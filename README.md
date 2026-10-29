@@ -1,4 +1,4 @@
-# 诗词天气 v2.11
+# 诗词天气 v2.13
 
 根据每日天气自动匹配古诗词，推送到 Dot. 墨水屏设备。
 
@@ -6,15 +6,26 @@
 
 ## 安装（WorkBuddy / Codex / Claude）
 
-仓库里内置了可直接安装的 skill 包：**`skills/poetry-weather/`**（含 SKILL.md、子集字体、诗词库与全部脚本，约 756KB）。
+仓库里内置了可直接安装的 skill 包：**`skills/poetry-weather/`**（含 SKILL.md、子集字体、诗词库与全部脚本，约 872KB）。
 
-### 方式一：一句话交给 AI（推荐）
+装好后对 AI 说「设置诗词天气推送」，按 `SKILL.md` 引导填 Dot. API 密钥 / 设备序列号 / 城市即可。
 
-把这句话发给 AI：
+### 方式一：下载安装包（国内网络推荐）
 
-> 帮我安装这个 skill：https://github.com/bearybearbearygood/poetry-weather
+把这句话发给 AI，它会自己下载装好：
 
-Agent 应当做的事：`git clone` 本仓库 → 把 `skills/poetry-weather/` 整个目录复制到技能目录：
+> 帮我安装这个 skill：https://poetry-weather.onrender.com/download/poetry-weather-skill.zip。下载后解压，把 poetry-weather 整个目录放进你的技能目录，然后读 poetry-weather/SKILL.md，按它的引导继续。
+
+也可以手动来：
+
+```bash
+curl -fL --max-time 120 -o /tmp/pw-skill.zip \
+  https://poetry-weather.onrender.com/download/poetry-weather-skill.zip
+unzip -oq /tmp/pw-skill.zip -d /tmp/pw-skill
+cp -R /tmp/pw-skill/poetry-weather ~/.workbuddy/skills/
+```
+
+目标技能目录：
 
 | 环境 | 技能目录 |
 |---|---|
@@ -23,13 +34,23 @@ Agent 应当做的事：`git clone` 本仓库 → 把 `skills/poetry-weather/` �
 | Codex | `~/.codex/skills/poetry-weather/` |
 | 通用（多 agent 共用） | `~/.agents/skills/poetry-weather/` |
 
-装好后对 AI 说「设置诗词天气推送」，按 `SKILL.md` 引导填 Dot. API 密钥 / 设备序列号 / 城市即可。
+> 这个 zip 由服务端从 `skills/poetry-weather/` 实时打包，内容和仓库永远一致。首次请求若赶上服务休眠，可能要等 30–60 秒才返回。
 
-### 方式二：WorkBuddy 图形界面
+### 方式二：从 GitHub 仓库安装（需要能访问 GitHub）
+
+> 国内多数网络访问不了 `github.com`，`git clone` 会干等约 75 秒然后抛 `Failed to connect to github.com port 443`。遇到这个报错直接用方式一，别重试。
+
+把这句话发给 AI：
+
+> 帮我安装这个 skill：https://github.com/bearybearbearygood/poetry-weather
+
+Agent 应当做的事：`git clone` 本仓库 → 把 `skills/poetry-weather/` 整个目录复制到上表的技能目录。
+
+### 方式三：WorkBuddy 图形界面
 
 设置 → 技能管理 → **从 Git 仓库导入** → 粘贴 `https://github.com/bearybearbearygood/poetry-weather`
 
-### 方式三：命令行（跨 agent）
+### 方式四：命令行（跨 agent）
 
 ```bash
 npx skills@latest add bearybearbearygood/poetry-weather --skill poetry-weather -g
@@ -43,6 +64,18 @@ npx skills@latest add bearybearbearygood/poetry-weather --skill poetry-weather -
 - 改动 `dot_api.py` / `poetry.py` / `poetry.json` / 字体后，记得同步复制到 `skills/poetry-weather/scripts/` 与 `skills/poetry-weather/fonts/`。
 
 ## 近期更新
+
+### v2.13（2026-10-29）
+- **新增 skill 安装包下载端点** `GET /download/poetry-weather-skill.zip`：从 `skills/poetry-weather/` 实时打包，按目录 mtime 缓存。不往仓库里塞二进制，改代码包就跟着变，不会出现包与代码不同步。
+- **指南页「自建部署」段重写**：下载直链作为主路径，配一键复制按钮（微信内置浏览器不支持 `navigator.clipboard` 时走 `execCommand` 兜底）；GitHub 克隆降为备选，并注明国内多数网络连不上。
+- **修复缺字**：上一轮补诗后未重跑子集化，40 个字（丞、义、鼎、梁、章、袁、陈、言、遣、骤…）在字体里完全缺失，墨水屏上渲染为空白。已重新生成，1317 → 1415 码位，诗库缺字归零。
+- **诗词库扩充**：243 → 311 条（唯一 297 首）。
+- skill 副本同步诗库与字体，`SKILL.md` 里过时的数量描述一并更正。
+
+### v2.12（2026-10-12）
+- **两条路线并列**：指南页与注册页不再只讲订阅，自建部署与订阅版等权呈现。想省事的用订阅，在意密钥归属的自己装。
+- **数据与密钥说明改为平实陈述**：密钥在服务端明文保存、项目没有安全认证、随时可在 Dot. App 删除密钥撤销。风险说清，不逼人。
+- **注销改为真删**：`delete_subscription()` 连带删除推送历史，与管理页「并删除你的订阅记录」的既有承诺对齐。
 
 ### v2.11（2026-09-23）
 - **托管版首页改版**：全站字体统一为非衬线（导航 logo、大标题、副标题、功能卡图标与标题、CTA 标题与正文，共 8 处），与注册页风格一致；删除示意图下方的「墨水屏显示效果（实拍）」说明行。
@@ -179,14 +212,15 @@ crontab -e
 ├── weather.py           # 彩云天气 API 客户端
 ├── dot_api.py           # Dot. 设备 Image API 客户端（Pillow 生成图片）
 ├── poetry.py            # 诗词匹配模块
-├── poetry.json          # 通用诗词库（243 条 / 唯一 229 首，13 类天气）
+├── poetry.json          # 通用诗词库（311 条 / 唯一 297 首，13 类天气）
 ├── poetry_ci.json       # 宋词库（37 首，13 类天气）
 ├── cities.json          # 中国 50 个主要城市经纬度
 ├── db.py                # 托管服务订阅数据库（SQLite）
 ├── templates/           # Web 页面（托管服务首页、注册页、管理页）
 ├── static/              # 样式表 + 首页示意图
-├── fonts/               # 内置子集字体（poetry-weather.ttf，599KB）
+├── fonts/               # 内置子集字体（poetry-weather.ttf，656KB）
 ├── scripts/             # 字体子集化脚本
+├── skills/              # 可独立安装的 skill 包（skills/poetry-weather/）
 ├── Dockerfile           # Docker 镜像构建
 ├── docker-compose.yml   # Docker Compose 部署
 ├── requirements.txt     # Python 依赖
@@ -210,11 +244,11 @@ crontab -e
 
 - **天气数据**：彩云天气 API v2.6，获取实时温度、湿度、AQI、舒适度
 - **图片生成**：Pillow 生成 296×152 灰度 PNG，`textbbox` 测量文字宽度实现像素级居中
-- **内置字体**：Noto Sans CJK SC 子集化（1314 字符，599KB），包含诗词库全字符 + UI 字符（含半角 `%`）
+- **内置字体**：Noto Sans CJK SC 子集化（1415 字符，656KB），包含诗词库全字符 + UI 字符（含半角 `%`）
 - **节气显示**：lunar_python 精确计算，**仅节气当天显示**
 - **天气类型**：取「实时 + 当天预报（全天综合 + 白天）三者中严重度最高者」，严重度相同优先实时
 - **底部日期行**：用 `·` 无空格拼接，14px 右对齐
-- **诗词匹配**：229 首按 13 种天气/温度类型分类；先排除 20 天去重窗口内推送过的诗，候选内再优先当季；若整池被窗口占满则窗口自适应收窄到「池子大小 - 1」，保证轮转周期等于池子大小
+- **诗词匹配**：297 首按 13 种天气/温度类型分类；先排除 20 天去重窗口内推送过的诗，候选内再优先当季；若整池被窗口占满则窗口自适应收窄到「池子大小 - 1」，保证轮转周期等于池子大小
 - **多版本文库**：`edition` 参数切换不同诗词 JSON（general 通用 / ci 宋词）
 
 ### 诗词匹配优先级
