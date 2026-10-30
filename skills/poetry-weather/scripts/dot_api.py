@@ -97,7 +97,7 @@ HEADER_Y = 3             # 顶部 y 坐标
 POEM_Y_START = 36        # 诗词起始 y（距顶部留足呼吸空间）
 POEM_LINE_HEIGHT = 26    # 诗词行高（字号20 + 间距6）
 SOURCE_GAP = 4           # 出处与诗词的间距
-SIG_Y = SCREEN_H - FS_SIG - 4  # 底部 y
+SIG_Y = SCREEN_H - FS_SIG - 9  # 底部 y（14px 字号的中文字形实际高度约 18px，留 4px 会压到屏幕边被裁）
 
 # ── 笔画增粗（假粗体：偏移重绘，约1.5倍）
 # 在原位基础上向右、向下各偏移1px重绘，竖画横画均匀加粗，

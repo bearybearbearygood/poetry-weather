@@ -20,3 +20,10 @@ fonts/*.otf
 scripts/__pycache__/
 *.bak
 *.bak-*
+webapp/dist/
+
+# 和风天气 Ed25519 私钥，绝不入库
+content_studio/secrets/
+
+# skill 分发包（由 server.py 运行时动态打包，不入库）
+poetry-weather-skill.zip
