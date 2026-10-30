@@ -1,0 +1,370 @@
+"""彩云天气 API 客户端
+
+数据来源：彩云天气 v2.6 API
+功能：
+  - 获取实时天气（温度、体感温度、湿度、风速、空气质量、舒适度）
+  - 获取今日预报（最高温/最低温）
+  - skycon 到天气类型映射
+  - 温度/湿度触发逻辑（用于诗词匹配增强）
+  - IP 自动定位（fallback）
+"""
+
+import urllib.request
+import urllib.error
+import json
+import time
+from datetime import datetime
+
+# ── 彩云天气 skycon 到本地天气类型的映射 ──
+# 彩云天气会返回带 _DAY / _NIGHT 后缀的值，统一映射
+SKYCON_MAP = {
+    "CLEAR": ("clear", "晴"),
+    "CLEAR_DAY": ("clear", "晴"),
+    "CLEAR_NIGHT": ("clear", "晴"),
+    "PARTLY_CLOUDY": ("partly_cloudy", "多云"),
+    "PARTLY_CLOUDY_DAY": ("partly_cloudy", "多云"),
+    "PARTLY_CLOUDY_NIGHT": ("partly_cloudy", "多云"),
+    "CLOUDY": ("cloudy", "阴"),
+    "LIGHT_HAZE": ("haze", "轻度雾霾"),
+    "MODERATE_HAZE": ("haze", "中度雾霾"),
+    "HEAVY_HAZE": ("haze", "重度雾霾"),
+    "LIGHT_RAIN": ("rain", "小雨"),
+    "STABLE_RAIN": ("rain", "中雨"),
+    "RAIN": ("rain", "雨"),
+    "HEAVY_RAIN": ("heavy_rain", "大雨"),
+    "STORM_RAIN": ("heavy_rain", "暴雨"),
+    "LIGHT_SNOW": ("snow", "小雪"),
+    "STABLE_SNOW": ("snow", "中雪"),
+    "SNOW": ("snow", "雪"),
+    "HEAVY_SNOW": ("heavy_snow", "大雪"),
+    "STORM_SNOW": ("heavy_snow", "暴雪"),
+    "FOG": ("fog", "雾"),
+    "WIND": ("wind", "大风"),
+    "DUST": ("dust", "浮尘"),
+    "SAND": ("dust", "沙尘"),
+    "HAIL": ("heavy_rain", "冰雹"),
+    "SLEET": ("snow", "雨夹雪"),
+}
+
+# 天气严重度（越大越"恶劣"），用于实时与当日预报合并时取更恶劣者
+CATEGORY_SEVERITY = {
+    "clear": 0, "partly_cloudy": 1, "cloudy": 2,
+    "rain": 3, "snow": 3,
+    "fog": 4, "haze": 4, "wind": 4, "dust": 4,
+    "heavy_rain": 5, "heavy_snow": 5,
+}
+
+# 天气图标 emoji
+WEATHER_EMOJI = {
+    "clear": "☀️",
+    "partly_cloudy": "⛅",
+    "cloudy": "☁️",
+    "rain": "🌧️",
+    "heavy_rain": "⛈️",
+    "snow": "❄️",
+    "heavy_snow": "🌨️",
+    "fog": "🌫️",
+    "haze": "😷",
+    "wind": "🌬️",
+    "dust": "🌪️",
+    "hot": "🔥",
+    "cold": "🥶",
+}
+
+# 舒适度描述
+COMFORT_MAP = {
+    0: "闷热",
+    1: "酷热",
+    2: "炎热",
+    3: "热",
+    4: "温暖",
+    5: "舒适",
+    6: "凉爽",
+    7: "冷",
+    8: "寒冷",
+    9: "严寒",
+}
+
+
+def get_location_by_ip():
+    """通过 IP 自动定位，返回经纬度
+
+    使用 ip-api.com 免费接口（无需 key）。
+    Returns:
+        (lng, lat, city_name) 或 None
+    """
+    url = "http://ip-api.com/json/?lang=zh-CN&fields=status,lat,lon,city"
+    try:
+        req = urllib.request.Request(url, method="GET")
+        req.add_header("Accept", "application/json")
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+        if data.get("status") == "success":
+            return data["lon"], data["lat"], data.get("city", "未知")
+    except Exception:
+        pass
+    return None
+
+
+def fetch_weather(caiyun_token, lng, lat):
+    """从彩云天气 API 获取完整天气数据
+
+    Args:
+        caiyun_token: 彩云天气 API token
+        lng: 经度
+        lat: 纬度
+
+    Returns:
+        dict: 完整天气信息
+    """
+    url = (
+        f"https://api.caiyunapp.com/v2.6/{caiyun_token}/{lng},{lat}/weather"
+        f"?dailysteps=3&hourlysteps=48"
+    )
+
+    req = urllib.request.Request(url, method="GET")
+    req.add_header("Accept", "application/json")
+
+    try:
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        raise RuntimeError(f"彩云天气 API 返回错误 {e.code}: {e.reason}")
+    except urllib.error.URLError as e:
+        raise RuntimeError(f"无法连接彩云天气 API: {e.reason}")
+
+    if data.get("status") != "ok":
+        raise RuntimeError(
+            f"彩云天气 API 返回异常: {data.get('error', '未知错误')}"
+        )
+
+    result = data["result"]
+    realtime = result.get("realtime", {})
+    daily = result.get("daily", {})
+
+    # ── skycon：实时 + 当日预报合并（取更恶劣者）──
+    # 每日推送代表一整天，realtime 只反映推送那一瞬间：雷阵雨来临前实时可能恰好是晴，
+    # 而当天预报已是雨。故取 realtime / daily 全天综合 / daily 白天 三者中严重度最高的
+    # 作为当日天气类型；严重度相同时优先 realtime。
+    skycon = realtime.get("skycon", "CLEAR_DAY")
+    category, description = SKYCON_MAP.get(skycon, ("clear", "晴"))
+
+    forecast_skycon = None
+    candidates = [(CATEGORY_SEVERITY.get(category, 0), 0, category, description)]
+    for key in ("skycon", "skycon_08h_20h"):
+        series = daily.get(key) or []
+        if series:
+            fc = series[0].get("value")
+            fc_cat, fc_desc = SKYCON_MAP.get(fc, (None, None))
+            if fc_cat:
+                candidates.append((CATEGORY_SEVERITY.get(fc_cat, 0), 1, fc_cat, fc_desc))
+                if forecast_skycon is None:
+                    forecast_skycon = fc
+    _, _, category, description = max(candidates, key=lambda c: (c[0], -c[1]))
+    emoji = WEATHER_EMOJI.get(category, "🌤️")
+
+    # ── 温度 ──
+    temperature = realtime.get("temperature")
+    if temperature is not None:
+        temperature = round(temperature)
+
+    apparent_temp = realtime.get("apparent_temperature")
+    if apparent_temp is not None:
+        apparent_temp = round(apparent_temp)
+
+    # 今日最高温/最低温
+    temp_max = None
+    temp_min = None
+    if "temperature" in daily and daily["temperature"]:
+        temp_max = round(daily["temperature"][0].get("max", 0))
+        temp_min = round(daily["temperature"][0].get("min", 0))
+
+    # ── 湿度 ──
+    humidity = realtime.get("humidity")
+    if humidity is not None:
+        humidity = round(humidity * 100)
+
+    # ── 风速 ──
+    wind = realtime.get("wind", {})
+    # 彩云 v2.6 的 wind.speed 单位是 km/h，这里统一换成 m/s，另保留原值
+    wind_speed_kmh = wind.get("speed")
+    wind_speed = round(wind_speed_kmh / 3.6, 1) if wind_speed_kmh is not None else None
+    wind_direction = wind.get("direction")
+
+    # ── 气压 / 能见度 / 云量 / 降水 ──
+    pressure = realtime.get("pressure")
+    if pressure is not None:
+        pressure = round(pressure / 100)  # Pa → hPa
+    visibility = realtime.get("visibility")
+    cloudrate = realtime.get("cloudrate")
+    if cloudrate is not None:
+        cloudrate = round(cloudrate * 100)
+    precipitation = realtime.get("precipitation", {}).get("local", {})
+    precip_intensity = precipitation.get("intensity")
+    precip_status = precipitation.get("status", "")
+
+    # ── 日出日落 ──
+    sunrise = sunset = ""
+    astro = daily.get("astro") or []
+    if astro:
+        sunrise = (astro[0].get("sunrise") or {}).get("time", "")
+        sunset = (astro[0].get("sunset") or {}).get("time", "")
+
+    # ── 空气质量 ──
+    air_quality = realtime.get("air_quality", {})
+    aqi = air_quality.get("aqi", {})
+    aqi_chn = aqi.get("chn")
+    pm25 = air_quality.get("pm25")
+    aqi_desc = air_quality.get("description", {}).get("chn", "")
+
+    # ── 舒适度 ──
+    comfort_index = None
+    comfort_desc = ""
+    life_index = realtime.get("life_index", {})
+    if "comfort" in life_index:
+        comfort_index = life_index["comfort"].get("index")
+        comfort_desc = COMFORT_MAP.get(comfort_index, "")
+
+    # ── 紫外线（实时）──
+    # 网页是用户随时打开，实时值就是他要的；下面 ultraviolet_desc 仍保留「全天峰值推算」口径，
+    # 那是给每天固定 9 点推送的设备端用的，两者不冲突。
+    uv_index = None
+    uv_desc = ""
+    if isinstance(life_index, dict) and "ultraviolet" in life_index:
+        uv_index = life_index["ultraviolet"].get("index")
+        uv_desc = life_index["ultraviolet"].get("desc", "")
+
+    # ── 紫外线 ──
+    # 彩云 daily.ultraviolet 为空（免费版不提供全天紫外线预报），realtime 紫外线是"当前时刻"值，
+    # 早上 9 点推送时永远显示"弱"失真。改为用当天 hourly 太阳辐射 dswrf 峰值推算全天紫外线等级：
+    #   <200 W/m² 弱 | 200~400 中等 | 400~600 强 | ≥600 很强（对应正午晴天的 800+ W/m² → 很强）
+    ultraviolet_desc = ""
+    try:
+        today = datetime.now().strftime("%Y-%m-%d")
+        dswrf_list = result.get("hourly", {}).get("dswrf", [])
+        today_peaks = [
+            item.get("value", 0) for item in dswrf_list
+            if item.get("datetime", "").startswith(today)
+        ]
+        if today_peaks:
+            peak = max(today_peaks)
+            if peak < 200:
+                ultraviolet_desc = "弱"
+            elif peak < 400:
+                ultraviolet_desc = "中等"
+            elif peak < 600:
+                ultraviolet_desc = "强"
+            else:
+                ultraviolet_desc = "很强"
+    except Exception:
+        pass
+    # fallback：若 hourly 数据缺失，退回实时紫外线描述
+    if not ultraviolet_desc and isinstance(life_index, dict) and "ultraviolet" in life_index:
+        ultraviolet_desc = life_index["ultraviolet"].get("desc", "")
+
+    # ── 温度触发 ──
+    triggers = [category]  # 基础天气类型
+
+    if temperature is not None:
+        if temperature >= 32:
+            triggers.append("hot")
+        elif temperature <= 5:
+            triggers.append("cold")
+
+    # 舒适度触发（补充温度判断）
+    if comfort_index is not None:
+        # 阈值 ≤2：仅"闷热/酷热/炎热"视为高温；"热"(3) 不触发，避免体感偏热就霸屏高温诗
+        if comfort_index <= 2 and "hot" not in triggers:
+            triggers.append("hot")
+        elif comfort_index >= 7 and "cold" not in triggers:
+            triggers.append("cold")
+
+    # ── 湿度触发 ──
+    # 阈值从 85 提到 92，避免南方潮湿天气（桑拿天 / 回南天）误推雾诗：
+    # 真雾天 humidity 一般 95%+ 仍能命中，但 80~90% 的湿热天不会触发。
+    # 进一步收紧：必须 skycon 不是晴/多云/阴 之一（这三类本来就和"雾"无关）。
+    if humidity is not None:
+        if (
+            humidity >= 92
+            and category not in ("rain", "heavy_rain", "snow", "heavy_snow", "clear", "partly_cloudy", "cloudy")
+        ):
+            triggers.append("fog")
+
+    return {
+        # 天气类型
+        "category": category,
+        "description": description,
+        "emoji": emoji,
+        "skycon": skycon,
+        "realtime_category": SKYCON_MAP.get(skycon, ("clear", "晴"))[0],
+        "forecast_skycon": forecast_skycon,
+        # 温度
+        "temperature": temperature,
+        "apparent_temp": apparent_temp,
+        "temp_max": temp_max,
+        "temp_min": temp_min,
+        # 湿度
+        "humidity": humidity,
+        # 风
+        "wind_speed": wind_speed,
+        "wind_speed_kmh": wind_speed_kmh,
+        "wind_direction": wind_direction,
+        # 气压 / 能见度 / 云量 / 降水
+        "pressure": pressure,
+        "visibility": visibility,
+        "cloudrate": cloudrate,
+        "precip_intensity": precip_intensity,
+        "precip_status": precip_status,
+        # 日出日落
+        "sunrise": sunrise,
+        "sunset": sunset,
+        # 空气质量
+        "aqi": aqi_chn,
+        "pm25": pm25,
+        "aqi_desc": aqi_desc,
+        # 舒适度
+        "comfort_index": comfort_index,
+        "comfort_desc": comfort_desc,
+        # 紫外线
+        "uv_index": uv_index,
+        "uv_desc": uv_desc,
+        "ultraviolet_desc": ultraviolet_desc,
+        # 触发列表（用于诗词匹配）
+        "triggers": triggers,
+        "source": "caiyun",
+    }
+
+
+def fetch_weather_any(provider, caiyun_token, lng, lat, retries=2):
+    """按 provider 选择天气数据源
+
+    provider: "qweather" | "caiyun" | "open-meteo"
+
+    默认用和风（qweather）：它与 Dot 内容工坊里的官方天气内容同源，
+    同一城市同一时刻两边数据一致，不会出现两张卡片互相打脸。
+
+    彩云对免费 token 有速率限制，短时间内连续请求会返回 429。
+    内容工坊的场景是「每城市每天只需生成一次」，正常不会触发；
+    但多个城市同时被拉取时可能撞上限流，所以这里做退避重试。
+    """
+    if provider == "qweather":
+        from weather_qweather import fetch_weather as fetch_qweather
+        return fetch_qweather(lng, lat)
+
+    if provider == "open-meteo":
+        from weather_openmeteo import fetch_weather as fetch_openmeteo
+        return fetch_openmeteo(lng, lat)
+
+    last_error = None
+    for attempt in range(retries + 1):
+        try:
+            return fetch_weather(caiyun_token, lng, lat)
+        except RuntimeError as e:
+            last_error = e
+            msg = str(e)
+            # 只对限流重试；密钥失效之类的错误重试也没用
+            if "429" in msg or "TOO MANY" in msg.upper():
+                time.sleep(1.5 * (attempt + 1))
+                continue
+            raise
+    raise last_error
